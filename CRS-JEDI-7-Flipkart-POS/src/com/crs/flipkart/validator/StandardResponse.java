@@ -8,5 +8,5 @@ package com.crs.flipkart.validator;
  *
  */
 public class StandardResponse {
-
+	
 }
