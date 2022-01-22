@@ -31,8 +31,16 @@ public class StudentImplementation {
 	{
 		return courseChoices;
 	}
+	public static void updateCourseChoices(Map<Integer,ArrayList<Course>> choiceList)
+	{
+		courseChoices = choiceList;
+	}
 	public static ArrayList<StudentRegisteredCourses> viewRegisteredCourses()
 	{
 		return registeredCoursesData;
+	}
+	public static void updateRegisteredCourses(ArrayList<StudentRegisteredCourses> newList)
+	{
+		registeredCoursesData = newList;
 	}
 }

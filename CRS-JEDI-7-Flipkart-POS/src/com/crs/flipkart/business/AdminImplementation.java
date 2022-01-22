@@ -132,6 +132,8 @@ public class AdminImplementation {
 					break;
 			}
 		}
+		StudentImplementation.updateRegisteredCourses(registeredData);
 	}
-	//public Challan generateChallan(SemesterRegistration semesterRegistration);//3
+	
+	//public Challan generateChallan(SemesterRegistration semesterRegistration);
 }
