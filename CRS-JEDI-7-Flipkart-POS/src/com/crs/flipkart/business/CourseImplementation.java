@@ -17,4 +17,8 @@ public class CourseImplementation {
 	{
 		return courseData;
 	}
+	public static void updateCourseData(ArrayList<Course> courseList)
+	{
+		courseData = courseList;
+	}
 }

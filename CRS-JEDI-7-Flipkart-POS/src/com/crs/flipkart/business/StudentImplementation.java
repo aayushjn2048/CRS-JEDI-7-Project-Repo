@@ -23,6 +23,10 @@ public class StudentImplementation {
 	{
 		return studentData;
 	}
+	public static void updateStudentData(ArrayList<Student> studentList)
+	{
+		studentData = studentList;
+	}
 	public static ArrayList<Course> viewCourseChoicesForStudent(int studentId)
 	{
 		return courseChoices.get(studentId);

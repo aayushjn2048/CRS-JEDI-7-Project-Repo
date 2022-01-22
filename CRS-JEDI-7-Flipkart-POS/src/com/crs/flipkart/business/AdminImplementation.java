@@ -41,6 +41,55 @@ public class AdminImplementation {
 	public ArrayList<Course> viewAllCourses(){
 		return CourseImplementation.viewCourseData();
 	}
+	public void registerCourses()
+	{
+		ArrayList<StudentRegisteredCourses> registeredCourses = new ArrayList<StudentRegisteredCourses>();
+		Map<Integer,ArrayList<Course>> data = StudentImplementation.viewAllCourseChoices();
+		Map<Integer,Integer> courseChoices = new HashMap<>();
+		for(Map.Entry<Integer,ArrayList<Course>> entry: data.entrySet())
+		{
+			ArrayList<Course> tmp = entry.getValue();
+			for(int i=0;i<tmp.size();i++)
+			{
+				if(courseChoices.containsKey((tmp.get(i).getCourseId())))
+					courseChoices.put(tmp.get(i).getCourseId(), courseChoices.get(tmp.get(i).getCourseId())+1);
+				else
+					courseChoices.put(tmp.get(i).getCourseId(),1);
+			}
+		}
+		/*System.out.println("Course Choice Count");
+		for(Map.Entry<Integer, Integer> entry: courseChoices.entrySet())
+			System.out.println(entry.getKey() + " " + entry.getValue());*/
+		for(Map.Entry<Integer, Integer> entry: courseChoices.entrySet())
+		{
+			int count = 0;
+			if(entry.getValue()>=3)
+			{
+				for(Map.Entry<Integer,ArrayList<Course>> entry2: data.entrySet())
+				{
+					if(count==10)
+						break;
+					StudentRegisteredCourses src = new StudentRegisteredCourses();
+					boolean flag = false;
+					ArrayList<Course> tmp = entry2.getValue();
+					for(int j=0;j<tmp.size();j++)
+					{
+						if(tmp.get(j).getCourseId()==entry.getKey())
+						{
+							flag = true;
+							src.setCourseId(entry.getKey());
+							src.setStudentId(entry2.getKey());
+							break;
+						}
+					}
+					if(flag)
+						registeredCourses.add(src);
+					count++;
+				}
+			}
+		}
+		StudentImplementation.updateRegisteredCourses(registeredCourses);
+	}
 	public void allocatePendingCourses(){
 		//Contains number of request made by students for particular course 
 		Map<Integer,ArrayList<Course>> data = StudentImplementation.viewAllCourseChoices();
@@ -52,7 +101,16 @@ public class AdminImplementation {
 		Map<Integer,Integer> pendingCourseChoices = new HashMap<>();
 		Map<Integer,ArrayList<Integer>> studentRegisteredCoursesNos = new HashMap<>();
 		for(int i=0;i<registeredData.size();i++)
-			studentRegisteredCoursesNos.get(registeredData.get(i).getStudentId()).add(registeredData.get(i).getCourseId());
+		{
+			if(studentRegisteredCoursesNos.containsKey(registeredData.get(i).getStudentId()))
+				studentRegisteredCoursesNos.get(registeredData.get(i).getStudentId()).add(registeredData.get(i).getCourseId());
+			else
+			{
+				ArrayList<Integer> tmp = new ArrayList<Integer>();
+				tmp.add(registeredData.get(i).getCourseId());
+				studentRegisteredCoursesNos.put(registeredData.get(i).getStudentId(), tmp);
+			}
+		}
 		for(Map.Entry<Integer,ArrayList<Course>> entry: data.entrySet())
 		{
 			ArrayList<Course> tmp = entry.getValue();
@@ -85,6 +143,7 @@ public class AdminImplementation {
 		ArrayList<Integer> topCoursesId = new ArrayList<Integer>();
 		ArrayList<Integer> topRequestNos = new ArrayList<Integer>();
 		int fixCourses = noOfRequestsPending/noOfCoursesRequired;
+		//System.out.println(noOfRequestsPending + " " + noOfCoursesRequired);
 		for(int i=0;i<noOfCoursesRequired;i++)
 		{
 			topCoursesId.add(tmp2.get(i).courseId);
@@ -98,7 +157,7 @@ public class AdminImplementation {
 			ArrayList<Course> tmp = entry.getValue();
 			for(int i=0;i<tmp.size();i++)
 			{
-				if(studentRegisteredCoursesNos.get(entry.getKey()).size() >= 4)
+				if((studentRegisteredCoursesNos.containsKey(entry.getKey()) && studentRegisteredCoursesNos.get(entry.getKey()).size() >= 4))
 					break;
 				if(topCoursesId.contains(tmp.get(i).getCourseId()))
 				{
@@ -106,7 +165,15 @@ public class AdminImplementation {
 					newCourse.setCourseId(tmp.get(i).getCourseId());
 					newCourse.setStudentId(entry.getKey());
 					registeredData.add(newCourse);
-					studentRegisteredCoursesNos.get(entry.getKey()).add(tmp.get(i).getCourseId());
+					//System.out.println("New: "+tmp.get(i).getCourseId() + " " + entry.getKey());
+					if(studentRegisteredCoursesNos.containsKey(entry.getKey()))
+						studentRegisteredCoursesNos.get(entry.getKey()).add(tmp.get(i).getCourseId());
+					else
+					{
+						ArrayList<Integer> tmp3 = new ArrayList<Integer>();
+						tmp3.add(tmp.get(i).getCourseId());
+						studentRegisteredCoursesNos.put(entry.getKey(), tmp3);
+					}
 					noOfCoursesRequired--;
 					int index = topCoursesId.indexOf(tmp.get(i).getCourseId());
 					topRequestNos.set(index, topRequestNos.get(index)-1);
