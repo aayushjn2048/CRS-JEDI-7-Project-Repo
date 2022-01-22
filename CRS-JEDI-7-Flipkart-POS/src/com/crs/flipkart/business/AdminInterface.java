@@ -16,19 +16,19 @@ import com.crs.flipkart.validator.StandardResponse;
 /**
  * @author HP
  *
- */
+ */ //Aditya, Utkarsh, Akshil
 public interface AdminInterface {
-	public StandardResponse addCourse(Course course);
-	public StandardResponse removeCourse(int courseId);
-	public StandardResponse updateCourse(Course course);
-	public StandardResponse addProfessor(Professor professor);
-	public StandardResponse removeProfessor(int professorId);
-	public StandardResponse updateProfessor(Professor professor);
-	public StandardResponse approveStudentRegistration(Student student);
-	public ArrayList<Course> viewAllCourses();
-	public void activateGradeCard();
-	public ArrayList<Student> viewAllStudents();
-	public ArrayList<Professor> viewAllProfessors();
-	public ArrayList<StudentRegisteredCourses> allocatePendingCourses();
-	public Challan generateChallan(SemesterRegistration semesterRegistration);
+	public StandardResponse addCourse(Course course);    //1
+	public StandardResponse removeCourse(int courseId);//1
+	public StandardResponse updateCourse(Course course);//1
+	public StandardResponse addProfessor(Professor professor);//2
+	public StandardResponse removeProfessor(int professorId);//2
+	public StandardResponse updateProfessor(Professor professor);//2
+	public StandardResponse approveStudentRegistration(Student student);//2
+	public ArrayList<Course> viewAllCourses();//3
+	public void activateGradeCard();//1
+	public ArrayList<Student> viewAllStudents();//3
+	public ArrayList<Professor> viewAllProfessors();//3
+	public ArrayList<StudentRegisteredCourses> allocatePendingCourses();//3
+	public Challan generateChallan(SemesterRegistration semesterRegistration);//3
 }
