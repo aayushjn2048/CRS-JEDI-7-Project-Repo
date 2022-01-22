@@ -7,6 +7,6 @@ package com.crs.flipkart.bean;
  * @author HP
  *
  */
-public class AdminNotification {
+public class AdminNotification extends Notification {
 
 }

@@ -7,6 +7,6 @@ package com.crs.flipkart.bean;
  * @author HP
  *
  */
-public class Admin {
-
+public class Admin extends User{
+	
 }
