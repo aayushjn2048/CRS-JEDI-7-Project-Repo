@@ -1,4 +1,4 @@
-package com.flipkart.constants;
+package com.crs.flipkart.constants;
 
 /**
  * The enum Gender.

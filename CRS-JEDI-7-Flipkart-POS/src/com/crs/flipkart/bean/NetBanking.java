@@ -10,6 +10,9 @@ package com.crs.flipkart.bean;
 public class NetBanking {
 	private String accountNumber;
 	private String IFSCCode;
+	private int amount;
+	private int referenceNo;
+	
 	/**
 	 * @return the accountNumber
 	 */
