@@ -41,7 +41,7 @@ public class AdminImplementation {
 	public ArrayList<Course> viewAllCourses(){
 		return CourseImplementation.viewCourseData();
 	}
-	public ArrayList<StudentRegisteredCourses> allocatePendingCourses(){
+	public void allocatePendingCourses(){
 		//Contains number of request made by students for particular course 
 		Map<Integer,ArrayList<Course>> data = StudentImplementation.viewAllCourseChoices();
 		int maxCoursesLeft = 0;
@@ -50,9 +50,11 @@ public class AdminImplementation {
 		
 		//Number of requests pending for a particular course
 		Map<Integer,Integer> pendingCourseChoices = new HashMap<>();
+		Map<Integer,ArrayList<Integer>> studentRegisteredCoursesNos = new HashMap<>();
+		for(int i=0;i<registeredData.size();i++)
+			studentRegisteredCoursesNos.get(registeredData.get(i).getStudentId()).add(registeredData.get(i).getCourseId());
 		for(Map.Entry<Integer,ArrayList<Course>> entry: data.entrySet())
 		{
-			
 			ArrayList<Course> tmp = entry.getValue();
 			//For a particular student how many courses are left to be assigned
 			int t = 4 - entry.getValue().size();
@@ -63,7 +65,7 @@ public class AdminImplementation {
 				if(pendingCourseChoices.containsKey((tmp.get(i).getCourseId())))
 					pendingCourseChoices.put(tmp.get(i).getCourseId(), pendingCourseChoices.get(tmp.get(i).getCourseId())+1);
 				else
-					pendingCourseChoices.put(tmp.get(i).getCourseId(),0);
+					pendingCourseChoices.put(tmp.get(i).getCourseId(),1);
 			}
 		}
 		for(int i=0;i<registeredData.size();i++)
@@ -89,26 +91,47 @@ public class AdminImplementation {
 			topRequestNos.add(fixCourses);
 		}
 		if(noOfRequestsPending-fixCourses*noOfCoursesRequired>0)
-			topRequestNos.get(0) += noOfRequestsPending-fixCourses*noOfCoursesRequired;
+			topRequestNos.set(0,topRequestNos.get(0)+noOfRequestsPending-fixCourses*noOfCoursesRequired);
 		//Allocating top courses first to those students having in their optional choices
 		for(Map.Entry<Integer,ArrayList<Course>> entry: data.entrySet())
 		{
 			ArrayList<Course> tmp = entry.getValue();
 			for(int i=0;i<tmp.size();i++)
 			{
+				if(studentRegisteredCoursesNos.get(entry.getKey()).size() >= 4)
+					break;
 				if(topCoursesId.contains(tmp.get(i).getCourseId()))
 				{
 					StudentRegisteredCourses newCourse = new StudentRegisteredCourses();
 					newCourse.setCourseId(tmp.get(i).getCourseId());
 					newCourse.setStudentId(entry.getKey());
 					registeredData.add(newCourse);
+					studentRegisteredCoursesNos.get(entry.getKey()).add(tmp.get(i).getCourseId());
 					noOfCoursesRequired--;
 					int index = topCoursesId.indexOf(tmp.get(i).getCourseId());
 					topRequestNos.set(index, topRequestNos.get(index)-1);
 				}
 			}
 		}
-		for()
+		for(Map.Entry<Integer, ArrayList<Integer>> entry: studentRegisteredCoursesNos.entrySet())
+		{
+			for(int i=0;i<noOfCoursesRequired;i++)
+			{
+				if(entry.getValue().size() < 4)
+				{
+					if(!entry.getValue().contains(topCoursesId.get(i)))
+					{
+						StudentRegisteredCourses newCourse = new StudentRegisteredCourses();
+						newCourse.setCourseId(topCoursesId.get(i));
+						newCourse.setStudentId(entry.getKey());
+						registeredData.add(newCourse);
+						studentRegisteredCoursesNos.get(entry.getKey()).add(topCoursesId.get(i));
+					}
+				}
+				else
+					break;
+			}
+		}
 	}
 	//public Challan generateChallan(SemesterRegistration semesterRegistration);//3
 }
