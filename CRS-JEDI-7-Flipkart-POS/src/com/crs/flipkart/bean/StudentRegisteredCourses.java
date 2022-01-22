@@ -26,6 +26,7 @@ public class StudentRegisteredCourses {
 	/**
 	 * @return the studentId
 	 */
+	
 	public int getStudentId() {
 		return studentId;
 	}
