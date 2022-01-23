@@ -6,6 +6,7 @@ package com.crs.flipkart.business;
 import java.util.ArrayList;
 
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.validator.StandardResponse;
 
 /**
  * @author HP
@@ -35,5 +36,10 @@ public class CourseImplementation {
 	public static void addCourse(Course course)
 	{
 		courseData.add(course);
+	}
+	public static StandardResponse updateCourse(Course course){
+		removeCourse(course.getCourseId());
+		addCourse(course);
+		return new StandardResponse();
 	}
 }

@@ -9,6 +9,20 @@ package com.crs.flipkart.bean;
  */
 public class Student extends User {
 	private int studentId;
+	private Boolean gradeCardVisibility;
+	/**
+	 * @return the gradeCardVisibility
+	 */
+	public Boolean getGradeCardVisibility() {
+		return gradeCardVisibility;
+	}
+
+	/**
+	 * @param gradeCardVisibility the gradeCardVisibility to set
+	 */
+	public void setGradeCardVisibility(Boolean gradeCardVisibility) {
+		this.gradeCardVisibility = gradeCardVisibility;
+	}
 
 	/**
 	 * @return the studentId

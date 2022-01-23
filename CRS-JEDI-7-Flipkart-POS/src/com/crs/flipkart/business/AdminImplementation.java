@@ -33,6 +33,52 @@ class Pair{
 }
 
 public class AdminImplementation {
+	
+	//Group 1
+	public void activateGradeCard(){
+		StudentImplementation.activateGradeCard();
+	}
+	
+	public void deactivateGradeCard(){
+		StudentImplementation.deactivateGradeCard();
+	}
+
+
+	//Group 2
+	public String addProfessor(Professor professor) {
+		
+		ProfessorImplementation.addProfessordata(professor);
+		return "Professor is succesfully created";
+	}
+	
+	public String removeProfessor(int professorId) {
+		
+		if(ProfessorImplementation.removeProfessordata(professorId)) {
+		
+		return "Professor is succesfully removed";
+		}
+		else {
+			return "Professor is not removed. Please enter valid professor id";
+		}
+	}
+	
+	public String updateProfessor(Professor professor) {
+		
+		ProfessorImplementation.updateProfessordata(professor);
+		return "Professor is updated";
+		
+	}
+	
+	public String approveStudentRegistration(Student student) {
+		if(student!=null) {
+			return "Student details approved!!!";
+		}
+		else {
+			return "Student registration approval denied!!!";
+		}
+	}
+	
+	//Group 3
 	public ArrayList<Student> viewAllStudents(){
 		return StudentImplementation.viewStudentData();
 	}//3
@@ -243,7 +289,6 @@ public class AdminImplementation {
 		}
 		StudentImplementation.updateRegisteredCourses(registeredData);
 	}
-	
 	public Challan generateChallan(SemesterRegistration semesterRegistration) {
 		PaymentReference paymentRef=new PaymentReference();
 		Student student=new Student();

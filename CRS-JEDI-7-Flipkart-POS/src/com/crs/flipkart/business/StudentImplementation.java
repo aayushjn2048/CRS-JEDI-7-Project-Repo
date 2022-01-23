@@ -19,6 +19,15 @@ public class StudentImplementation {
 	private static ArrayList<Student> studentData = new ArrayList<Student>();
 	private static Map<Integer,ArrayList<Course>> courseChoices = new HashMap<>();
 	private static ArrayList<StudentRegisteredCourses> registeredCoursesData = new ArrayList<StudentRegisteredCourses>();
+	public static Student viewStudentDetails(int studentId)
+	{
+		for(Student student: studentData)
+		{
+			if(student.getStudentId()==studentId)
+				return student;
+		}
+		return null;
+	}
 	public static ArrayList<Student> viewStudentData()
 	{
 		return studentData;
@@ -46,5 +55,15 @@ public class StudentImplementation {
 	public static void updateRegisteredCourses(ArrayList<StudentRegisteredCourses> newList)
 	{
 		registeredCoursesData = newList;
+	}
+	public static void activateGradeCard(){
+		for(int i =0; i<studentData.size(); i++){
+			studentData.get(i).setGradeCardVisibility(true);
+		}
+	}
+	public static void deactivateGradeCard(){
+		for(int i =0; i<studentData.size(); i++){
+			studentData.get(i).setGradeCardVisibility(false);
+		}
 	}
 }
