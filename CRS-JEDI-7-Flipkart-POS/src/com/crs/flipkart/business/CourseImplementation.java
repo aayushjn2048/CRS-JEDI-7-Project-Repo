@@ -21,4 +21,19 @@ public class CourseImplementation {
 	{
 		courseData = courseList;
 	}
+	public static void removeCourse(int courseId)
+	{
+		for(Course c: courseData)
+		{
+			if(c.getCourseId()==courseId)
+			{
+				courseData.remove(c);
+				break;
+			}
+		}
+	}
+	public static void addCourse(Course course)
+	{
+		courseData.add(course);
+	}
 }

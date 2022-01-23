@@ -35,7 +35,7 @@ public class SemesterRegisterImplementation implements SemesterRegistration {
 		return new StandardResponse();
 	}
 
-	public static int payFee(ArrayList<Course> courses) {
+	public int payFee(ArrayList<Course> courses) {
 		// TODO Auto-generated method stub
 		Catalogue catalogue=new Catalogue();
 		int finalSum=0;

@@ -47,6 +47,7 @@ public class AdminImplementation {
 		ArrayList<StudentRegisteredCourses> registeredCourses = new ArrayList<StudentRegisteredCourses>();
 		Map<Integer,ArrayList<Course>> data = StudentImplementation.viewAllCourseChoices();
 		Map<Integer,Integer> courseChoices = new HashMap<>();
+		Map<Integer,Integer> studentRegisteredCourseNos = new HashMap<>();
 		for(Map.Entry<Integer,ArrayList<Course>> entry: data.entrySet())
 		{
 			ArrayList<Course> tmp = entry.getValue();
@@ -58,9 +59,7 @@ public class AdminImplementation {
 					courseChoices.put(tmp.get(i).getCourseId(),1);
 			}
 		}
-		/*System.out.println("Course Choice Count");
-		for(Map.Entry<Integer, Integer> entry: courseChoices.entrySet())
-			System.out.println(entry.getKey() + " " + entry.getValue());*/
+		ArrayList<Integer> removeList = new ArrayList<Integer>();
 		for(Map.Entry<Integer, Integer> entry: courseChoices.entrySet())
 		{
 			int count = 0;
@@ -69,7 +68,12 @@ public class AdminImplementation {
 				for(Map.Entry<Integer,ArrayList<Course>> entry2: data.entrySet())
 				{
 					if(count==10)
+					{
+						removeList.add(entry.getKey());
 						break;
+					}
+					if(studentRegisteredCourseNos.containsKey(entry2.getKey())&&studentRegisteredCourseNos.get(entry2.getKey())==4)
+						continue;
 					StudentRegisteredCourses src = new StudentRegisteredCourses();
 					boolean flag = false;
 					ArrayList<Course> tmp = entry2.getValue();
@@ -84,12 +88,49 @@ public class AdminImplementation {
 						}
 					}
 					if(flag)
+					{
 						registeredCourses.add(src);
-					count++;
+						if(studentRegisteredCourseNos.containsKey(src.getStudentId()))
+							studentRegisteredCourseNos.put(src.getStudentId(), studentRegisteredCourseNos.get(src.getStudentId())+1);
+						else
+							studentRegisteredCourseNos.put(src.getStudentId(), 1);
+						count++;
+					}
 				}
 			}
 		}
+		for(int i=0;i<removeList.size();i++)
+			System.out.println("Course removed: "+removeList.get(i));
+		System.out.println("Previous choices");
+		for(Map.Entry<Integer,ArrayList<Course>> entry: data.entrySet())
+		{
+			ArrayList<Course> tmp = entry.getValue();
+			for(int i=0;i<tmp.size();i++)
+				System.out.println(entry.getKey() + " " + tmp.get(i).getCourseId());
+		}
+		Map<Integer,ArrayList<Course>> newData = new HashMap<>();
+		for(Map.Entry<Integer,ArrayList<Course>> entry: data.entrySet())
+		{
+			ArrayList<Course> tmp = entry.getValue();
+			ArrayList<Course> tor = new ArrayList<Course>();
+			for(int i=0;i<tmp.size();i++)
+			{
+				if(removeList.contains(tmp.get(i).getCourseId()))
+					tor.add(tmp.get(i));
+			}
+			for(int i=0;i<tor.size();i++)
+				tmp.remove(tor.get(i));
+			newData.put(entry.getKey(), tmp);
+		}
+		System.out.println("Updated choices");
+		for(Map.Entry<Integer,ArrayList<Course>> entry: newData.entrySet())
+		{
+			ArrayList<Course> tmp = entry.getValue();
+			for(int i=0;i<tmp.size();i++)
+				System.out.println(entry.getKey() + " " + tmp.get(i).getCourseId());
+		}
 		StudentImplementation.updateRegisteredCourses(registeredCourses);
+		StudentImplementation.updateCourseChoices(newData);
 	}
 	public void allocatePendingCourses(){
 		//Contains number of request made by students for particular course 
@@ -166,7 +207,7 @@ public class AdminImplementation {
 					newCourse.setCourseId(tmp.get(i).getCourseId());
 					newCourse.setStudentId(entry.getKey());
 					registeredData.add(newCourse);
-					//System.out.println("New: "+tmp.get(i).getCourseId() + " " + entry.getKey());
+					System.out.println("New: "+tmp.get(i).getCourseId() + " " + entry.getKey());
 					if(studentRegisteredCoursesNos.containsKey(entry.getKey()))
 						studentRegisteredCoursesNos.get(entry.getKey()).add(tmp.get(i).getCourseId());
 					else
@@ -206,12 +247,12 @@ public class AdminImplementation {
 	public Challan generateChallan(SemesterRegistration semesterRegistration) {
 		PaymentReference paymentRef=new PaymentReference();
 		Student student=new Student();
-		CourseImplementation courseImplementation=new CourseImplementation();
 		int amount=0;
 		if(paymentRef.getPayeeName()==student.getName())
 			amount=paymentRef.getAmount();
 		Challan challan=new Challan();
-		if(amount==SemesterRegisterImplementation.payFee(courseImplementation.viewCourseData()){
+		SemesterRegisterImplementation semesterRegisterImplementation = new SemesterRegisterImplementation();
+		if(amount==semesterRegisterImplementation.payFee(CourseImplementation.viewCourseData())){
 			challan.setChallanNo(amount+semesterRegistration.getStudentId());
 			challan.setPaymentReference(paymentRef);
 		}
