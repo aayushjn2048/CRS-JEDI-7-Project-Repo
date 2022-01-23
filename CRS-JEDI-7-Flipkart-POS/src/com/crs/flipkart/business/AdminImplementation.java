@@ -8,10 +8,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.crypto.Data;
+// import javax.xml.crypto.Data;
 
 import com.crs.flipkart.bean.Challan;
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.bean.PaymentReference;
 import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.bean.SemesterRegistration;
 import com.crs.flipkart.bean.Student;
@@ -202,5 +203,18 @@ public class AdminImplementation {
 		StudentImplementation.updateRegisteredCourses(registeredData);
 	}
 	
-	//public Challan generateChallan(SemesterRegistration semesterRegistration);
+	public Challan generateChallan(SemesterRegistration semesterRegistration) {
+		PaymentReference paymentRef=new PaymentReference();
+		Student student=new Student();
+		CourseImplementation courseImplementation=new CourseImplementation();
+		int amount=0;
+		if(paymentRef.getPayeeName()==student.getName())
+			amount=paymentRef.getAmount();
+		Challan challan=new Challan();
+		if(amount==SemesterRegisterImplementation.payFee(courseImplementation.viewCourseData()){
+			challan.setChallanNo(amount+semesterRegistration.getStudentId());
+			challan.setPaymentReference(paymentRef);
+		}
+		return challan;	
+	}
 }

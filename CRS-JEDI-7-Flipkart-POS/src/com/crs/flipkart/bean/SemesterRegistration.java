@@ -8,5 +8,43 @@ package com.crs.flipkart.bean;
  *
  */
 public class SemesterRegistration {
-	
+	private int studentId;
+	private int semesterNo;
+	private String dateOfRegistration;
+	/**
+	 * @return the studentId
+	 */
+	public int getStudentId() {
+		return studentId;
+	}
+	/**
+	 * @param studentId the studentId to set
+	 */
+	public void setStudentId(int studentId) {
+		this.studentId = studentId;
+	}
+	/**
+	 * @return the semesterNo
+	 */
+	public int getSemesterNo() {
+		return semesterNo;
+	}
+	/**
+	 * @param semesterNo the semesterNo to set
+	 */
+	public void setSemesterNo(int semesterNo) {
+		this.semesterNo = semesterNo;
+	}
+	/**
+	 * @return the dateOfRegistration
+	 */
+	public String getDateOfRegistration() {
+		return dateOfRegistration;
+	}
+	/**
+	 * @param dateOfRegistration the dateOfRegistration to set
+	 */
+	public void setDateOfRegistration(String dateOfRegistration) {
+		this.dateOfRegistration = dateOfRegistration;
+	}
 }

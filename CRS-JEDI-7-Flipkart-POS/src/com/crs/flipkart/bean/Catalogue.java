@@ -10,6 +10,7 @@ package com.crs.flipkart.bean;
 public class Catalogue {
 	private int courseId;
 	private String courseName;
+	private int courseAmount;
 	/**
 	 * @return the courseId
 	 */
@@ -33,5 +34,17 @@ public class Catalogue {
 	 */
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+	/**
+	 * @return the courseAmount
+	 */
+	public int getCourseAmount(int courseId) {
+		return courseAmount;
+	}
+	/**
+	 * @param courseAmount the courseAmount to set
+	 */
+	public void setCourseAmount(int courseAmount) {
+		this.courseAmount = courseAmount;
 	}
 }
