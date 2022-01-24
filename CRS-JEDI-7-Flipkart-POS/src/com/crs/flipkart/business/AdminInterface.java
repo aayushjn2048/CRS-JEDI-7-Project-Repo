@@ -18,17 +18,16 @@ import com.crs.flipkart.validator.StandardResponse;
  *
  */
 public interface AdminInterface {
-	public StandardResponse addCourse(Course course);    //1
-	public StandardResponse removeCourse(int courseId);//1
-	public StandardResponse updateCourse(Course course);//1
-	public StandardResponse addProfessor(Professor professor);//2
-	public StandardResponse removeProfessor(int professorId);//2
-	public StandardResponse updateProfessor(Professor professor);//2
-	public StandardResponse approveStudentRegistration(Student student);//2
-	public ArrayList<Course> viewAllCourses();//3
 	public void activateGradeCard();//1
-	public ArrayList<Student> viewAllStudents();//3
-	public ArrayList<Professor> viewAllProfessors();//3
-	public ArrayList<StudentRegisteredCourses> allocatePendingCourses();//3
-	public Challan generateChallan(SemesterRegistration semesterRegistration);//3
+	public void deactivateGradeCard();
+	public String addProfessor(Professor professor);
+	public String removeProfessor(int professorId);
+	public String updateProfessor(Professor professor);
+	public String approveStudentRegistration(Student student);
+	public ArrayList<Student> viewAllStudents();
+	public ArrayList<Professor> viewAllProfessors();
+	public ArrayList<Course> viewAllCourses();
+	public void registerCourses();
+	public void allocatePendingCourses();
+	public Challan generateChallan(SemesterRegistration semesterRegistration);
 }

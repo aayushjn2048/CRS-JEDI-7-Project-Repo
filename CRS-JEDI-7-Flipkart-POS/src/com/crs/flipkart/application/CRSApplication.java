@@ -42,6 +42,7 @@ public class CRSApplication {
 					  		{
 					  			CRSAdminMenu adminMenu = new CRSAdminMenu();
 					  			adminMenu.adminMenuMain();
+					  			System.out.println("Back to CRS Application");
 					  		}
 					  		else
 					  			System.out.println("Retry Logging in");

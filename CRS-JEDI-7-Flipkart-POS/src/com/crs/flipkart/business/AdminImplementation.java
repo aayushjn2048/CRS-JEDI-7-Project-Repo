@@ -32,7 +32,7 @@ class Pair{
 	}
 }
 
-public class AdminImplementation{
+public class AdminImplementation implements AdminInterface{
 	
 	//Group 1
 	public void activateGradeCard(){
@@ -42,7 +42,6 @@ public class AdminImplementation{
 	public void deactivateGradeCard(){
 		StudentImplementation.deactivateGradeCard();
 	}
-
 
 	//Group 2
 	public String addProfessor(Professor professor) {
