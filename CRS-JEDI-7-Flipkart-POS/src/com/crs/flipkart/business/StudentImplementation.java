@@ -19,6 +19,18 @@ public class StudentImplementation {
 	private static ArrayList<Student> studentData = new ArrayList<Student>();
 	private static Map<Integer,ArrayList<Course>> courseChoices = new HashMap<>();
 	private static ArrayList<StudentRegisteredCourses> registeredCoursesData = new ArrayList<StudentRegisteredCourses>();
+	private static Map<Integer,ArrayList<Integer>> registeredCourseChoices = new HashMap<>();
+	
+	public static Map<Integer,ArrayList<Integer>> viewRegisteredCourseChoices()
+	{
+		return registeredCourseChoices;
+	}
+	
+	public static void updateRegisteredCourseChoices(Map<Integer,ArrayList<Integer>> data)
+	{
+		registeredCourseChoices = data;
+	}
+	
 	public static Student viewStudentDetails(int studentId)
 	{
 		for(Student student: studentData)

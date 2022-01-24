@@ -32,7 +32,7 @@ class Pair{
 	}
 }
 
-public class AdminImplementation {
+public class AdminImplementation{
 	
 	//Group 1
 	public void activateGradeCard(){
@@ -145,15 +145,6 @@ public class AdminImplementation {
 				}
 			}
 		}
-		for(int i=0;i<removeList.size();i++)
-			System.out.println("Course removed: "+removeList.get(i));
-		System.out.println("Previous choices");
-		for(Map.Entry<Integer,ArrayList<Course>> entry: data.entrySet())
-		{
-			ArrayList<Course> tmp = entry.getValue();
-			for(int i=0;i<tmp.size();i++)
-				System.out.println(entry.getKey() + " " + tmp.get(i).getCourseId());
-		}
 		Map<Integer,ArrayList<Course>> newData = new HashMap<>();
 		for(Map.Entry<Integer,ArrayList<Course>> entry: data.entrySet())
 		{
@@ -167,13 +158,6 @@ public class AdminImplementation {
 			for(int i=0;i<tor.size();i++)
 				tmp.remove(tor.get(i));
 			newData.put(entry.getKey(), tmp);
-		}
-		System.out.println("Updated choices");
-		for(Map.Entry<Integer,ArrayList<Course>> entry: newData.entrySet())
-		{
-			ArrayList<Course> tmp = entry.getValue();
-			for(int i=0;i<tmp.size();i++)
-				System.out.println(entry.getKey() + " " + tmp.get(i).getCourseId());
 		}
 		StudentImplementation.updateRegisteredCourses(registeredCourses);
 		StudentImplementation.updateCourseChoices(newData);
@@ -253,7 +237,6 @@ public class AdminImplementation {
 					newCourse.setCourseId(tmp.get(i).getCourseId());
 					newCourse.setStudentId(entry.getKey());
 					registeredData.add(newCourse);
-					System.out.println("New: "+tmp.get(i).getCourseId() + " " + entry.getKey());
 					if(studentRegisteredCoursesNos.containsKey(entry.getKey()))
 						studentRegisteredCoursesNos.get(entry.getKey()).add(tmp.get(i).getCourseId());
 					else
@@ -288,6 +271,20 @@ public class AdminImplementation {
 			}
 		}
 		StudentImplementation.updateRegisteredCourses(registeredData);
+		Map<Integer,ArrayList<Integer>> registeredCourseChoices = new HashMap<>();
+		for(StudentRegisteredCourses sc: registeredData)
+		{
+			if(registeredCourseChoices.containsKey(sc.getStudentId()))
+				registeredCourseChoices.get(sc.getStudentId()).add(sc.getCourseId());
+			else
+			{
+				ArrayList<Integer> tmp = new ArrayList<Integer>();
+				tmp.add(sc.getCourseId());
+				registeredCourseChoices.put(sc.getStudentId(), tmp);
+			}
+		}
+		StudentImplementation.updateRegisteredCourseChoices(registeredCourseChoices);
+		
 	}
 	public Challan generateChallan(SemesterRegistration semesterRegistration) {
 		PaymentReference paymentRef=new PaymentReference();

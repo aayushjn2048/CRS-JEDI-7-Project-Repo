@@ -15,9 +15,6 @@ public class ProfessorImplementation {
 	private static ArrayList<Professor> professorData = new ArrayList<Professor>();
 	public static ArrayList<Professor> viewProfessorData()
 	{
-		for(Professor professor: professorData) {
-			System.out.println(professor.getProfessorId()+" "+professor.getRole());
-		}
 		return professorData;
 	}
 	

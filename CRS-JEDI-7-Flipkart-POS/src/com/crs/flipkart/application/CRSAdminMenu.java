@@ -25,24 +25,72 @@ import com.crs.flipkart.constants.Role;
  * @author HP
  *
  */
-public class Main {
+public class CRSAdminMenu {
 
 	/**
 	 * @param args
 	 */
 	
-	public static void main(String[] args) {
+	
+	public void adminMenuMain() {
 		// TODO Auto-generated method stub
+
+		final int nos = 12;
+		final int noc = 10;
+		ArrayList<Student> student = new ArrayList<Student>();
+		for(int i=1;i<=nos;i++)
+		{
+			Student s = new Student();
+			s.setUsername("s"+i);
+			s.setStudentId(i);
+			s.setName("Student"+i);
+			student.add(s);
+		}
+		ArrayList<Course> course = new ArrayList<Course>();
+		for(int i=1;i<=noc;i++)
+		{
+			Course c = new Course();
+			c.setCourseId(i);
+			c.setName("Course"+i);
+			course.add(c);
+		}
+		Map<Integer,ArrayList<Course>> courseChoices = new HashMap<>();
+		for(int i=0;i<nos;i++)
+		{
+			Random random = new Random();  
+			ArrayList<Course> tmp = new ArrayList<Course>();
+			courseChoices.put(i+1, tmp);
+			boolean flag[]=new boolean[noc];
+			for(int j=0;j<noc;j++)
+				flag[j] = false;
+			for(int j=0;j<6;j++)
+			{
+				int x;
+				while(true)
+				{
+					x = random.nextInt(noc);
+					if(flag[x]==false)
+					{
+						flag[x] = true;
+						break;
+					}
+				}
+				courseChoices.get(i+1).add(course.get(x));
+			}
+		}
+		StudentImplementation.updateStudentData(student);
+		CourseImplementation.updateCourseData(course);
+		StudentImplementation.updateCourseChoices(courseChoices);
 		System.out.println("Welcome Admin!!!");
 		System.out.println("Choose which operation you want to perform:-");
 		System.out.println("0 : Quit\n1 : Add Course\n2 : Delete Course\n3 : Update Course\n4 : Activate Grade Card");
 		System.out.println("5 : Add Professor Details\n6 : Delete Professor Details\n7 : Update Professor Details\n8 : Approve Student Registration");
-		System.out.println("9 : View Students Data\n10: View Professors Data\n11: View All Courses\n12: Student Course Allocation\n13 : Generate Challan");
+		System.out.println("9 : View Students Data\n10: View Professors Data\n11: View All Courses\n12: Student Course Allocation");
 		AdminImplementation admin = new AdminImplementation();
 		while(true)
 		{
 			Scanner scanner = new Scanner(System.in);
-			System.out.print("Enter Choice Number: ");
+			System.out.print("\nEnter Choice Number: ");
 			int choice = scanner.nextInt();
 			if(choice == 0)
 				break;
@@ -66,10 +114,11 @@ public class Main {
 							break;
 						}
 				case 2: {
-							
 							System.out.print("Enter CourseId: ");
-							CourseImplementation.removeCourse(scanner.nextInt());
-							
+							if(CourseImplementation.removeCourse(scanner.nextInt()))
+								System.out.println("Course details deleted from the database");
+							else
+								System.out.println("Course with entered courseId does not exist");
 							break;
 						}
 				case 3: {
@@ -97,31 +146,31 @@ public class Main {
 							break;
 					    }
 				case 5: {
-						Professor professor = new Professor();
-						System.out.print("Enter username: ");
-						String username = scanner.next();
-						professor.setUsername(username);
-						System.out.print("Enter password: ");
-						String passwordHash = scanner.next();
-						professor.setPasswordHash(passwordHash);
-						System.out.print("Enter name: ");
-						String name = scanner.next();
-						professor.setName(name);
-						System.out.print("Enter address: ");
-						String address = scanner.next();
-						professor.setAddress(address);
-						System.out.print("Enter contact number: ");
-						String contactNo = scanner.next();
-						professor.setContactNo(contactNo);
-						System.out.print("Enter role: ");
-						String role = scanner.next();
-						professor.setRole(Role.stringToName(role));
-						System.out.print("Enter ProfessorId: ");
-						int ProfessorId = scanner.nextInt();
-						professor.setProfessorId(ProfessorId);
-						String response = admin.addProfessor(professor);
-						System.out.println(response);
-						break;
+							Professor professor = new Professor();
+							System.out.print("Enter username: ");
+							String username = scanner.next();
+							professor.setUsername(username);
+							System.out.print("Enter password: ");
+							String passwordHash = scanner.next();
+							professor.setPasswordHash(passwordHash);
+							System.out.print("Enter name: ");
+							String name = scanner.next();
+							professor.setName(name);
+							System.out.print("Enter address: ");
+							String address = scanner.next();
+							professor.setAddress(address);
+							System.out.print("Enter contact number: ");
+							String contactNo = scanner.next();
+							professor.setContactNo(contactNo);
+							System.out.print("Enter role: ");
+							String role = scanner.next();
+							professor.setRole(Role.stringToName(role));
+							System.out.print("Enter ProfessorId: ");
+							int ProfessorId = scanner.nextInt();
+							professor.setProfessorId(ProfessorId);
+							String response = admin.addProfessor(professor);
+							System.out.println(response);
+							break;
 						}
 				//for deleting professor
 				case 6: {
@@ -167,27 +216,36 @@ public class Main {
 				case 9: {
 							ArrayList<Student> studentData = admin.viewAllStudents();
 							System.out.println("Student Id\t\tStudent Name");
-							for(Student student: studentData)
-								System.out.println(student.getStudentId() + "\t\t\t" + student.getName());
+							for(Student stu: studentData)
+								System.out.println(stu.getStudentId() + "\t\t\t" + stu.getName());
 							break;
 						}
 				case 10: {
 							ArrayList<Professor> professorData = admin.viewAllProfessors();
 							System.out.println("Professor Id\t\tProfessor Name");
-							for(Professor professor: professorData)
-								System.out.println(professor.getProfessorId() + "\t\t\t" + professor.getName());
+							for(Professor prof: professorData)
+								System.out.println(prof.getProfessorId() + "\t\t\t" + prof.getName());
 							break;
 						}
 				case 11: {
 							ArrayList<Course> courseData = admin.viewAllCourses();
 							System.out.println("Course Id\t\tCourse Name");
-							for(Course course: courseData)
-								System.out.println(course.getCourseId() + "\t\t\t" + course.getName());
+							for(Course c: courseData)
+								System.out.println(c.getCourseId() + "\t\t\t" + c.getName());
 							break;
 						}
 				case 12: {    
 							admin.registerCourses();
 							admin.allocatePendingCourses();
+							Map<Integer,ArrayList<Integer>> registeredCourseChoices = StudentImplementation.viewRegisteredCourseChoices();
+							System.out.println("Student Id\t\tCourse Ids");
+							for(Map.Entry<Integer, ArrayList<Integer>> entry: registeredCourseChoices.entrySet())
+							{
+								System.out.print(entry.getKey()+"\t\t\t");
+								for(Integer tmp: entry.getValue())
+									System.out.print(tmp + ", ");
+								System.out.println("");
+							}
 							break;
 						}
 				case 13: {
@@ -198,77 +256,6 @@ public class Main {
 				default: System.out.println("Invalid Input");
 			}
 		}
-		/*final int nos = 10;
-		final int noc = 40;
-		ArrayList<Student> student = new ArrayList<Student>();
-		for(int i=1;i<=nos;i++)
-		{
-			Student s = new Student();
-			s.setUsername("s"+i);
-			s.setStudentId(i);
-			student.add(s);
-		}
-		ArrayList<Course> course = new ArrayList<Course>();
-		for(int i=1;i<=noc;i++)
-		{
-			Course c = new Course();
-			c.setCourseId(i);
-			c.setName("c"+i);
-			course.add(c);
-		}
-		Map<Integer,ArrayList<Course>> courseChoices = new HashMap<>();
-		for(int i=0;i<nos;i++)
-		{
-			Random random = new Random();  
-			ArrayList<Course> tmp = new ArrayList<Course>();
-			courseChoices.put(i+1, tmp);
-			boolean flag[]=new boolean[noc];
-			for(int j=0;j<noc;j++)
-				flag[j] = false;
-			for(int j=0;j<6;j++)
-			{
-				int x;
-				while(true)
-				{
-					x = random.nextInt(noc);
-					if(flag[x]==false)
-					{
-						flag[x] = true;
-						break;
-					}
-				}
-				courseChoices.get(i+1).add(course.get(x));
-			}
-		}
-		StudentImplementation.updateStudentData(student);
-		CourseImplementation.updateCourseData(course);
-		StudentImplementation.updateCourseChoices(courseChoices);
-		for(Map.Entry<Integer,ArrayList<Course>> entry: courseChoices.entrySet())
-		{
-			ArrayList<Course> t = entry.getValue();
-			for(int i=0;i<t.size();i++)
-			{
-				Course tmp = t.get(i);
-				//System.out.println(entry.getKey() + " "+tmp.getCourseId());
-			}
-		}
-		AdminImplementation admin = new AdminImplementation();
-		admin.registerCourses();
-		ArrayList<StudentRegisteredCourses> registeredCoursesData = StudentImplementation.viewRegisteredCourses();
-		System.out.println("Registered Course List");
-		for(int i=0;i<registeredCoursesData.size();i++)
-		{
-			StudentRegisteredCourses tmp = registeredCoursesData.get(i);
-			System.out.println(tmp.getCourseId() + " " + tmp.getStudentId());
-		}
-		admin.allocatePendingCourses();
-		registeredCoursesData = StudentImplementation.viewRegisteredCourses();
-		System.out.println("Registered Course List New");
-		for(int i=0;i<registeredCoursesData.size();i++)
-		{
-			StudentRegisteredCourses tmp = registeredCoursesData.get(i);
-			System.out.println(tmp.getCourseId() + " " + tmp.getStudentId());
-		}*/
 	}
 
 }

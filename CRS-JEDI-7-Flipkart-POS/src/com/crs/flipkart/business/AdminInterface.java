@@ -16,7 +16,7 @@ import com.crs.flipkart.validator.StandardResponse;
 /**
  * @author HP
  *
- */ //Aditya, Utkarsh, Akshil
+ */
 public interface AdminInterface {
 	public StandardResponse addCourse(Course course);    //1
 	public StandardResponse removeCourse(int courseId);//1
