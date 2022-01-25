@@ -15,10 +15,7 @@ import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.bean.SemesterRegistration;
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
-import com.crs.flipkart.business.AdminImplementation;
-import com.crs.flipkart.business.CourseImplementation;
-import com.crs.flipkart.business.ProfessorImplementation;
-import com.crs.flipkart.business.StudentImplementation;
+import com.crs.flipkart.business.*;
 import com.crs.flipkart.constants.Role;
 
 /**
@@ -27,10 +24,8 @@ import com.crs.flipkart.constants.Role;
  */
 public class CRSAdminMenu {
 
-	/**
-	 * @param args
-	 */
-	
+	CourseInterface courseImplementation = CourseImplementation.getInstance();
+	StudentImplementation studentImplementation = StudentImplementation.getInstance();
 	
 	public void adminMenuMain() {
 		// TODO Auto-generated method stub
@@ -110,15 +105,12 @@ public class CRSAdminMenu {
 							System.out.print("Enter Professor Id: ");
 							newCourse.setProfessorId(scanner.nextInt());
 							
-							CourseImplementation.addCourse(newCourse);
+							courseImplementation.addCourse(newCourse);
 							break;
 						}
 				case 2: {
 							System.out.print("Enter CourseId: ");
-							if(CourseImplementation.removeCourse(scanner.nextInt()))
-								System.out.println("Course details deleted from the database");
-							else
-								System.out.println("Course with entered courseId does not exist");
+							courseImplementation.removeCourse(scanner.nextInt());
 							break;
 						}
 				case 3: {
@@ -136,7 +128,7 @@ public class CRSAdminMenu {
 							System.out.print("Enter new Professor Id: ");
 							newCourse1.setProfessorId(scanner.nextInt());
 							
-							CourseImplementation.updateCourse(newCourse1);
+							courseImplementation.updateCourse(newCourse1);
 							
 							break;
 						}
@@ -210,7 +202,7 @@ public class CRSAdminMenu {
 				case 8: {
 							System.out.print("Enter StudentId: ");
 							int studentId = scanner.nextInt();
-							System.out.println(admin.approveStudentRegistration(StudentImplementation.viewStudentDetails(studentId)));
+							System.out.println(admin.approveStudentRegistration(studentImplementation.viewStudentDetails(studentId)));
 							break;
 						}
 				case 9: {

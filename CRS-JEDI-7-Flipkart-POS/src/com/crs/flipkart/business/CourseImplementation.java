@@ -8,13 +8,30 @@ import java.util.ArrayList;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.dao.AdminDaoInterface;
 import com.crs.flipkart.dao.AdminDaoOperation;
+import com.crs.flipkart.dao.CourseDaoImplementation;
+import com.crs.flipkart.dao.CourseDaoInterface;
 import com.crs.flipkart.validator.StandardResponse;
 
 /**
  * @author HP
  *
  */
-public class CourseImplementation {
+public class CourseImplementation implements CourseInterface{
+
+	private static CourseImplementation instance = null;
+	private CourseDaoInterface courseDaoImplementation = CourseDaoImplementation.getInstance();
+
+	private CourseImplementation(){}
+
+	public static CourseImplementation getInstance(){
+		if(instance==null){
+			synchronized (CourseImplementation.class){
+				instance = new CourseImplementation();
+			}
+		}
+		return instance;
+	}
+
 	private static ArrayList<Course> courseData = new ArrayList<Course>();
 	public static ArrayList<Course> viewCourseData()
 	{
@@ -24,26 +41,19 @@ public class CourseImplementation {
 	{
 		courseData = courseList;
 	}
-	public static boolean removeCourse(int courseId)
-	{
-		for(Course c: courseData)
-		{
-			if(c.getCourseId()==courseId)
-			{
-				courseData.remove(c);
-				return true;
-			}
-		}
-		return false;
+
+	@Override
+	public void removeCourse(int courseId) {
+		courseDaoImplementation.deleteCourse(courseId);
 	}
-	public static void addCourse(Course course)
-	{
-		AdminDaoInterface admin = new AdminDaoOperation();
-		admin.addCourse(course);
+
+	@Override
+	public void addCourse(Course course) {
+		courseDaoImplementation.addCourse(course);
 	}
-	public static StandardResponse updateCourse(Course course){
-		removeCourse(course.getCourseId());
-		addCourse(course);
-		return new StandardResponse();
+
+	@Override
+	public void updateCourse(Course course) {
+		courseDaoImplementation.updateCourse(course);
 	}
 }

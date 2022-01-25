@@ -8,8 +8,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-// import javax.xml.crypto.Data;
-
 import com.crs.flipkart.bean.Challan;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.PaymentReference;
@@ -17,6 +15,9 @@ import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.bean.SemesterRegistration;
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
+import com.crs.flipkart.constants.PaymentStatus;
+import com.crs.flipkart.dao.PaymentsDaoImplementation;
+import com.crs.flipkart.dao.PaymentsDaoInterface;
 
 /**
  * @author HP
@@ -33,10 +34,15 @@ class Pair{
 }
 
 public class AdminImplementation implements AdminInterface{
+
+	private StudentInterface studentImplementation = StudentImplementation.getInstance();
+	private PaymentsDaoInterface paymentsDaoImplementation = PaymentsDaoImplementation.getInstance();
 	
 	//Group 1
+
+	@Override
 	public void activateGradeCard(){
-		StudentImplementation.activateGradeCard();
+		studentImplementation.activateGradeCard();
 	}
 	
 	public void deactivateGradeCard(){
@@ -79,7 +85,7 @@ public class AdminImplementation implements AdminInterface{
 	
 	//Group 3
 	public ArrayList<Student> viewAllStudents(){
-		return StudentImplementation.viewStudentData();
+		return studentImplementation.viewStudentData();
 	}//3
 	public ArrayList<Professor> viewAllProfessors(){
 		return ProfessorImplementation.viewProfessorData();
@@ -286,17 +292,24 @@ public class AdminImplementation implements AdminInterface{
 		
 	}
 	public Challan generateChallan(SemesterRegistration semesterRegistration) {
-		PaymentReference paymentRef=new PaymentReference();
-		Student student=new Student();
-		int amount=0;
-		if(paymentRef.getPayeeName()==student.getName())
-			amount=paymentRef.getAmount();
-		Challan challan=new Challan();
-		SemesterRegisterImplementation semesterRegisterImplementation = new SemesterRegisterImplementation();
-		if(amount==semesterRegisterImplementation.payFee(CourseImplementation.viewCourseData())){
-			challan.setChallanNo(amount+semesterRegistration.getStudentId());
-			challan.setPaymentReference(paymentRef);
-		}
-		return challan;	
+		int fee = semesterRegistration.getTotalFee();
+		int studentId = semesterRegistration.getStudentId();
+		PaymentReference paymentReference = getPaymentReference(fee, studentId);
+		int paymentReferenceNumber = paymentReference.getReferenceNo();
+		Challan challan = new Challan();
+		challan.setChallanNo((paymentReferenceNumber*265)%10000);
+		challan.setPaymentReference(paymentReference);
+		paymentsDaoImplementation.storeChallan(challan);
+		return challan;
+	}
+
+	private PaymentReference getPaymentReference(int fee, int studentId) {
+		PaymentReference paymentReference = new PaymentReference();
+		paymentReference.setPaymentStatus(PaymentStatus.SUCCESSFUL);
+		paymentReference.setAmount(fee);
+		paymentReference.setPayeeName(studentImplementation.viewStudentDetails(studentId).getName());
+		int paymentReferenceNumber = paymentsDaoImplementation.storePaymentReference(paymentReference);
+		paymentReference.setReferenceNo(paymentReferenceNumber);
+		return paymentReference;
 	}
 }
