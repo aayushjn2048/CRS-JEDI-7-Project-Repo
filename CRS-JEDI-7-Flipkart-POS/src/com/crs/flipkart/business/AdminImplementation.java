@@ -17,6 +17,8 @@ import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.bean.SemesterRegistration;
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
+import com.crs.flipkart.dao.AdminDaoInterface;
+import com.crs.flipkart.dao.AdminDaoOperation;
 
 /**
  * @author HP
@@ -46,14 +48,18 @@ public class AdminImplementation implements AdminInterface{
 	//Group 2
 	public String addProfessor(Professor professor) {
 		
-		ProfessorImplementation.addProfessordata(professor);
-		return "Professor is succesfully created";
+		//ProfessorImplementation.addProfessor data(professor);
+		AdminDaoInterface admin = new AdminDaoOperation();
+		if(admin.addProfessor(professor))
+			return "Professor is successfully created";
+		else
+			return "Professor is not created";
 	}
 	
 	public String removeProfessor(int professorId) {
-		
-		if(ProfessorImplementation.removeProfessordata(professorId)) {
-		
+
+		AdminDaoInterface admin = new AdminDaoOperation();
+		if(admin.removeProfessor(professorId)){
 		return "Professor is succesfully removed";
 		}
 		else {
@@ -63,8 +69,15 @@ public class AdminImplementation implements AdminInterface{
 	
 	public String updateProfessor(Professor professor) {
 		
-		ProfessorImplementation.updateProfessordata(professor);
-		return "Professor is updated";
+
+		AdminDaoInterface admin = new AdminDaoOperation();
+		if(admin.updateProfessor(professor,professor)){	//Ultimately we should update only the details that were newly changed
+			return "Professor is updated";
+
+		}
+		else{
+			return "Professor not updated";
+		}
 		
 	}
 	

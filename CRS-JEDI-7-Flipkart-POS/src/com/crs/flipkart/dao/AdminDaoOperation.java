@@ -101,7 +101,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	@Override
 	public Boolean addProfessor(Professor professor) {
 		// TODO Auto-generated method stub
-		
+		// As per current schema this whole query is supposed to be run as a Transaction , but right now there are no concurrent queries so left it simple.
 		try {
 			String sql = "INSERT INTO user(username,password,name,address,gender,contactNo,role) values(?,?,?,?,?,?,?)";
 			stmt = conn.prepareStatement(sql);
@@ -111,16 +111,18 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			stmt.setString(4, professor.getAddress());
 			stmt.setString(5, professor.getGender().toString());
 			stmt.setString(6, professor.getContactNo());
-			stmt.setString(7, professor.getRole().toString());
+			stmt.setString(7, "Professor");
 			int rs = stmt.executeUpdate();
 			if (rs == 0)
 				return false;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
+			return false;
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			e.printStackTrace();
+			return false;
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
@@ -128,20 +130,60 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		
 		
 		//get the id of this professor from the DB
-		
+		int profId = 0;
+		try {
+			String sql = "SELECT userId FROM user WHERE username = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1,professor.getUsername());
+			ResultSet rs = stmt.executeQuery();
+
+			while(rs.next()){
+				profId = rs.getInt(1);
+			}
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+			return false;
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+			return false;
+		} finally {
+			// finally block used to close resources // nothing we can do//end finally try
+		}
+
 		
 		//add this professor and his designation to the professor table
-		
-		
-		
-		return false;
+
+		try {
+			String sql = "INSERT INTO professor(professorId,designation) values(?,?)";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,profId);
+			//stmt.setString(2, professor.getDesignation().toString());
+			stmt.setString(2,"Associate Professor");	//for now the value is hardcoded , change it once Designation enum is implemented
+			int rs = stmt.executeUpdate();
+			if (rs == 0)
+				return false;
+			return true;
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+			return false;
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+			return false;
+		} finally {
+			// finally block used to close resources // nothing we can do//end finally try
+		}
 	}
 
 	@Override
 	public Boolean removeProfessor(int professorId) {
 		// TODO Auto-generated method stub
 		try {
-			String sql = "DELETE FROM professor WHERE courseId = ?";
+			//Should we remove this professor from user as well or will he still be the user ?
+			String sql = "DELETE FROM professor WHERE professorId = ?";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, professorId);		
 			int rs = stmt.executeUpdate();
@@ -189,7 +231,8 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
-		
+
+		/* We are not taking change in Designation for now
 		if(!professorOld.getDesignation().equals(professorNew.getDesignation())) {
 			
 			try {
@@ -215,6 +258,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			}
 			
 		}
+		 */
 		
 		return true;
 		

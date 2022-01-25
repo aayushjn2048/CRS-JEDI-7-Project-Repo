@@ -26,24 +26,21 @@ public class CourseImplementation {
 	}
 	public static boolean removeCourse(int courseId)
 	{
-		for(Course c: courseData)
-		{
-			if(c.getCourseId()==courseId)
-			{
-				courseData.remove(c);
-				return true;
-			}
-		}
-		return false;
+		AdminDaoInterface admin = new AdminDaoOperation();
+		if(admin.deleteCourse(courseId))
+			return true;
+		else
+			return false;
 	}
 	public static void addCourse(Course course)
 	{
 		AdminDaoInterface admin = new AdminDaoOperation();
 		admin.addCourse(course);
 	}
-	public static StandardResponse updateCourse(Course course){
-		removeCourse(course.getCourseId());
-		addCourse(course);
-		return new StandardResponse();
+	public static void updateCourse(Course course){
+
+		AdminDaoInterface admin = new AdminDaoOperation();
+		admin.updateCourse(course,course);	//we need to change in the menu so that users can only add the details they can update
+
 	}
 }

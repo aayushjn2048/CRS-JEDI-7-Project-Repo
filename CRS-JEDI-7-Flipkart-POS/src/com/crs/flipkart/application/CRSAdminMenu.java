@@ -19,7 +19,9 @@ import com.crs.flipkart.business.AdminImplementation;
 import com.crs.flipkart.business.CourseImplementation;
 import com.crs.flipkart.business.ProfessorImplementation;
 import com.crs.flipkart.business.StudentImplementation;
+import com.crs.flipkart.constants.Gender;
 import com.crs.flipkart.constants.Role;
+import sun.security.krb5.internal.crypto.Des;
 
 /**
  * @author HP
@@ -159,12 +161,15 @@ public class CRSAdminMenu {
 							System.out.print("Enter address: ");
 							String address = scanner.next();
 							professor.setAddress(address);
+							System.out.print("Enter gender: ");
+							String gender = scanner.next();	//Input MALE / FEMALE / OTHER all in capitals
+							professor.setGender(Gender.valueOf(gender));
 							System.out.print("Enter contact number: ");
 							String contactNo = scanner.next();
 							professor.setContactNo(contactNo);
-							System.out.print("Enter role: ");
-							String role = scanner.next();
-							professor.setRole(Role.stringToName(role));
+//							System.out.print("Enter designation: ");		//this is not role , role will always be professor , this is designation
+//							String designation = scanner.next();
+//							professor.setDesignation(Designation.valueOf(designation));			//Designation enum is not yet implemented , so uncomment it after imiplementation
 							System.out.print("Enter ProfessorId: ");
 							int ProfessorId = scanner.nextInt();
 							professor.setProfessorId(ProfessorId);
