@@ -42,7 +42,8 @@ public class StudentDaoImplementation implements StudentDaoInterface {
                 student.setName(rs.getNString(2));
                 student.setAddress(rs.getNString(3));
                 student.setGender(Gender.stringToGender(rs.getNString(4)));
-                student.setGradeCardVisibility(rs.getBoolean(5));
+                student.setContactNo(rs.getNString(5));
+                student.setGradeCardVisibility(rs.getInt(6)==1);
                 System.out.println(student.getStudentId()+" "+student.getName()+" "+student.getAddress()+" "+student.getGender()+" "+student.getGradeCardVisibility());
             }
             return list;
