@@ -81,11 +81,11 @@ public class CRSAdminMenu {
 		StudentImplementation.updateStudentData(student);
 		CourseImplementation.updateCourseData(course);
 		StudentImplementation.updateCourseChoices(courseChoices);
-		System.out.println("Welcome Admin!!!");
+		System.out.println("\n----------------!!Welcome Admin!!----------------\n");
 		System.out.println("Choose which operation you want to perform:-");
-		System.out.println("0 : Quit\n1 : Add Course\n2 : Delete Course\n3 : Update Course\n4 : Activate Grade Card");
-		System.out.println("5 : Add Professor Details\n6 : Delete Professor Details\n7 : Update Professor Details\n8 : Approve Student Registration");
-		System.out.println("9 : View Students Data\n10: View Professors Data\n11: View All Courses\n12: Student Course Allocation");
+		System.out.println("\t1 : Add Course\n\t2 : Delete Course\n\t3 : Update Course\n\t4 : Activate Grade Card");
+		System.out.println("\t5 : Add Professor Details\n\t6 : Delete Professor Details\n\t7 : Update Professor Details\n\t8 : Approve Student Registration");
+		System.out.println("\t9 : View Students Data\n\t10: View Professors Data\n\t11: View All Courses\n\t12: Student Course Allocation");
 		AdminImplementation admin = new AdminImplementation();
 		while(true)
 		{

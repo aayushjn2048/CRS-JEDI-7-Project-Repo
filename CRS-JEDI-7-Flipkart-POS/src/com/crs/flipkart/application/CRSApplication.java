@@ -19,8 +19,8 @@ public class CRSApplication {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.println("Welcome to CRS Application");
-		System.out.println("Choose the following operation:-\n1 : Login User\n2 : Self Register Student\n3 : Forgot/Change Password\n4 : Quit");
+		System.out.println("\n----------------!!Welcome to CRS Application!!----------------\n");
+		System.out.println("Choose the following operation:-\n\t1 : Login User\n\t2 : Self Register Student\n\t3 : Forgot/Change Password\n\t4 : Quit");
 		Scanner scanner = new Scanner(System.in);
 		AuthorizationService authorizationService = new AuthorizationService();
 		while(true)
@@ -42,7 +42,7 @@ public class CRSApplication {
 					  		{
 					  			CRSAdminMenu adminMenu = new CRSAdminMenu();
 					  			adminMenu.adminMenuMain();
-					  			System.out.println("Back to CRS Application");
+					  			System.out.println("\n----------------!!Back to CRS Application!!----------------\n");
 					  		}
 					  		else
 					  			System.out.println("Retry Logging in");

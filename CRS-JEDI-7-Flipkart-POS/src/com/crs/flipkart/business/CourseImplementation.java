@@ -6,6 +6,8 @@ package com.crs.flipkart.business;
 import java.util.ArrayList;
 
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.dao.AdminDaoInterface;
+import com.crs.flipkart.dao.AdminDaoOperation;
 import com.crs.flipkart.validator.StandardResponse;
 
 /**
@@ -36,7 +38,8 @@ public class CourseImplementation {
 	}
 	public static void addCourse(Course course)
 	{
-		courseData.add(course);
+		AdminDaoInterface admin = new AdminDaoOperation();
+		admin.addCourse(course);
 	}
 	public static StandardResponse updateCourse(Course course){
 		removeCourse(course.getCourseId());
