@@ -7,7 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+
+import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.bean.Student;
 
 /**
  * @author HP
@@ -64,55 +69,48 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 	
 	
 	@Override
-	public void viewEnrolledStudents(int professorId) {
+	public Map<Integer,ArrayList<Student>> viewEnrolledStudents(int professorId) {
 		// TODO Auto-generated method stub
 		try {
 			 
 			PreparedStatement stmt = null;
-			String sql = "SELECT * FROM courseCatalog";
+			String sql = "SELECT * FROM courseCatalog WHERE professorId = ?";
 			stmt = conn.prepareStatement(sql);
-			 ResultSet rs = stmt.executeQuery(sql);
-			 ArrayList<Integer> registeredstudents = new  ArrayList<Integer>();
-			 while(rs.next()){
-		            //Display values
-				 	int professorid=rs.getInt("professorId");
-				 	
-				 	if(professorid==professorId) {
-				 		//System.out.println(rs.getInt("courseId"));
-				 		
-				 		int courseid=rs.getInt("courseId");
-				 		PreparedStatement stmt1 = null;
-						String sql1 = "SELECT * FROM studentRegisteredCourses";
-						stmt1 = conn.prepareStatement(sql1);
-						 ResultSet rs1 = stmt1.executeQuery(sql1);
-						 while(rs1.next()) {
-							 int courseid1=rs1.getInt("courseId1");
-							 int courseid2=rs1.getInt("courseId2");
-							 int courseid3=rs1.getInt("courseId3");
-							 int courseid4=rs1.getInt("courseId4");
-							// System.out.println(courseid1);
-							 if(courseid1==courseid || courseid2==courseid || courseid3==courseid || courseid4==courseid) {
-								 registeredstudents.add(rs1.getInt("studentId"));							 
-							 }
-						 }
-						 
-				 	}
-		            
-		         }
+			stmt.setInt(1, professorId);
+			ResultSet rs = stmt.executeQuery(sql);
+			Map<Integer,ArrayList<Student>> registeredstudents = new HashMap<>();
+			while(rs.next()){
+				ArrayList<Student> stulist = new ArrayList<Student>();
+			 	int courseid=rs.getInt("courseId");
+		 		PreparedStatement stmt1 = null;
+				String sql1 = "SELECT * FROM studentRegisteredCourses sc JOIN user ON (sc.studentId = user.userId) WHERE (courseId1 = ? OR courseId2 = ? OR courseId3 = ? OR courseId4 = ?)";
+				stmt1 = conn.prepareStatement(sql1);
+				stmt1.setInt(1, courseid);
+				stmt1.setInt(2, courseid);
+				stmt1.setInt(3, courseid);
+				stmt1.setInt(4, courseid);
+				ResultSet rs1 = stmt1.executeQuery(sql1);
+				while(rs1.next()) {
+					Student stu = new Student();
+					stu.setStudentId(rs.getInt("studentId"));
+					stu.setName(rs.getString("name"));
+					stu.setContactNo(rs.getString("contactNo"));
+					stulist.add(stu);	
+				}
+				registeredstudents.put(courseid, stulist);
+			}
 			 
-			 	if(registeredstudents.size()==0) {
-			 		System.out.println("No students enrolled");
-			 	}
-			 	else {
-			 		for(int i=0;i<registeredstudents.size();i++) {
-			 			System.out.println(registeredstudents.get(i));
-			 		}
-			 	}
-			 	
-			}
-			catch(Exception e){
-				
-			}
+		 	if(registeredstudents.size()==0) {
+		 		System.out.println("No students enrolled");
+		 	}
+		 	else {
+		 		return registeredstudents;
+		 	}
+		}
+		catch(Exception e){
+			
+		}
+		return null;
 	}
 	
 	
@@ -147,6 +145,31 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 			
 		}
 		
+	}
+
+
+	@Override
+	public ArrayList<Course> viewAvailableCourses() {
+		try {
+			ArrayList<Course> clist = new ArrayList<Course>();
+			PreparedStatement stmt = null;
+			String sql = "SELECT * FROM courseCatalog WHERE professorId IS NULL";
+			stmt = conn.prepareStatement(sql);
+			 ResultSet rs = stmt.executeQuery(sql);
+			 while(rs.next()){
+		            //Display values
+				 	Course c = new Course();
+				 	c.setCourseId(rs.getInt("courseId"));
+				 	c.setName(rs.getString("name"));
+				 	c.setOfferedSemester(rs.getInt("offeredSemester"));
+				 	clist.add(c);
+		         }
+			 return clist;
+			}
+			catch(Exception e){
+				
+			}
+		return null;
 	}
 
 }

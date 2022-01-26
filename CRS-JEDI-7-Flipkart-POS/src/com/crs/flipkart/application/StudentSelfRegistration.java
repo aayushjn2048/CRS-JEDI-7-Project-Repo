@@ -25,9 +25,10 @@ public class StudentSelfRegistration {
 	public void selfRegistration()  {
 		Scanner scanner=new Scanner(System.in);
 		
-		System.out.println("Welcome ");
-		System.out.print("Enter userid: ");
-		int userid = scanner.nextInt();
+		System.out.println("\n==========================================\n");
+		
+		System.out.print("Enter scholar no: ");
+		int studentId = scanner.nextInt();
 		
 		System.out.print("Enter username: ");
 		String username = scanner.next();
@@ -44,40 +45,34 @@ public class StudentSelfRegistration {
 		System.out.print("Enter contact number: ");
 		String contactNo = scanner.next();
 		
-		System.out.print("Enter Gender: ");
+		System.out.print("Enter Gender('MALE','FEMALE','OTHERS'): ");
 		String gen=scanner.next();
 		Gender gender = Gender.stringToGender(gen);
+
 		
-		System.out.print("Enter Role: ");
-		String rol=scanner.next();
-		Role role = Role.stringToName(rol);
-		
-		
-		
-		int StudentId=userid;
 		AdminInterface adminimplementation = new AdminImplementation();
-		if(adminimplementation.approveStudentRegistration(StudentId)) {
-			System.out.println("Student is registerd succesfully");
+		if(adminimplementation.approveStudentRegistration(studentId)) {
 			StudentImplementation studentImplementation = new StudentImplementation();
 			
 			Student user= new Student();
-			user.setUserId(userid);
+			user.setUserId(studentId);
 			user.setUsername(username);
 			user.setPasswordHash(passwordHash);
 			user.setName(name);
 			user.setAddress(address);
 			user.setContactNo(contactNo);
 			user.setGender(gender);
-			user.setRole(role);
+			user.setRole(Role.STUDENT);
 			UserImplementation userImplementation = new UserImplementation();
 			userImplementation.addUserdata(user);
 			Student student = new Student();
 			student.setGradeCardVisibility(false);
-			student.setStudentId(StudentId);
+			student.setStudentId(studentId);
 			studentImplementation.addStudentdata(student);
+			System.out.println("Student is registerd succesfully");
 		}
 		else {
-			System.out.println("Please retry");
+			System.out.println("User unauthorized");
 		}
 		
 	}

@@ -17,8 +17,20 @@ public class CRSApplication {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	private static int userId = 0;
+	
+	public static int getUserId()
+	{
+		return userId;
+	}
+	
+	public static void setUserId(int val)
+	{
+		userId = val;
+	}
+	
+	public static void startApplication()
+	{
 		System.out.println("\n----------------!!Welcome to CRS Application!!----------------\n");
 		System.out.println("Choose the following operation:-");
 		System.out.println("--------------------------------------------------------------");
@@ -45,16 +57,14 @@ public class CRSApplication {
 					  		{
 					  			CRSAdminMenu adminMenu = new CRSAdminMenu();
 					  			adminMenu.adminMenuMain();
-					  			System.out.println("\n----------------!!Back to CRS Application!!----------------\n");
 					  		}
 					  		else if(role!=null&&role.equals(Role.PROFESSOR))
 					  		{
 					  			CRSProfessorMenu professorMenu = new CRSProfessorMenu();
 					  			professorMenu.professorMenuMain();
-					  			System.out.println("\n----------------!!Back to CRS Application!!----------------\n");
 					  		}
 					  		else
-					  			System.out.println("Retry Logging in");
+					  			System.out.println("\nWrong credentials!!!\n");
 					  		break;
 					}
 				case 2: {
@@ -69,6 +79,11 @@ public class CRSApplication {
 				}
 			}
 		}
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		startApplication();
 	}
 
 }

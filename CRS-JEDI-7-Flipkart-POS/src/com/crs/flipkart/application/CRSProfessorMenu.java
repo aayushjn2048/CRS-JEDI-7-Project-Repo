@@ -14,24 +14,26 @@ import com.crs.flipkart.business.ProfessorImplementation;
 public class CRSProfessorMenu {
 	
 	public void professorMenuMain() {
-		System.out.println("\n----------------!!Welcome Professor!!----------------\n");
+		System.out.println("\n------------------!!Welcome Professor!!-------------------\n");
 		System.out.println("Choose an option:-");
 		System.out.println("----------------------------------------------------------");
-		System.out.println("\t1 : viewAllCourses\n\t2 : viewEnrolledStudents\n\t3 : selectCourse\n\t4 : assignGrade");
+		System.out.println("\t1 : View Available Courses\n\t2 : View enrolled students\n\t3 : Select Course\n\t4 : Assign Grade\n\t5 : Logout");
 		System.out.println("==========================================================");
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Enter professorId");
-		int professorId = scanner.nextInt();
+		int professorId = CRSApplication.getUserId();
 		ProfessorImplementation professorImplementation = new ProfessorImplementation();
 		while(true) {
-			System.out.println("Welocme choice");
+			System.out.print("Enter your Choice: ");
 			int choice = scanner.nextInt();
-			if(choice==5) {
+			if(choice == 5)
+			{
+				System.out.println("");
+				CRSApplication.startApplication();
 				break;
 			}
 			switch(choice) {
 				case 1:{
-					professorImplementation.viewAllCourses();
+					professorImplementation.viewAvailableCourses();
 					break;
 				}
 				case 2: {
@@ -40,14 +42,14 @@ public class CRSProfessorMenu {
 				}
 				case 3:{
 					while(true) {
-						System.out.println("Please enter your choice of selection");
+						System.out.print("Please enter your choice of selection: ");
 						int courseId=scanner.nextInt();
 						if(professorImplementation.selectCourse(professorId,courseId)) {
 							System.out.println("Succesfully allocated");
 							break;
 						}
 						else {
-							System.out.println("Course is already taken Please choose some other");
+							System.out.println("Course is already taken");
 						}
 					}
 					break;
@@ -62,7 +64,6 @@ public class CRSProfessorMenu {
 					professorImplementation.assignGrade(studentId,courseId,semesternumber);
 					break;
 				}
-				
 			}
 		}
 	}

@@ -4,8 +4,11 @@
 package com.crs.flipkart.business;
 
 import java.util.ArrayList;
+import java.util.Map;
 
+import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Professor;
+import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.dao.AdminDaoInterface;
 import com.crs.flipkart.dao.AdminDaoOperation;
 import com.crs.flipkart.dao.ProfessorDaoInterface;
@@ -51,14 +54,28 @@ public class ProfessorImplementation {
 		}
 	}
 	
-	public void viewAllCourses() {
-		AdminDaoInterface admindaooperation = new AdminDaoOperation();
-		 admindaooperation.viewAllCourses();
+	public void viewAvailableCourses() {
+		ProfessorDaoInterface profdao = new ProfessorDaoOperation();
+		ArrayList<Course> clist = profdao.viewAvailableCourses();
+		 System.out.println("Serial No\tCourse Id\tCourse Name\tOffered Sem");
+		 int count = 1;
+		 for(Course c : clist)
+		 {
+			 System.out.println(count+"\t\t"+c.getCourseId()+"\t\t"+c.getName()+"\t\t"+c.getOfferedSemester());
+			 count++;
+		 }
 	}
 	
 	public void viewEnrolledStudents(int professorid) {
 		ProfessorDaoInterface professorDaoOperation = new ProfessorDaoOperation();
-		professorDaoOperation.viewEnrolledStudents(professorid);
+		Map<Integer,ArrayList<Student>> stulist = professorDaoOperation.viewEnrolledStudents(professorid);
+		for(Map.Entry<Integer,ArrayList<Student>> entry: stulist.entrySet())
+		{
+			System.out.println("\nCourse Id: "+entry.getKey()+"\n");
+			System.out.println("Student Id\t\tStudent Name\t\tContact No");
+			for(Student st: entry.getValue())
+				System.out.println(st.getStudentId()+"\t\t\t"+st.getName()+"\t\t\t"+st.getContactNo());
+		}
 	}
 	
 	public boolean selectCourse(int professorId, int courseId) {

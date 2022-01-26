@@ -4,6 +4,8 @@
 package com.crs.flipkart.business;
 
 import com.crs.flipkart.constants.Role;
+import com.crs.flipkart.dao.AuthorizeDaoInterface;
+import com.crs.flipkart.dao.AuthorizeDaoOperation;
 
 /**
  * @author HP
@@ -18,12 +20,8 @@ public class AuthorizationService {
 			role = Role.ADMIN;
 			return role;
 		}
-		if(username.equals("professor") &&password.equals("password"))
-		{
-			role = Role.PROFESSOR;
-			return role;
-		}
-		else
-			return null;
+		AuthorizeDaoInterface auth = new AuthorizeDaoOperation();
+		return auth.authorizeUser(username, password);
+		
 	}
 }

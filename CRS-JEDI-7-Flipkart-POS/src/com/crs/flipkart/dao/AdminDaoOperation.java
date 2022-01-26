@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Professor;
@@ -201,6 +202,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	public Boolean addProfessor(Professor professor) {
 		// TODO Auto-generated method stub
 		PreparedStatement stmt = null;
+		int val;
 		// As per current schema this whole query is supposed to be run as a Transaction , but right now there are no concurrent queries so left it simple.
 		try {
 			{
@@ -214,43 +216,21 @@ public class AdminDaoOperation implements AdminDaoInterface {
 					return false;
 				}
 			}
-			String sql = "INSERT INTO user(username,password,name,address,gender,contactNo,role) values(?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO user(userId,username,password,name,address,gender,contactNo,role) values(?,?,?,?,?,?,?,?)";
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, professor.getUsername());
-			stmt.setString(2, professor.getPasswordHash());
-			stmt.setString(3, professor.getName());
-			stmt.setString(4, professor.getAddress());
-			stmt.setString(5, professor.getGender().toString());
-			stmt.setString(6, professor.getContactNo());
-			stmt.setString(7, "Professor");
+			Random rand = new Random();
+			val = rand.nextInt(900000)+100000;
+			stmt.setInt(1, val);
+			stmt.setString(2, professor.getUsername());
+			stmt.setString(3, professor.getPasswordHash());
+			stmt.setString(4, professor.getName());
+			stmt.setString(5, professor.getAddress());
+			stmt.setString(6, professor.getGender().toString());
+			stmt.setString(7, professor.getContactNo());
+			stmt.setString(8, "Professor");
 			int rs = stmt.executeUpdate();
 			if (rs == 0)
 				return false;
-		} catch (SQLException se) {
-			// Handle errors for JDBC
-			se.printStackTrace();
-			return false;
-		} catch (Exception e) {
-			// Handle errors for Class.forName
-			e.printStackTrace();
-			return false;
-		} finally {
-			// finally block used to close resources // nothing we can do//end finally try
-		}
-		
-		
-		
-		//get the id of this professor from the DB
-		int profId = 0;
-		try {
-			String sql = "SELECT userId FROM user WHERE username = ?";
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1,professor.getUsername());
-			ResultSet rs = stmt.executeQuery();
-
-			while(rs.next()){
-				profId = rs.getInt(1);
-			}
 		} catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
@@ -269,7 +249,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		try {
 			String sql = "INSERT INTO professor(professorId,designation) values(?,?)";
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1,profId);
+			stmt.setInt(1,val);
 			//stmt.setString(2, professor.getDesignation().toString());
 			stmt.setString(2,professor.getDesignation().toString());	//for now the value is hardcoded , change it once Designation enum is implemented
 			int rs = stmt.executeUpdate();
@@ -382,7 +362,6 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		
 	}
 
-	
 	@Override
 	public ArrayList<Course> getAllCourseDetails() {
 		ArrayList<Course> courseDetails = new ArrayList<Course>();
