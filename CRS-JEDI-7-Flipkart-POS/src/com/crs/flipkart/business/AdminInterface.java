@@ -23,11 +23,10 @@ public interface AdminInterface {
 	public String addProfessor(Professor professor);
 	public String removeProfessor(int professorId);
 	public String updateProfessor(Professor professor);
-	public String approveStudentRegistration(Student student);
+	public Boolean approveStudentRegistration(int studentId);
 	public ArrayList<Student> viewAllStudents();
-	public ArrayList<Professor> viewAllProfessors();
-	public ArrayList<Course> viewAllCourses();
-	public void registerCourses();
+	public void viewAllProfessors();
+	public void viewAllCourses();
 	public void allocatePendingCourses();
 	public Challan generateChallan(SemesterRegistration semesterRegistration);
 }

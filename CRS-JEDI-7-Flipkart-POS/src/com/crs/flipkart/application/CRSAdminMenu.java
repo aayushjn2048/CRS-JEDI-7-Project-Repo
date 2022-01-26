@@ -17,9 +17,12 @@ import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
 import com.crs.flipkart.business.AdminImplementation;
 import com.crs.flipkart.business.CourseImplementation;
+import com.crs.flipkart.business.CourseInterface;
 import com.crs.flipkart.business.ProfessorImplementation;
 import com.crs.flipkart.business.StudentImplementation;
+import com.crs.flipkart.constants.Gender;
 import com.crs.flipkart.constants.Role;
+import com.crs.flipkart.dao.AdminDaoOperation;
 
 /**
  * @author HP
@@ -30,7 +33,8 @@ public class CRSAdminMenu {
 	/**
 	 * @param args
 	 */
-	
+	CourseInterface courseImplementation = CourseImplementation.getInstance();
+	StudentImplementation studentImplementation = StudentImplementation.getInstance();
 	
 	public void adminMenuMain() {
 		// TODO Auto-generated method stub
@@ -59,6 +63,8 @@ public class CRSAdminMenu {
 		{
 			Random random = new Random();  
 			ArrayList<Course> tmp = new ArrayList<Course>();
+			//ArrayList<Integer> tmp2 = new ArrayList<Integer>();
+			
 			courseChoices.put(i+1, tmp);
 			boolean flag[]=new boolean[noc];
 			for(int j=0;j<noc;j++)
@@ -76,7 +82,10 @@ public class CRSAdminMenu {
 					}
 				}
 				courseChoices.get(i+1).add(course.get(x));
+				//tmp2.add(x+4);
 			}
+			//AdminDaoOperation admindao = new AdminDaoOperation();
+			//admindao.addStudentCourseChoices(i+1, tmp2);
 		}
 		StudentImplementation.updateStudentData(student);
 		CourseImplementation.updateCourseData(course);
@@ -110,12 +119,12 @@ public class CRSAdminMenu {
 							System.out.print("Enter Professor Id: ");
 							newCourse.setProfessorId(scanner.nextInt());
 							
-							CourseImplementation.addCourse(newCourse);
+							courseImplementation.addCourse(newCourse);
 							break;
 						}
 				case 2: {
 							System.out.print("Enter CourseId: ");
-							if(CourseImplementation.removeCourse(scanner.nextInt()))
+							if(courseImplementation.removeCourse(scanner.nextInt()))
 								System.out.println("Course details deleted from the database");
 							else
 								System.out.println("Course with entered courseId does not exist");
@@ -136,7 +145,7 @@ public class CRSAdminMenu {
 							System.out.print("Enter new Professor Id: ");
 							newCourse1.setProfessorId(scanner.nextInt());
 							
-							CourseImplementation.updateCourse(newCourse1);
+							courseImplementation.updateCourse(newCourse1);
 							
 							break;
 						}
@@ -159,12 +168,15 @@ public class CRSAdminMenu {
 							System.out.print("Enter address: ");
 							String address = scanner.next();
 							professor.setAddress(address);
+							System.out.print("Enter gender: ");
+							String gender = scanner.next();	//Input MALE / FEMALE / OTHER all in capitals
+							professor.setGender(Gender.valueOf(gender));
 							System.out.print("Enter contact number: ");
 							String contactNo = scanner.next();
 							professor.setContactNo(contactNo);
-							System.out.print("Enter role: ");
-							String role = scanner.next();
-							professor.setRole(Role.stringToName(role));
+//							System.out.print("Enter designation: ");		//this is not role , role will always be professor , this is designation
+//							String designation = scanner.next();
+//							professor.setDesignation(Designation.valueOf(designation));			//Designation enum is not yet implemented , so uncomment it after imiplementation
 							System.out.print("Enter ProfessorId: ");
 							int ProfessorId = scanner.nextInt();
 							professor.setProfessorId(ProfessorId);
@@ -210,7 +222,7 @@ public class CRSAdminMenu {
 				case 8: {
 							System.out.print("Enter StudentId: ");
 							int studentId = scanner.nextInt();
-							System.out.println(admin.approveStudentRegistration(StudentImplementation.viewStudentDetails(studentId)));
+							System.out.println(admin.approveStudentRegistration(studentImplementation.viewStudentDetails(studentId).getStudentId()));
 							break;
 						}
 				case 9: {
@@ -221,21 +233,14 @@ public class CRSAdminMenu {
 							break;
 						}
 				case 10: {
-							ArrayList<Professor> professorData = admin.viewAllProfessors();
-							System.out.println("Professor Id\t\tProfessor Name");
-							for(Professor prof: professorData)
-								System.out.println(prof.getProfessorId() + "\t\t\t" + prof.getName());
+							admin.viewAllProfessors();
 							break;
 						}
 				case 11: {
-							ArrayList<Course> courseData = admin.viewAllCourses();
-							System.out.println("Course Id\t\tCourse Name");
-							for(Course c: courseData)
-								System.out.println(c.getCourseId() + "\t\t\t" + c.getName());
+							admin.viewAllCourses();
 							break;
 						}
 				case 12: {    
-							admin.registerCourses();
 							admin.allocatePendingCourses();
 							Map<Integer,ArrayList<Integer>> registeredCourseChoices = StudentImplementation.viewRegisteredCourseChoices();
 							System.out.println("Student Id\t\tCourse Ids");

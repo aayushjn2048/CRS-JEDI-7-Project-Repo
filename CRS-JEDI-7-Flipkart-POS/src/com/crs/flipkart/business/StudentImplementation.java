@@ -10,16 +10,42 @@ import java.util.Map;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
+import com.crs.flipkart.dao.StudentDaoOperation;
+import com.crs.flipkart.dao.StudentDaoInterface;
 
 /**
  * @author HP
  *
  */
-public class StudentImplementation {
+public class StudentImplementation implements StudentInterface{
+	
+	private static StudentImplementation instance = null;
+
+	public StudentImplementation(){}
+
+	public static StudentImplementation getInstance(){
+		if(instance==null){
+			synchronized (StudentImplementation.class){
+				instance = new StudentImplementation();
+			}
+		}
+		return instance;
+	}
+
+	private StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
+	
 	private static ArrayList<Student> studentData = new ArrayList<Student>();
 	private static Map<Integer,ArrayList<Course>> courseChoices = new HashMap<>();
 	private static ArrayList<StudentRegisteredCourses> registeredCoursesData = new ArrayList<StudentRegisteredCourses>();
 	private static Map<Integer,ArrayList<Integer>> registeredCourseChoices = new HashMap<>();
+	
+	
+	public void addStudentdata(Student student) {
+		StudentDaoInterface studentDaoOperation = new StudentDaoOperation();
+		if(studentDaoOperation.addStudentData(student)) {
+			System.out.println("student is added");
+		}
+	}
 	
 	public static Map<Integer,ArrayList<Integer>> viewRegisteredCourseChoices()
 	{
@@ -31,18 +57,13 @@ public class StudentImplementation {
 		registeredCourseChoices = data;
 	}
 	
-	public static Student viewStudentDetails(int studentId)
+	public Student viewStudentDetails(int studentId)
 	{
-		for(Student student: studentData)
-		{
-			if(student.getStudentId()==studentId)
-				return student;
-		}
-		return null;
+		return studentDaoImplementation.viewStudentDetails(studentId);
 	}
-	public static ArrayList<Student> viewStudentData()
+	public ArrayList<Student> viewStudentData()
 	{
-		return studentData;
+		return studentDaoImplementation.viewAllStudents();
 	}
 	public static void updateStudentData(ArrayList<Student> studentList)
 	{
@@ -68,9 +89,12 @@ public class StudentImplementation {
 	{
 		registeredCoursesData = newList;
 	}
-	public static void activateGradeCard(){
-		for(int i =0; i<studentData.size(); i++){
-			studentData.get(i).setGradeCardVisibility(true);
+	public void activateGradeCard(){
+		try {
+			studentDaoImplementation.activateGradeCard();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	public static void deactivateGradeCard(){

@@ -50,6 +50,8 @@ public class CRSApplication {
 					}
 				case 2: {
 							//Register Student Portal
+							StudentSelfRegistration studentSelfRegistration = new StudentSelfRegistration();
+							studentSelfRegistration.selfRegistration();
 							break;
 				}
 				case 3: {

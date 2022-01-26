@@ -12,6 +12,7 @@ import com.crs.flipkart.constants.Role;
  */
 public abstract class User {
 	
+		private int userId;
 		private String username;
 		private String passwordHash;
 		private String name;
@@ -19,6 +20,18 @@ public abstract class User {
 		private Gender gender;
 		private String contactNo;
 		private Role role;
+		/**
+		 * @return the userId
+		 */
+		public int getUserId() {
+			return userId;
+		}
+		/**
+		 * @param userId the userId to set
+		 */
+		public void setUserId(int userId) {
+			this.userId = userId;
+		}
 		/**
 		 * @return the username
 		 */

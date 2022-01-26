@@ -8,14 +8,31 @@ import java.util.ArrayList;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.dao.AdminDaoInterface;
 import com.crs.flipkart.dao.AdminDaoOperation;
+import com.crs.flipkart.dao.CourseDaoImplementation;
+import com.crs.flipkart.dao.CourseDaoInterface;
 import com.crs.flipkart.validator.StandardResponse;
 
 /**
  * @author HP
  *
  */
-public class CourseImplementation {
+public class CourseImplementation implements CourseInterface{
 	private static ArrayList<Course> courseData = new ArrayList<Course>();
+	
+	private static CourseImplementation instance = null;
+	private CourseDaoInterface courseDaoImplementation = CourseDaoImplementation.getInstance();
+
+	private CourseImplementation(){}
+	
+	public static CourseImplementation getInstance(){
+		if(instance==null){
+			synchronized (CourseImplementation.class){
+				instance = new CourseImplementation();
+			}
+		}
+		return instance;
+	}
+	
 	public static ArrayList<Course> viewCourseData()
 	{
 		return courseData;
@@ -24,26 +41,23 @@ public class CourseImplementation {
 	{
 		courseData = courseList;
 	}
-	public static boolean removeCourse(int courseId)
+	public boolean removeCourse(int courseId)
 	{
-		for(Course c: courseData)
-		{
-			if(c.getCourseId()==courseId)
-			{
-				courseData.remove(c);
-				return true;
-			}
-		}
-		return false;
+		AdminDaoInterface admin = new AdminDaoOperation();
+		if(admin.deleteCourse(courseId))
+			return true;
+		else
+			return false;
 	}
-	public static void addCourse(Course course)
+	public void addCourse(Course course)
 	{
 		AdminDaoInterface admin = new AdminDaoOperation();
 		admin.addCourse(course);
 	}
-	public static StandardResponse updateCourse(Course course){
-		removeCourse(course.getCourseId());
-		addCourse(course);
-		return new StandardResponse();
+	public void updateCourse(Course course){
+
+		AdminDaoInterface admin = new AdminDaoOperation();
+		admin.updateCourse(course,course);	//we need to change in the menu so that users can only add the details they can update
+
 	}
 }

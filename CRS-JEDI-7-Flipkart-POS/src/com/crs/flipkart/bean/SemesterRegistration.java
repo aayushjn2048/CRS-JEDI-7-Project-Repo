@@ -11,6 +11,19 @@ public class SemesterRegistration {
 	private int studentId;
 	private int semesterNo;
 	private String dateOfRegistration;
+	private int totalFee;
+	/**
+	 * @return the totalFee
+	 */
+	public int getTotalFee() {
+		return totalFee;
+	}
+	/**
+	 * @param totalFee the totalFee to set
+	 */
+	public void setTotalFee(int totalFee) {
+		this.totalFee = totalFee;
+	}
 	/**
 	 * @return the studentId
 	 */

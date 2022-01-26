@@ -17,6 +17,11 @@ import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.bean.SemesterRegistration;
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
+import com.crs.flipkart.constants.PaymentStatus;
+import com.crs.flipkart.dao.AdminDaoInterface;
+import com.crs.flipkart.dao.AdminDaoOperation;
+import com.crs.flipkart.dao.PaymentsDaoImplementation;
+import com.crs.flipkart.dao.PaymentsDaoInterface;
 
 /**
  * @author HP
@@ -33,10 +38,11 @@ class Pair{
 }
 
 public class AdminImplementation implements AdminInterface{
-	
+	private PaymentsDaoInterface paymentsDaoImplementation = PaymentsDaoImplementation.getInstance();
+	private StudentInterface studentImplementation = StudentImplementation.getInstance();
 	//Group 1
 	public void activateGradeCard(){
-		StudentImplementation.activateGradeCard();
+		studentImplementation.activateGradeCard();
 	}
 	
 	public void deactivateGradeCard(){
@@ -51,9 +57,9 @@ public class AdminImplementation implements AdminInterface{
 	}
 	
 	public String removeProfessor(int professorId) {
-		
-		if(ProfessorImplementation.removeProfessordata(professorId)) {
-		
+
+		AdminDaoInterface admin = new AdminDaoOperation();
+		if(admin.removeProfessor(professorId)){
 		return "Professor is succesfully removed";
 		}
 		else {
@@ -63,32 +69,38 @@ public class AdminImplementation implements AdminInterface{
 	
 	public String updateProfessor(Professor professor) {
 		
-		ProfessorImplementation.updateProfessordata(professor);
-		return "Professor is updated";
+
+		AdminDaoInterface admindao = new AdminDaoOperation();
+		if(admindao.updateProfessor(professor,professor)){	//Ultimately we should update only the details that were newly changed
+			return "Professor is updated";
+
+		}
+		else{
+			return "Professor not updated";
+		}
 		
 	}
 	
-	public String approveStudentRegistration(Student student) {
-		if(student!=null) {
-			return "Student details approved!!!";
-		}
-		else {
-			return "Student registration approval denied!!!";
-		}
+	public Boolean approveStudentRegistration(int studentId) {
+		AdminDaoInterface admindaooperation = new AdminDaoOperation();
+		 return(admindaooperation.studentSelfRegistration(studentId));
 	}
 	
 	//Group 3
 	public ArrayList<Student> viewAllStudents(){
-		return StudentImplementation.viewStudentData();
+		return studentImplementation.viewStudentData();
 	}//3
-	public ArrayList<Professor> viewAllProfessors(){
-		return ProfessorImplementation.viewProfessorData();
+	public void viewAllProfessors(){
+		AdminDaoInterface admindaooperation = new AdminDaoOperation();
+		 admindaooperation.viewAllProfessor();
 	}
-	public ArrayList<Course> viewAllCourses(){
-		return CourseImplementation.viewCourseData();
+	public void viewAllCourses(){
+		 AdminDaoInterface admindaooperation = new AdminDaoOperation();
+		 admindaooperation.viewAllCourses();
 	}
-	public void registerCourses()
-	{
+
+	public void allocatePendingCourses(){
+		//Contains number of request made by students for particular course 
 		ArrayList<StudentRegisteredCourses> registeredCourses = new ArrayList<StudentRegisteredCourses>();
 		Map<Integer,ArrayList<Course>> data = StudentImplementation.viewAllCourseChoices();
 		Map<Integer,Integer> courseChoices = new HashMap<>();
@@ -158,15 +170,10 @@ public class AdminImplementation implements AdminInterface{
 				tmp.remove(tor.get(i));
 			newData.put(entry.getKey(), tmp);
 		}
-		StudentImplementation.updateRegisteredCourses(registeredCourses);
-		StudentImplementation.updateCourseChoices(newData);
-	}
-	public void allocatePendingCourses(){
-		//Contains number of request made by students for particular course 
-		Map<Integer,ArrayList<Course>> data = StudentImplementation.viewAllCourseChoices();
+		data = newData;
 		int maxCoursesLeft = 0;
 		//Contains number of students allocated to a particular course
-		ArrayList<StudentRegisteredCourses> registeredData = StudentImplementation.viewRegisteredCourses();
+		ArrayList<StudentRegisteredCourses> registeredData = registeredCourses;
 		
 		//Number of requests pending for a particular course
 		Map<Integer,Integer> pendingCourseChoices = new HashMap<>();
@@ -282,21 +289,30 @@ public class AdminImplementation implements AdminInterface{
 				registeredCourseChoices.put(sc.getStudentId(), tmp);
 			}
 		}
+		AdminDaoInterface admindao = new AdminDaoOperation();
+		admindao.updateAllocatedStudentCourses(registeredCourseChoices);
 		StudentImplementation.updateRegisteredCourseChoices(registeredCourseChoices);
 		
 	}
 	public Challan generateChallan(SemesterRegistration semesterRegistration) {
-		PaymentReference paymentRef=new PaymentReference();
-		Student student=new Student();
-		int amount=0;
-		if(paymentRef.getPayeeName()==student.getName())
-			amount=paymentRef.getAmount();
-		Challan challan=new Challan();
-		SemesterRegisterImplementation semesterRegisterImplementation = new SemesterRegisterImplementation();
-		if(amount==semesterRegisterImplementation.payFee(CourseImplementation.viewCourseData())){
-			challan.setChallanNo(amount+semesterRegistration.getStudentId());
-			challan.setPaymentReference(paymentRef);
-		}
-		return challan;	
+		int fee = semesterRegistration.getTotalFee();
+		int studentId = semesterRegistration.getStudentId();
+		PaymentReference paymentReference = getPaymentReference(fee, studentId);
+		int paymentReferenceNumber = paymentReference.getReferenceNo();
+		Challan challan = new Challan();
+		challan.setChallanNo((paymentReferenceNumber*265)%10000);
+		challan.setPaymentReference(paymentReference);
+		paymentsDaoImplementation.storeChallan(challan);
+		return challan;
+	}
+
+	private PaymentReference getPaymentReference(int fee, int studentId) {
+		PaymentReference paymentReference = new PaymentReference();
+		paymentReference.setPaymentStatus(PaymentStatus.SUCCESSFUL);
+		paymentReference.setAmount(fee);
+		paymentReference.setPayeeName(studentImplementation.viewStudentDetails(studentId).getName());
+		int paymentReferenceNumber = paymentsDaoImplementation.storePaymentReference(paymentReference);
+		paymentReference.setReferenceNo(paymentReferenceNumber);
+		return paymentReference;
 	}
 }

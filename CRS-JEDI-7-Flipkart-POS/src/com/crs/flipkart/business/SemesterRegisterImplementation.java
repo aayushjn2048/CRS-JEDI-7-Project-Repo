@@ -20,7 +20,7 @@ public class SemesterRegisterImplementation implements SemesterRegistration {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	CourseImplementation courseImplementation=new CourseImplementation();
+	private CourseInterface courseImplementation=CourseImplementation.getInstance();
 	@Override
 	public StandardResponse addCourse(Course course) {
 		// TODO Auto-generated method stub
