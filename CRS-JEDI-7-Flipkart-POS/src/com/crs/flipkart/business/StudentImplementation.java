@@ -8,9 +8,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.bean.GradeCard;
 import com.crs.flipkart.bean.Student;
+import com.crs.flipkart.bean.StudentCourseChoice;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
 import com.crs.flipkart.dao.StudentDaoOperation;
+import com.crs.flipkart.dao.CourseDaoImplementation;
+import com.crs.flipkart.dao.CourseDaoInterface;
+import com.crs.flipkart.dao.GradeCardDaoInterface;
+import com.crs.flipkart.dao.GradeCardDaoOperation;
 import com.crs.flipkart.dao.StudentDaoInterface;
 
 /**
@@ -20,6 +26,9 @@ import com.crs.flipkart.dao.StudentDaoInterface;
 public class StudentImplementation implements StudentInterface{
 	
 	private static StudentImplementation instance = null;
+	private CourseInterface courseImplementation = CourseImplementation.getInstance();
+	private GradeCardDaoInterface gradeCardOperation = GradeCardDaoOperation.getInstance();
+	private CourseDaoInterface courseDaoImplementation = CourseDaoImplementation.getInstance();
 
 	public StudentImplementation(){}
 
@@ -53,6 +62,7 @@ public class StudentImplementation implements StudentInterface{
 	
 	@Override
 	public void displayCourseCatalog() {
+		AdminInterface adminImplementation = new AdminImplementation();
 		adminImplementation.viewAllCourses();
 		// TODO Auto-generated method stub
 		
@@ -85,5 +95,11 @@ public class StudentImplementation implements StudentInterface{
 			System.out.println("Grade card is yet not published.");
 		}
 		
+	}
+
+	@Override
+	public StudentCourseChoice selectCourses(int studentId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

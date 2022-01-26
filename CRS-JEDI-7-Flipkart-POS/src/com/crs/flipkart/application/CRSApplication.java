@@ -20,7 +20,10 @@ public class CRSApplication {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("\n----------------!!Welcome to CRS Application!!----------------\n");
-		System.out.println("Choose the following operation:-\n\t1 : Login User\n\t2 : Self Register Student\n\t3 : Forgot/Change Password\n\t4 : Quit");
+		System.out.println("Choose the following operation:-");
+		System.out.println("--------------------------------------------------------------");
+		System.out.println("\t1 : Login User\n\t2 : Self Register Student\n\t3 : Forgot/Change Password\n\t4 : Quit");
+		System.out.println("==============================================================");
 		Scanner scanner = new Scanner(System.in);
 		AuthorizationService authorizationService = new AuthorizationService();
 		while(true)

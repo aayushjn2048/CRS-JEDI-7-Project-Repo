@@ -15,8 +15,10 @@ public class CRSProfessorMenu {
 	
 	public void professorMenuMain() {
 		System.out.println("\n----------------!!Welcome Professor!!----------------\n");
-		System.out.println("Choose which operation you want to perform:-");
+		System.out.println("Choose an option:-");
+		System.out.println("----------------------------------------------------------");
 		System.out.println("\t1 : viewAllCourses\n\t2 : viewEnrolledStudents\n\t3 : selectCourse\n\t4 : assignGrade");
+		System.out.println("==========================================================");
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter professorId");
 		int professorId = scanner.nextInt();

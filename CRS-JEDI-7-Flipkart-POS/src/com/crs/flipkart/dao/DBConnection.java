@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class DBConnection {
 	
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";  
 	   static final String DB_URL = "jdbc:mysql://crs-database.ca10tiiqurow.ap-south-1.rds.amazonaws.com/CRS";
 
 	   //  Database credentials
@@ -31,7 +31,7 @@ public class DBConnection {
 			   try{
 				   
 				   // Step 3 Regiater Driver here and create connection 
-				      Class.forName("com.mysql.jdbc.Driver");
+				      Class.forName(JDBC_DRIVER);
 
 				   // Step 4 make/open  a connection 
 				   

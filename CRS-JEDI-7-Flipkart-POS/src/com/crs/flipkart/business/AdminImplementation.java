@@ -41,7 +41,6 @@ class Pair{
 
 public class AdminImplementation implements AdminInterface{
 	private PaymentsDaoInterface paymentsDaoImplementation = PaymentsDaoImplementation.getInstance();
-	private StudentInterface studentImplementation = StudentImplementation.getInstance();
 	//Group 1
 	public void activateGradeCard(){
 		StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
@@ -97,6 +96,7 @@ public class AdminImplementation implements AdminInterface{
 	
 	//Group 3
 	public ArrayList<Student> viewAllStudents(){
+		StudentInterface studentImplementation = StudentImplementation.getInstance();
 		return studentImplementation.viewStudentData();
 	}//3
 	public void viewAllProfessors(){
@@ -322,6 +322,7 @@ public class AdminImplementation implements AdminInterface{
 
 	private PaymentReference getPaymentReference(int fee, int studentId) {
 		PaymentReference paymentReference = new PaymentReference();
+		StudentInterface studentImplementation = StudentImplementation.getInstance();
 		paymentReference.setPaymentStatus(PaymentStatus.SUCCESSFUL);
 		paymentReference.setAmount(fee);
 		paymentReference.setPayeeName(studentImplementation.viewStudentDetails(studentId).getName());
