@@ -8,5 +8,5 @@ package com.crs.flipkart.business;
  *
  */
 public interface PaymentInterface {
-
+	
 }

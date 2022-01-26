@@ -19,7 +19,6 @@ import com.crs.flipkart.validator.StandardResponse;
  */
 public interface AdminInterface {
 	public void activateGradeCard();//1
-	public void deactivateGradeCard();
 	public String addProfessor(Professor professor);
 	public String removeProfessor(int professorId);
 	public String updateProfessor(Professor professor);

@@ -44,6 +44,12 @@ public class CRSApplication {
 					  			adminMenu.adminMenuMain();
 					  			System.out.println("\n----------------!!Back to CRS Application!!----------------\n");
 					  		}
+					  		else if(role!=null&&role.equals(Role.PROFESSOR))
+					  		{
+					  			CRSProfessorMenu professorMenu = new CRSProfessorMenu();
+					  			professorMenu.professorMenuMain();
+					  			System.out.println("\n----------------!!Back to CRS Application!!----------------\n");
+					  		}
 					  		else
 					  			System.out.println("Retry Logging in");
 					  		break;

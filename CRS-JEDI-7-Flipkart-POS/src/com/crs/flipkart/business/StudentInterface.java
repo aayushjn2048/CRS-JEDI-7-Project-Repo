@@ -6,6 +6,7 @@ package com.crs.flipkart.business;
 import java.util.ArrayList;
 
 import com.crs.flipkart.bean.Student;
+import com.crs.flipkart.bean.StudentCourseChoice;
 
 /**
  * @author HP
@@ -13,6 +14,8 @@ import com.crs.flipkart.bean.Student;
  */
 public interface StudentInterface {
 	 public ArrayList<Student> viewStudentData();
-	    public void activateGradeCard();
-	    public Student viewStudentDetails(int studentId);
+	 public Student viewStudentDetails(int studentId);
+	 public StudentCourseChoice selectCourses(int studentId);
+	 public void displayCourseCatalog();
+	 public void displayGradeCard(int studentId);
 }

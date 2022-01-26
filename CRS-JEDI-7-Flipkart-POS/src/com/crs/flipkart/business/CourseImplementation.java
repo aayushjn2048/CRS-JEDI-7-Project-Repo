@@ -17,7 +17,6 @@ import com.crs.flipkart.validator.StandardResponse;
  *
  */
 public class CourseImplementation implements CourseInterface{
-	private static ArrayList<Course> courseData = new ArrayList<Course>();
 	
 	private static CourseImplementation instance = null;
 	private CourseDaoInterface courseDaoImplementation = CourseDaoImplementation.getInstance();
@@ -33,14 +32,6 @@ public class CourseImplementation implements CourseInterface{
 		return instance;
 	}
 	
-	public static ArrayList<Course> viewCourseData()
-	{
-		return courseData;
-	}
-	public static void updateCourseData(ArrayList<Course> courseList)
-	{
-		courseData = courseList;
-	}
 	public boolean removeCourse(int courseId)
 	{
 		AdminDaoInterface admin = new AdminDaoOperation();
@@ -57,7 +48,28 @@ public class CourseImplementation implements CourseInterface{
 	public void updateCourse(Course course){
 
 		AdminDaoInterface admin = new AdminDaoOperation();
-		admin.updateCourse(course,course);	//we need to change in the menu so that users can only add the details they can update
+		admin.updateCourse(course);	//we need to change in the menu so that users can only add the details they can update
 
+	}
+	
+	@Override
+	public ArrayList<Course> getAllCourses() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Course getCourseFromCatalog(int courseId) {
+		// TODO Auto-generated method stub
+		ArrayList<Course> courseList = getAllCourses();
+		
+		for(Course course:courseList)
+		{
+			if(course.getCourseId() == courseId)
+			{
+				return course;
+			}
+		}	
+		return null;
 	}
 }

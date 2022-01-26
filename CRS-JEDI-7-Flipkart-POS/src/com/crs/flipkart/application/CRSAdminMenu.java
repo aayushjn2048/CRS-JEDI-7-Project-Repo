@@ -20,6 +20,7 @@ import com.crs.flipkart.business.CourseImplementation;
 import com.crs.flipkart.business.CourseInterface;
 import com.crs.flipkart.business.ProfessorImplementation;
 import com.crs.flipkart.business.StudentImplementation;
+import com.crs.flipkart.constants.Designation;
 import com.crs.flipkart.constants.Gender;
 import com.crs.flipkart.constants.Role;
 import com.crs.flipkart.dao.AdminDaoOperation;
@@ -39,7 +40,7 @@ public class CRSAdminMenu {
 	public void adminMenuMain() {
 		// TODO Auto-generated method stub
 
-		final int nos = 12;
+		final int nos = 14;
 		final int noc = 10;
 		ArrayList<Student> student = new ArrayList<Student>();
 		for(int i=1;i<=nos;i++)
@@ -63,7 +64,7 @@ public class CRSAdminMenu {
 		{
 			Random random = new Random();  
 			ArrayList<Course> tmp = new ArrayList<Course>();
-			//ArrayList<Integer> tmp2 = new ArrayList<Integer>();
+			ArrayList<Integer> tmp2 = new ArrayList<Integer>();
 			
 			courseChoices.put(i+1, tmp);
 			boolean flag[]=new boolean[noc];
@@ -82,14 +83,11 @@ public class CRSAdminMenu {
 					}
 				}
 				courseChoices.get(i+1).add(course.get(x));
-				//tmp2.add(x+4);
+				tmp2.add(x+4);
 			}
 			//AdminDaoOperation admindao = new AdminDaoOperation();
 			//admindao.addStudentCourseChoices(i+1, tmp2);
 		}
-		StudentImplementation.updateStudentData(student);
-		CourseImplementation.updateCourseData(course);
-		StudentImplementation.updateCourseChoices(courseChoices);
 		System.out.println("\n----------------!!Welcome Admin!!----------------\n");
 		System.out.println("Choose which operation you want to perform:-");
 		System.out.println("\t1 : Add Course\n\t2 : Delete Course\n\t3 : Update Course\n\t4 : Activate Grade Card");
@@ -106,10 +104,7 @@ public class CRSAdminMenu {
 			switch(choice)
 			{
 				case 1: {
-							Course newCourse = new Course();
-							System.out.print("Enter CourseId: ");
-							newCourse.setCourseId(scanner.nextInt());
-							
+							Course newCourse = new Course();							
 							System.out.print("Enter course name: ");
 							newCourse.setName(scanner.next());
 							
@@ -133,17 +128,24 @@ public class CRSAdminMenu {
 				case 3: {
 							
 							Course newCourse1 = new Course();
-							System.out.print("Enter new CourseId: ");
+							System.out.print("Enter Course Id: ");
 							newCourse1.setCourseId(scanner.nextInt());
-							
+							System.out.println("Note: Enter NA if you want to keep the details same.");
+							String s;
 							System.out.print("Enter new course name: ");
-							newCourse1.setName(scanner.next());
+							s = scanner.next();
+							if(!s.equals("NA"))
+								newCourse1.setName(s);
 							
 							System.out.print("Enter new offered Semester: ");
-							newCourse1.setOfferedSemester(scanner.nextInt());
+							s = scanner.next();
+							if(!s.equals("NA"))
+								newCourse1.setOfferedSemester(Integer.parseInt(s));
 							
 							System.out.print("Enter new Professor Id: ");
-							newCourse1.setProfessorId(scanner.nextInt());
+							s = scanner.next();
+							if(!s.equals("NA"))
+								newCourse1.setProfessorId(Integer.parseInt(s));
 							
 							courseImplementation.updateCourse(newCourse1);
 							
@@ -168,18 +170,15 @@ public class CRSAdminMenu {
 							System.out.print("Enter address: ");
 							String address = scanner.next();
 							professor.setAddress(address);
-							System.out.print("Enter gender: ");
+							System.out.print("Enter gender('MALE'/'FEMALE'/'OTHERS'): ");
 							String gender = scanner.next();	//Input MALE / FEMALE / OTHER all in capitals
 							professor.setGender(Gender.valueOf(gender));
 							System.out.print("Enter contact number: ");
 							String contactNo = scanner.next();
 							professor.setContactNo(contactNo);
-//							System.out.print("Enter designation: ");		//this is not role , role will always be professor , this is designation
-//							String designation = scanner.next();
-//							professor.setDesignation(Designation.valueOf(designation));			//Designation enum is not yet implemented , so uncomment it after imiplementation
-							System.out.print("Enter ProfessorId: ");
-							int ProfessorId = scanner.nextInt();
-							professor.setProfessorId(ProfessorId);
+							System.out.print("Enter designation('ASSOCIATE'/'ASSISTANT'/'PROFESSOR'): ");		//this is not role , role will always be professor , this is designation
+							String designation = scanner.next();
+							professor.setDesignation(Designation.valueOf(designation)); //Designation enum is not yet implemented , so uncomment it after imiplementation
 							String response = admin.addProfessor(professor);
 							System.out.println(response);
 							break;
@@ -242,15 +241,6 @@ public class CRSAdminMenu {
 						}
 				case 12: {    
 							admin.allocatePendingCourses();
-							Map<Integer,ArrayList<Integer>> registeredCourseChoices = StudentImplementation.viewRegisteredCourseChoices();
-							System.out.println("Student Id\t\tCourse Ids");
-							for(Map.Entry<Integer, ArrayList<Integer>> entry: registeredCourseChoices.entrySet())
-							{
-								System.out.print(entry.getKey()+"\t\t\t");
-								for(Integer tmp: entry.getValue())
-									System.out.print(tmp + ", ");
-								System.out.println("");
-							}
 							break;
 						}
 				case 13: {

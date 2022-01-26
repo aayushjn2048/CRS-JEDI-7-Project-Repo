@@ -34,11 +34,6 @@ public class StudentImplementation implements StudentInterface{
 
 	private StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
 	
-	private static ArrayList<Student> studentData = new ArrayList<Student>();
-	private static Map<Integer,ArrayList<Course>> courseChoices = new HashMap<>();
-	private static ArrayList<StudentRegisteredCourses> registeredCoursesData = new ArrayList<StudentRegisteredCourses>();
-	private static Map<Integer,ArrayList<Integer>> registeredCourseChoices = new HashMap<>();
-	
 	
 	public void addStudentdata(Student student) {
 		StudentDaoInterface studentDaoOperation = new StudentDaoOperation();
@@ -46,17 +41,7 @@ public class StudentImplementation implements StudentInterface{
 			System.out.println("student is added");
 		}
 	}
-	
-	public static Map<Integer,ArrayList<Integer>> viewRegisteredCourseChoices()
-	{
-		return registeredCourseChoices;
-	}
-	
-	public static void updateRegisteredCourseChoices(Map<Integer,ArrayList<Integer>> data)
-	{
-		registeredCourseChoices = data;
-	}
-	
+
 	public Student viewStudentDetails(int studentId)
 	{
 		return studentDaoImplementation.viewStudentDetails(studentId);
@@ -65,41 +50,40 @@ public class StudentImplementation implements StudentInterface{
 	{
 		return studentDaoImplementation.viewAllStudents();
 	}
-	public static void updateStudentData(ArrayList<Student> studentList)
-	{
-		studentData = studentList;
+	
+	@Override
+	public void displayCourseCatalog() {
+		adminImplementation.viewAllCourses();
+		// TODO Auto-generated method stub
+		
 	}
-	public static ArrayList<Course> viewCourseChoicesForStudent(int studentId)
-	{
-		return courseChoices.get(studentId);
-	}
-	public static Map<Integer,ArrayList<Course>> viewAllCourseChoices()
-	{
-		return courseChoices;
-	}
-	public static void updateCourseChoices(Map<Integer,ArrayList<Course>> choiceList)
-	{
-		courseChoices = choiceList;
-	}
-	public static ArrayList<StudentRegisteredCourses> viewRegisteredCourses()
-	{
-		return registeredCoursesData;
-	}
-	public static void updateRegisteredCourses(ArrayList<StudentRegisteredCourses> newList)
-	{
-		registeredCoursesData = newList;
-	}
-	public void activateGradeCard(){
-		try {
-			studentDaoImplementation.activateGradeCard();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+	@Override
+	public void displayGradeCard(int studentId) {
+		// TODO Auto-generated method stub
+		
+		StudentRegisteredCourses studentRegisteredCourses = courseDaoImplementation.getStudentRegisteredCourses(studentId);
+		
+		GradeCard gradeCard = gradeCardOperation.getGradeCard(studentId);
+		int grade1 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId1());
+		int grade2 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId2());
+		int grade3 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId3());
+		int grade4 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId4());
+		
+		if(gradeCard.isPublished())
+		{
+			System.out.println("Student Id: "+ gradeCard.getStudentId());
+			System.out.println("Semester: "+ gradeCard.getSemester());
+			System.out.println("SGPA: "+ gradeCard.getSgpa());
+			System.out.println("Course-1: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId1()) +" Grade:" + grade1);
+			System.out.println("Course-2: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId2()) +" Grade:" + grade1);
+			System.out.println("Course-3: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId3()) +" Grade:" + grade1);
+			System.out.println("Course-4: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId4()) +" Grade:" + grade1);
 		}
-	}
-	public static void deactivateGradeCard(){
-		for(int i =0; i<studentData.size(); i++){
-			studentData.get(i).setGradeCardVisibility(false);
+		else
+		{
+			System.out.println("Grade card is yet not published.");
 		}
+		
 	}
 }

@@ -19,7 +19,7 @@ public interface AdminDaoInterface {
 	
 	public Boolean addCourse(Course course);
 	public Boolean deleteCourse(int courseId);
-	public Boolean updateCourse(Course courseOld,Course courseNew);
+	public Boolean updateCourse(Course course);
 	public Boolean addProfessor(Professor professor);
 	public Boolean removeProfessor(int professorId);
 	public Boolean updateProfessor(Professor professorOld,Professor professorNew);
@@ -28,6 +28,6 @@ public interface AdminDaoInterface {
 	public ArrayList<Course> getAllCourseDetails();
 	public Map<Integer,ArrayList<Course>> getAllCourseChoices();
 	public void viewAllProfessor();
-	public void viewAllCourses();
+	public ArrayList<Course> viewAllCourses();
 	public boolean studentSelfRegistration(int studentId);
 }

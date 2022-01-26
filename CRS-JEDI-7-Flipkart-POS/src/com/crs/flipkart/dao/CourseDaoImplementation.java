@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.bean.StudentRegisteredCourses;
 
 /**
  * @author HP
@@ -77,4 +78,16 @@ public class CourseDaoImplementation implements CourseDaoInterface{
             se.printStackTrace();
         }
     }
+
+	@Override
+	public StudentRegisteredCourses getStudentRegisteredCourses(int studentId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Course getCourseFromCourseId(int courseId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

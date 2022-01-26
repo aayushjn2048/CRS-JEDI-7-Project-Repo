@@ -75,16 +75,37 @@ public class AdminDaoOperation implements AdminDaoInterface {
 
 	@Override
 	//Considers the fact that courseId cannot be changed
-	public Boolean updateCourse(Course courseOld,Course courseNew) {
+	public Boolean updateCourse(Course course) {
 		// TODO Auto-generated method stub
 		try {
 			PreparedStatement stmt = null;
-			String sql = "UPDATE courseCatalog SET name = ? , offeredSemester = ? , professorId = ? WHERE courseId = ?";
+			String sql = "UPDATE courseCatalog SET ";
+			if(course.getName()!=null)
+				sql += " name = ?,";
+			if(course.getOfferedSemester()!=-1)
+				sql += " offeredSemester = ?,";
+			if(course.getProfessorId() !=-1)
+				sql += " professorId = ?,";
+			sql = sql.substring(0, sql.length() - 1);
+			sql += " WHERE courseId = ?;";
 			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, courseNew.getName());
-			stmt.setInt(2, courseNew.getOfferedSemester());
-			stmt.setInt(3, courseNew.getProfessorId());
-			stmt.setInt(4, courseOld.getCourseId());
+			int count = 1;
+			if(course.getName()!=null)
+			{
+				stmt.setString(count, course.getName());
+				count++;
+			}
+			if(course.getOfferedSemester()!=-1)
+			{
+				stmt.setInt(count, course.getOfferedSemester());
+				count++;
+			}
+			if(course.getProfessorId() !=-1)
+			{
+				stmt.setInt(count, course.getProfessorId());
+				count++;
+			}
+			stmt.setInt(count, course.getCourseId());
 			int rs = stmt.executeUpdate();
 			if (rs == 0)
 				return false;
@@ -125,25 +146,28 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	}
 
 	@Override
-	public void viewAllCourses() {
+	public ArrayList<Course> viewAllCourses() {
 		
 		try {
-			 
+			ArrayList<Course> clist = new ArrayList<Course>();
 			PreparedStatement stmt = null;
 			String sql = "SELECT * FROM courseCatalog";
 			stmt = conn.prepareStatement(sql);
 			 ResultSet rs = stmt.executeQuery(sql);
 			 while(rs.next()){
 		            //Display values
-		            System.out.print("CourseId: " + rs.getInt("courseId")+" ");
-		            System.out.print("Course Name: " + rs.getString("name"));
-		            System.out.println("\n");
+				 	Course c = new Course();
+				 	c.setCourseId(rs.getInt("courseId"));
+				 	c.setName(rs.getString("name"));
+				 	c.setProfessorId(rs.getInt("professorId"));
+				 	clist.add(c);
 		         }
+			 return clist;
 			}
 			catch(Exception e){
 				
 			}
-		
+		return null;
 	}
 	
 	@Override
@@ -179,6 +203,17 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		PreparedStatement stmt = null;
 		// As per current schema this whole query is supposed to be run as a Transaction , but right now there are no concurrent queries so left it simple.
 		try {
+			{
+				String sql = "SELECT * FROM user WHERE username = ?";
+				stmt = conn.prepareStatement(sql);
+				stmt.setString(1,professor.getUsername());
+				ResultSet rs = stmt.executeQuery();
+				while(rs.next())
+				{
+					System.out.println("Username already Taken");
+					return false;
+				}
+			}
 			String sql = "INSERT INTO user(username,password,name,address,gender,contactNo,role) values(?,?,?,?,?,?,?)";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, professor.getUsername());
@@ -236,7 +271,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,profId);
 			//stmt.setString(2, professor.getDesignation().toString());
-			stmt.setString(2,"Associate Professor");	//for now the value is hardcoded , change it once Designation enum is implemented
+			stmt.setString(2,professor.getDesignation().toString());	//for now the value is hardcoded , change it once Designation enum is implemented
 			int rs = stmt.executeUpdate();
 			if (rs == 0)
 				return false;
@@ -264,6 +299,12 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, professorId);		
 			int rs = stmt.executeUpdate();
+			if (rs == 0)
+				return false;
+			sql = "DELETE FROM user WHERE userId = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, professorId);		
+			rs = stmt.executeUpdate();
 			if (rs == 0)
 				return false;
 			return true;

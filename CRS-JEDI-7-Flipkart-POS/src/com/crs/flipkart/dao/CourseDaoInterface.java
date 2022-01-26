@@ -4,6 +4,7 @@
 package com.crs.flipkart.dao;
 
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.bean.StudentRegisteredCourses;
 
 /**
  * @author HP
@@ -15,4 +16,8 @@ public interface CourseDaoInterface {
     public void deleteCourse(int courseId);
 
     public void updateCourse(Course course);
+    
+    public StudentRegisteredCourses getStudentRegisteredCourses(int studentId);
+    
+    public Course getCourseFromCourseId(int courseId);
 }

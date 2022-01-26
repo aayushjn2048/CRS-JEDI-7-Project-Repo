@@ -18,6 +18,11 @@ public class AuthorizationService {
 			role = Role.ADMIN;
 			return role;
 		}
+		if(username.equals("professor") &&password.equals("password"))
+		{
+			role = Role.PROFESSOR;
+			return role;
+		}
 		else
 			return null;
 	}

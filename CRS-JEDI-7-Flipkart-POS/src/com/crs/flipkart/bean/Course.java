@@ -9,9 +9,9 @@ package com.crs.flipkart.bean;
  */
 public class Course {
 	private int courseId;
-	private String name;
-	private int professorId;
-	private int offeredSemester;
+	private String name = null;
+	private int professorId = -1;
+	private int offeredSemester = -1;
 	/**
 	 * @return the courseId
 	 */

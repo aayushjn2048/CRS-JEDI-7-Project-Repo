@@ -6,6 +6,10 @@ package com.crs.flipkart.business;
 import java.util.ArrayList;
 
 import com.crs.flipkart.bean.Professor;
+import com.crs.flipkart.dao.AdminDaoInterface;
+import com.crs.flipkart.dao.AdminDaoOperation;
+import com.crs.flipkart.dao.ProfessorDaoInterface;
+import com.crs.flipkart.dao.ProfessorDaoOperation;
 
 /**
  * @author HP
@@ -46,4 +50,26 @@ public class ProfessorImplementation {
 			pos++;
 		}
 	}
+	
+	public void viewAllCourses() {
+		AdminDaoInterface admindaooperation = new AdminDaoOperation();
+		 admindaooperation.viewAllCourses();
+	}
+	
+	public void viewEnrolledStudents(int professorid) {
+		ProfessorDaoInterface professorDaoOperation = new ProfessorDaoOperation();
+		professorDaoOperation.viewEnrolledStudents(professorid);
+	}
+	
+	public boolean selectCourse(int professorId, int courseId) {
+		
+		ProfessorDaoInterface professorDaoOperation = new ProfessorDaoOperation();
+		return professorDaoOperation.selectCourse(professorId,courseId);
+	}
+	
+	public void assignGrade(int studentId, int courseId, int semesterNumber) {
+		ProfessorDaoInterface professorDaoOperation = new ProfessorDaoOperation();
+		professorDaoOperation.assignGrade(studentId,courseId,semesterNumber);
+	}
+	
 }

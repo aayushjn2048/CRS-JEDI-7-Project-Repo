@@ -22,6 +22,8 @@ import com.crs.flipkart.dao.AdminDaoInterface;
 import com.crs.flipkart.dao.AdminDaoOperation;
 import com.crs.flipkart.dao.PaymentsDaoImplementation;
 import com.crs.flipkart.dao.PaymentsDaoInterface;
+import com.crs.flipkart.dao.StudentDaoInterface;
+import com.crs.flipkart.dao.StudentDaoOperation;
 
 /**
  * @author HP
@@ -42,18 +44,25 @@ public class AdminImplementation implements AdminInterface{
 	private StudentInterface studentImplementation = StudentImplementation.getInstance();
 	//Group 1
 	public void activateGradeCard(){
-		studentImplementation.activateGradeCard();
+		StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
+		try {
+			studentDaoImplementation.activateGradeCard();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	
-	public void deactivateGradeCard(){
-		StudentImplementation.deactivateGradeCard();
-	}
+
 
 	//Group 2
 	public String addProfessor(Professor professor) {
 		
-		ProfessorImplementation.addProfessordata(professor);
-		return "Professor is succesfully created";
+		//ProfessorImplementation.addProfessor data(professor);
+		AdminDaoInterface admin = new AdminDaoOperation();
+		if(admin.addProfessor(professor))
+			return "Professor is successfully created";
+		else
+			return "Professor is not created";
 	}
 	
 	public String removeProfessor(int professorId) {
@@ -96,13 +105,21 @@ public class AdminImplementation implements AdminInterface{
 	}
 	public void viewAllCourses(){
 		 AdminDaoInterface admindaooperation = new AdminDaoOperation();
-		 admindaooperation.viewAllCourses();
+		 ArrayList<Course> clist = admindaooperation.viewAllCourses();
+		 System.out.println("Serial No\tCourse Id\tCourse Name");
+		 int count = 1;
+		 for(Course c : clist)
+		 {
+			 System.out.println(count+"\t\t"+c.getCourseId()+"\t\t"+c.getName());
+			 count++;
+		 }
 	}
 
 	public void allocatePendingCourses(){
 		//Contains number of request made by students for particular course 
 		ArrayList<StudentRegisteredCourses> registeredCourses = new ArrayList<StudentRegisteredCourses>();
-		Map<Integer,ArrayList<Course>> data = StudentImplementation.viewAllCourseChoices();
+		AdminDaoInterface admindao = new AdminDaoOperation();
+		Map<Integer,ArrayList<Course>> data = admindao.getAllCourseChoices();
 		Map<Integer,Integer> courseChoices = new HashMap<>();
 		Map<Integer,Integer> studentRegisteredCourseNos = new HashMap<>();
 		for(Map.Entry<Integer,ArrayList<Course>> entry: data.entrySet())
@@ -139,7 +156,7 @@ public class AdminImplementation implements AdminInterface{
 						if(tmp.get(j).getCourseId()==entry.getKey())
 						{
 							flag = true;
-							src.setCourseId(entry.getKey());
+							src.setCourseId1(entry.getKey());
 							src.setStudentId(entry2.getKey());
 							break;
 						}
@@ -181,11 +198,11 @@ public class AdminImplementation implements AdminInterface{
 		for(int i=0;i<registeredData.size();i++)
 		{
 			if(studentRegisteredCoursesNos.containsKey(registeredData.get(i).getStudentId()))
-				studentRegisteredCoursesNos.get(registeredData.get(i).getStudentId()).add(registeredData.get(i).getCourseId());
+				studentRegisteredCoursesNos.get(registeredData.get(i).getStudentId()).add(registeredData.get(i).getCourseId1());
 			else
 			{
 				ArrayList<Integer> tmp = new ArrayList<Integer>();
-				tmp.add(registeredData.get(i).getCourseId());
+				tmp.add(registeredData.get(i).getCourseId1());
 				studentRegisteredCoursesNos.put(registeredData.get(i).getStudentId(), tmp);
 			}
 		}
@@ -206,7 +223,8 @@ public class AdminImplementation implements AdminInterface{
 		}
 		for(int i=0;i<registeredData.size();i++)
 		{
-			pendingCourseChoices.put(registeredData.get(i).getCourseId(), pendingCourseChoices.get(registeredData.get(i).getCourseId())-1);
+			if(pendingCourseChoices.containsKey(registeredData.get(i).getCourseId1()))
+				pendingCourseChoices.put(registeredData.get(i).getCourseId1(), pendingCourseChoices.get(registeredData.get(i).getCourseId1())-1);
 		}
 		
 		ArrayList<Pair> tmp2 = new ArrayList<Pair>();
@@ -240,7 +258,7 @@ public class AdminImplementation implements AdminInterface{
 				if(topCoursesId.contains(tmp.get(i).getCourseId()))
 				{
 					StudentRegisteredCourses newCourse = new StudentRegisteredCourses();
-					newCourse.setCourseId(tmp.get(i).getCourseId());
+					newCourse.setCourseId1(tmp.get(i).getCourseId());
 					newCourse.setStudentId(entry.getKey());
 					registeredData.add(newCourse);
 					if(studentRegisteredCoursesNos.containsKey(entry.getKey()))
@@ -266,7 +284,7 @@ public class AdminImplementation implements AdminInterface{
 					if(!entry.getValue().contains(topCoursesId.get(i)))
 					{
 						StudentRegisteredCourses newCourse = new StudentRegisteredCourses();
-						newCourse.setCourseId(topCoursesId.get(i));
+						newCourse.setCourseId1(topCoursesId.get(i));
 						newCourse.setStudentId(entry.getKey());
 						registeredData.add(newCourse);
 						studentRegisteredCoursesNos.get(entry.getKey()).add(topCoursesId.get(i));
@@ -276,23 +294,19 @@ public class AdminImplementation implements AdminInterface{
 					break;
 			}
 		}
-		StudentImplementation.updateRegisteredCourses(registeredData);
 		Map<Integer,ArrayList<Integer>> registeredCourseChoices = new HashMap<>();
 		for(StudentRegisteredCourses sc: registeredData)
 		{
 			if(registeredCourseChoices.containsKey(sc.getStudentId()))
-				registeredCourseChoices.get(sc.getStudentId()).add(sc.getCourseId());
+				registeredCourseChoices.get(sc.getStudentId()).add(sc.getCourseId1());
 			else
 			{
 				ArrayList<Integer> tmp = new ArrayList<Integer>();
-				tmp.add(sc.getCourseId());
+				tmp.add(sc.getCourseId1());
 				registeredCourseChoices.put(sc.getStudentId(), tmp);
 			}
 		}
-		AdminDaoInterface admindao = new AdminDaoOperation();
 		admindao.updateAllocatedStudentCourses(registeredCourseChoices);
-		StudentImplementation.updateRegisteredCourseChoices(registeredCourseChoices);
-		
 	}
 	public Challan generateChallan(SemesterRegistration semesterRegistration) {
 		int fee = semesterRegistration.getTotalFee();
@@ -315,4 +329,5 @@ public class AdminImplementation implements AdminInterface{
 		paymentReference.setReferenceNo(paymentReferenceNumber);
 		return paymentReference;
 	}
+
 }

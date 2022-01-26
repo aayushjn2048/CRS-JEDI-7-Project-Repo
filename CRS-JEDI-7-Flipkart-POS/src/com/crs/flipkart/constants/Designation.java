@@ -8,5 +8,5 @@ package com.crs.flipkart.constants;
  *
  */
 public enum Designation {
-
+	ASSOCIATE, ASSISTANT, PROFESSOR
 }
