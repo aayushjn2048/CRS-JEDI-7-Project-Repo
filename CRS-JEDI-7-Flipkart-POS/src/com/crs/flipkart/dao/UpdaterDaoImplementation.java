@@ -17,7 +17,6 @@ public class UpdaterDaoImplementation {
 
     Connection conn = DBConnection.connectDB();
 
-    @Override
     public Boolean update(String username,String oldPassword,String newPassword) {
         PreparedStatement stmt = null;
 
@@ -28,8 +27,13 @@ public class UpdaterDaoImplementation {
                 stmt = conn.prepareStatement(sql);
                 stmt.setString(1, username);
                 ResultSet rs = stmt.executeQuery();
+                boolean ok = false;
                 while (rs.next()) {
-                    System.out.println("Username already Taken");
+                    ok = true;
+                    System.out.println("Username exists");
+                }
+                if(!ok){
+                    System.out.println("Username Doesn't exist !");
                     return false;
                 }
             }
@@ -53,11 +57,7 @@ public class UpdaterDaoImplementation {
                 stmt = conn.prepareStatement(sql);
                 stmt.setString(1, newPassword);
                 stmt.setString(2, username);
-                int rs = stmt.executeQuery();
-                if (rs == 0) {
-                    System.out.println("Some error occured");
-                    return false;
-                }
+                int sz = stmt.executeUpdate();
             }
             return true;
 
