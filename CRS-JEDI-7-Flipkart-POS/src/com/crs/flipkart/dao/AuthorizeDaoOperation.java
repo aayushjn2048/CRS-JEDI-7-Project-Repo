@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import com.crs.flipkart.application.CRSApplication;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.constants.Role;
+import com.crs.flipkart.utils.DBUtils;
 
 /**
  * @author HP
@@ -19,7 +20,7 @@ import com.crs.flipkart.constants.Role;
  */
 public class AuthorizeDaoOperation implements AuthorizeDaoInterface{
 
-	private Connection conn = DBConnection.connectDB();
+	private Connection conn = DBUtils.getConnection();
 	@Override
 	public Role authorizeUser(String username, String password) {
 		try {

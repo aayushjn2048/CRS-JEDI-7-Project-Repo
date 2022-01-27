@@ -5,6 +5,7 @@ package com.crs.flipkart.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.crs.flipkart.bean.Course;
@@ -78,16 +79,54 @@ public class CourseDaoImplementation implements CourseDaoInterface{
             se.printStackTrace();
         }
     }
+    
 
-	@Override
-	public StudentRegisteredCourses getStudentRegisteredCourses(int studentId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+   	public StudentRegisteredCourses getStudentRegisteredCourses(int studentId) {
+   		// TODO Auto-generated method stub
+   		try {
+               PreparedStatement stmt = null;
+               String sql = "select * from studentRegisteredDetails where studentId = ?";
+               stmt = conn.prepareStatement(sql);
+               stmt.setInt(1, studentId);
+               ResultSet rs = stmt.executeQuery();
+               StudentRegisteredCourses registeredCourses=new StudentRegisteredCourses();
+               while(rs.next())
+               {
+               	registeredCourses.setStudentId(rs.getInt("studentId"));
+               	registeredCourses.setCourseId1(rs.getInt("courseId1"));
+               	registeredCourses.setCourseId2(rs.getInt("courseId2"));
+               	registeredCourses.setCourseId3(rs.getInt("courseId3"));
+               	registeredCourses.setCourseId4(rs.getInt("courseId4"));
+               }
+               return registeredCourses;
+           } catch (Exception se) {
+               // Handle errors for JDBC
+               se.printStackTrace();
+           }
+   		return null;
+   	}
 
-	@Override
-	public Course getCourseFromCourseId(int courseId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+   	@Override
+   	public Course getCourseFromCourseId(int courseId) {
+           try {
+               PreparedStatement stmt = null;
+               String sql = "SELETC * from course where courseId = ?";
+               stmt = conn.prepareStatement(sql);
+               stmt.setInt(1, courseId);
+               ResultSet rs = stmt.executeQuery(sql);
+               while(rs.next()){
+                   Course c = new Course();
+                   c.setCourseId(rs.getInt("courseId"));
+                   c.setName(rs.getString("name"));
+                   c.setProfessorId(rs.getInt("professorId"));
+                   c.setCourseFee(rs.getInt("courseFee"));
+                   return c;
+               }
+           } catch (Exception se) {
+               // Handle errors for JDBC
+               se.printStackTrace();
+           }
+           return null;
+   	}
 }

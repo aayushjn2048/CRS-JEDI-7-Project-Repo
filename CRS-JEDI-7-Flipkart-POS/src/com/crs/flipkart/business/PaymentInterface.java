@@ -8,5 +8,5 @@ package com.crs.flipkart.business;
  *
  */
 public interface PaymentInterface {
-	
+	public int calculateFees(int studentId);
 }

@@ -11,7 +11,19 @@ public class Course {
 	private int courseId;
 	private String name = null;
 	private int professorId = -1;
-	private int offeredSemester = -1;
+	private int courseFee;
+	/**
+	 * @return the courseFee
+	 */
+	public int getCourseFee() {
+		return courseFee;
+	}
+	/**
+	 * @param courseFee the courseFee to set
+	 */
+	public void setCourseFee(int courseFee) {
+		this.courseFee = courseFee;
+	}
 	/**
 	 * @return the courseId
 	 */
