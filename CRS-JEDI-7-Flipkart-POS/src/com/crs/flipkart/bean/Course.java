@@ -63,13 +63,4 @@ public class Course {
 	/**
 	 * @return the offeredSemester
 	 */
-	public int getOfferedSemester() {
-		return offeredSemester;
-	}
-	/**
-	 * @param offeredSemester the offeredSemester to set
-	 */
-	public void setOfferedSemester(int offeredSemester) {
-		this.offeredSemester = offeredSemester;
-	}
 }

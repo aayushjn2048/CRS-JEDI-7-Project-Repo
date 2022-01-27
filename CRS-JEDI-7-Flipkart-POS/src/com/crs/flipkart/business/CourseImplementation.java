@@ -55,7 +55,7 @@ public class CourseImplementation implements CourseInterface{
 	@Override
 	public ArrayList<Course> getAllCourses() {
 		// TODO Auto-generated method stub
-		return null;
+		return courseDaoImplementation.getAllCourse();
 	}
 
 	@Override

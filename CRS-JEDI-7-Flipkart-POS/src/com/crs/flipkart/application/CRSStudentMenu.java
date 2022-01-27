@@ -7,12 +7,14 @@ import java.util.Scanner;
 
 import com.crs.flipkart.business.ProfessorImplementation;
 import com.crs.flipkart.business.StudentImplementation;
+import com.crs.flipkart.business.StudentInterface;
 
 /**
  * @author HP
  *
  */
 public class CRSStudentMenu {
+	private StudentInterface studntImplementation = StudentImplementation.getInstance();
 	public void studentMenuMain() {
 		System.out.println("\n------------------!!Welcome Student!!-------------------\n");
 		System.out.println("Choose an option:-");
@@ -38,10 +40,20 @@ public class CRSStudentMenu {
 				}
 				case 2: {
 					//Semester Registration
+					System.out.println("Please Enter email");
+					String email = scanner.next();
+					System.out.println("Please Enter contact email");
+					String contaccNo = scanner.next();
+					
+					studentImplementation.selectCourses(CRSApplication.getUserId());
+					
+					
 					break;
 				}
 				case 3:{
-					//Select Courses
+					//Payement
+					
+					
 					break;
 				}
 				case 4:{

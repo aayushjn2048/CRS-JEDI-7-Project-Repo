@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class DBConnection {
 	
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";  
-	   static final String DB_URL = "jdbc:mysql://crs-database.ca10tiiqurow.ap-south-1.rds.amazonaws.com/CRS";
+	   static final String DB_URL = "jdbc:mysql://crs-database.ca10tiiqurow.ap-south-1.rds.amazonaws.com/CRS-Flipkart";
 
 	   //  Database credentials
 	   static final String USER = "ce";

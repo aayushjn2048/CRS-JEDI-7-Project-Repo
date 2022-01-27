@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
@@ -35,10 +36,9 @@ public class CourseDaoImplementation implements CourseDaoInterface{
     public void addCourse(Course course) {
         try {
             PreparedStatement stmt = null;
-            String sql = "INSERT INTO courseCatalog(name,offeredSemester) values(?,?)";
+            String sql = "INSERT INTO courseCatalog(name) values(?)";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, course.getName());
-            stmt.setInt(2, course.getOfferedSemester());
             int rs = stmt.executeUpdate();
         } catch (SQLException se) {
             // Handle errors for JDBC
@@ -68,11 +68,10 @@ public class CourseDaoImplementation implements CourseDaoInterface{
     public void updateCourse(Course course) {
         try {
             PreparedStatement stmt = null;
-            String sql = "UPDATE courseCatalog set name=?, offeredSemester=? where courseId = ?";
+            String sql = "UPDATE courseCatalog set name=? where courseId = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, course.getName());
-            stmt.setInt(2, course.getOfferedSemester());
-            stmt.setInt(3, course.getCourseId());
+            stmt.setInt(2, course.getCourseId());
             int rs = stmt.executeUpdate();
         } catch (Exception se) {
             // Handle errors for JDBC
@@ -129,4 +128,30 @@ public class CourseDaoImplementation implements CourseDaoInterface{
            }
            return null;
    	}
+
+	@Override
+	public ArrayList<Course> getAllCourse() {
+		// TODO Auto-generated method stub
+		try {
+			ArrayList<Course> clist = new ArrayList<Course>();
+			PreparedStatement stmt = null;
+			String sql = "SELECT * FROM course";
+			stmt = conn.prepareStatement(sql);
+			 ResultSet rs = stmt.executeQuery(sql);
+			 while(rs.next()){
+		            //Display values
+				 	Course c = new Course();
+				 	c.setCourseId(rs.getInt("courseId"));
+				 	c.setName(rs.getString("name"));
+				 	c.setProfessorId(rs.getInt("professorId"));
+				 	c.setCourseFee(rs.getInt("courseFee"));
+				 	clist.add(c);
+		         }
+			 return clist;
+			}
+			catch(Exception e){
+				
+			}
+		return null;
+	}
 }

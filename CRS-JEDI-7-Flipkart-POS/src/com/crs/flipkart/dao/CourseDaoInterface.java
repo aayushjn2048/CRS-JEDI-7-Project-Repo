@@ -3,6 +3,8 @@
  */
 package com.crs.flipkart.dao;
 
+import java.util.ArrayList;
+
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
 
@@ -20,4 +22,6 @@ public interface CourseDaoInterface {
     public StudentRegisteredCourses getStudentRegisteredCourses(int studentId);
     
     public Course getCourseFromCourseId(int courseId);
+    
+    public ArrayList<Course> getAllCourse();
 }

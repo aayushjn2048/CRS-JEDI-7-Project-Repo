@@ -6,6 +6,7 @@ package com.crs.flipkart.business;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.GradeCard;
@@ -100,6 +101,31 @@ public class StudentImplementation implements StudentInterface{
 	@Override
 	public StudentCourseChoice selectCourses(int studentId) {
 		// TODO Auto-generated method stub
-		return null;
+		System.out.println("Please select your courses (4 Primary + 2 Alternate):");
+		displayCourseCatalog();
+		Scanner sc = new Scanner(System.in);
+		ArrayList<Course> selectedCourses = new ArrayList<Course>();
+		ArrayList<Course> courseCatalog = courseImplementation.getAllCourses();
+		
+		for(int i=1; i<=6; )
+		{
+			System.out.println("Enter course choice-"+i);
+			int courseId = sc.nextInt();
+			Course course = courseImplementation.getCourseFromCatalog(courseId);
+			if(course != null)
+			{
+				i++;
+				selectedCourses.add(course);
+			}
+			else
+			{
+				System.out.println("Course not found!!");
+			}
+			
+		}
+		
+		StudentCourseChoice studentCourseChoice = new StudentCourseChoice();
+		studentCourseChoice.setCourses(selectedCourses);
+		return studentCourseChoice;
 	}
 }

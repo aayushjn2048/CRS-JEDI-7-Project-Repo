@@ -29,10 +29,9 @@ public class AdminDaoOperation implements AdminDaoInterface {
 
 		try {
 			PreparedStatement stmt = null;
-			String sql = "INSERT INTO courseCatalog(name,offeredSemester) values(?,?)";
+			String sql = "INSERT INTO courseCatalog(name) values(?)";
 			stmt = conn.prepareStatement(sql);
 			stmt.setString(1, course.getName());
-			stmt.setInt(2, course.getOfferedSemester());
 			int rs = stmt.executeUpdate();
 			if (rs == 0)
 				return false;
@@ -83,8 +82,6 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			String sql = "UPDATE courseCatalog SET ";
 			if(course.getName()!=null)
 				sql += " name = ?,";
-			if(course.getOfferedSemester()!=-1)
-				sql += " offeredSemester = ?,";
 			if(course.getProfessorId() !=-1)
 				sql += " professorId = ?,";
 			sql = sql.substring(0, sql.length() - 1);
@@ -96,11 +93,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 				stmt.setString(count, course.getName());
 				count++;
 			}
-			if(course.getOfferedSemester()!=-1)
-			{
-				stmt.setInt(count, course.getOfferedSemester());
-				count++;
-			}
+			
 			if(course.getProfessorId() !=-1)
 			{
 				stmt.setInt(count, course.getProfessorId());
@@ -152,7 +145,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		try {
 			ArrayList<Course> clist = new ArrayList<Course>();
 			PreparedStatement stmt = null;
-			String sql = "SELECT * FROM courseCatalog";
+			String sql = "SELECT * FROM course";
 			stmt = conn.prepareStatement(sql);
 			 ResultSet rs = stmt.executeQuery(sql);
 			 while(rs.next()){

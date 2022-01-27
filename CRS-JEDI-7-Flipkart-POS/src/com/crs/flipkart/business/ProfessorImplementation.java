@@ -61,7 +61,7 @@ public class ProfessorImplementation {
 		 int count = 1;
 		 for(Course c : clist)
 		 {
-			 System.out.println(count+"\t\t"+c.getCourseId()+"\t\t"+c.getName()+"\t\t"+c.getOfferedSemester());
+			 System.out.println(count+"\t\t"+c.getCourseId()+"\t\t"+c.getName()+"\t\t");
 			 count++;
 		 }
 	}
