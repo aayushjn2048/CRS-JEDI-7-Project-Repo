@@ -12,6 +12,20 @@ public class Course {
 	private String name = null;
 	private int professorId = -1;
 	private int courseFee;
+	private int catalogId;
+
+	/**
+	 * @return the catalogId
+	 */
+	public int getCatalogId() {
+		return catalogId;
+	}
+	/**
+	 * @param catalogId the catalogId to set
+	 */
+	public void setCatalogId(int catalogId) {
+		this.catalogId = catalogId;
+	}
 	/**
 	 * @return the courseFee
 	 */
@@ -63,13 +77,4 @@ public class Course {
 	/**
 	 * @return the offeredSemester
 	 */
-	public int getOfferedSemester() {
-		return offeredSemester;
-	}
-	/**
-	 * @param offeredSemester the offeredSemester to set
-	 */
-	public void setOfferedSemester(int offeredSemester) {
-		this.offeredSemester = offeredSemester;
-	}
 }

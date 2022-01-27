@@ -114,9 +114,6 @@ public class CRSAdminMenu {
 							System.out.print("Enter course name: ");
 							newCourse.setName(scanner.next());
 							
-							System.out.print("Enter Offered Semester: ");
-							newCourse.setOfferedSemester(scanner.nextInt());
-							
 							System.out.print("Enter Professor Id: ");
 							newCourse.setProfessorId(scanner.nextInt());
 							
@@ -142,11 +139,6 @@ public class CRSAdminMenu {
 							s = scanner.next();
 							if(!s.equals("NA"))
 								newCourse1.setName(s);
-							
-							System.out.print("Enter new offered Semester: ");
-							s = scanner.next();
-							if(!s.equals("NA"))
-								newCourse1.setOfferedSemester(Integer.parseInt(s));
 							
 							System.out.print("Enter new Professor Id: ");
 							s = scanner.next();

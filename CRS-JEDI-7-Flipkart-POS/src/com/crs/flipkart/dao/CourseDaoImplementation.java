@@ -35,10 +35,9 @@ public class CourseDaoImplementation implements CourseDaoInterface{
     public void addCourse(Course course) {
         try {
             PreparedStatement stmt = null;
-            String sql = "INSERT INTO courseCatalog(name,offeredSemester) values(?,?)";
+            String sql = "INSERT INTO courseCatalog(name,offeredSemester) values(?)";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, course.getName());
-            stmt.setInt(2, course.getOfferedSemester());
             int rs = stmt.executeUpdate();
         } catch (SQLException se) {
             // Handle errors for JDBC
@@ -68,11 +67,10 @@ public class CourseDaoImplementation implements CourseDaoInterface{
     public void updateCourse(Course course) {
         try {
             PreparedStatement stmt = null;
-            String sql = "UPDATE courseCatalog set name=?, offeredSemester=? where courseId = ?";
+            String sql = "UPDATE courseCatalog set name=? where courseId = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, course.getName());
-            stmt.setInt(2, course.getOfferedSemester());
-            stmt.setInt(3, course.getCourseId());
+            stmt.setInt(2, course.getCourseId());
             int rs = stmt.executeUpdate();
         } catch (Exception se) {
             // Handle errors for JDBC

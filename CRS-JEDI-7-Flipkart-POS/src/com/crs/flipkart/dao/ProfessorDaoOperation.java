@@ -161,7 +161,6 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 				 	Course c = new Course();
 				 	c.setCourseId(rs.getInt("courseId"));
 				 	c.setName(rs.getString("name"));
-				 	c.setOfferedSemester(rs.getInt("offeredSemester"));
 				 	clist.add(c);
 		         }
 			 return clist;
