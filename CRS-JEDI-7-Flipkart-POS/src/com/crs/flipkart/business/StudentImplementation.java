@@ -87,10 +87,10 @@ public class StudentImplementation implements StudentInterface{
 			System.out.println("Student Id: "+ gradeCard.getStudentId());
 			System.out.println("Semester: "+ gradeCard.getSemester());
 			System.out.println("SGPA: "+ gradeCard.getSgpa());
-			System.out.println("Course-1: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId1()) +" Grade:" + grade1);
-			System.out.println("Course-2: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId2()) +" Grade:" + grade1);
-			System.out.println("Course-3: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId3()) +" Grade:" + grade1);
-			System.out.println("Course-4: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId4()) +" Grade:" + grade1);
+			System.out.println("Course-1: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId1()).getName() +"\t: Grade:" + grade1);
+			System.out.println("Course-2: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId2()).getName()+"\t: Grade:" + grade2);
+			System.out.println("Course-3: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId3()).getName() +"\t: Grade:" + grade3);
+			System.out.println("Course-4: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId4()).getName() +"\t: Grade:" + grade4);
 		}
 		else
 		{

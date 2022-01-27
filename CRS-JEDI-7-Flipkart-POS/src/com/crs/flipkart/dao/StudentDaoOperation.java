@@ -104,7 +104,7 @@ public class StudentDaoOperation implements StudentDaoInterface {
     public Student viewStudentDetails(int studentId) {
         try {
             PreparedStatement stmt = null;
-            String sql = "select * from student where studentId = ?";
+            String sql = "select * from student where studentId=?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, studentId);
             ResultSet rs = stmt.executeQuery();
@@ -116,7 +116,7 @@ public class StudentDaoOperation implements StudentDaoInterface {
                 student.setAddress(rs.getNString("address"));
                 student.setGender(Gender.stringToGender(rs.getNString("gender")));
                 student.setContactNo(rs.getNString("contactNo"));
-                System.out.println(student.getStudentId()+" "+student.getName()+" "+student.getAddress()+" "+student.getGender()+" "+student.getGradeCardVisibility());
+//                System.out.println(student.getStudentId()+" "+student.getName()+" "+student.getAddress()+" "+student.getGender()+" "+student.getGradeCardVisibility());
             }
             return student;
 

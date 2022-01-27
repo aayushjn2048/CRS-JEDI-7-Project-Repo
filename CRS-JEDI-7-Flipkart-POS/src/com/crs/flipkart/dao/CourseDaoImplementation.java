@@ -111,10 +111,10 @@ public class CourseDaoImplementation implements CourseDaoInterface{
    	public Course getCourseFromCourseId(int courseId) {
            try {
                PreparedStatement stmt = null;
-               String sql = "SELETC * from course where courseId = ?";
+               String sql = "select * from course where courseId = ?";
                stmt = conn.prepareStatement(sql);
                stmt.setInt(1, courseId);
-               ResultSet rs = stmt.executeQuery(sql);
+               ResultSet rs = stmt.executeQuery();
                while(rs.next()){
                    Course c = new Course();
                    c.setCourseId(rs.getInt("courseId"));

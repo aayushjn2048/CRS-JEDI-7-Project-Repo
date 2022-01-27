@@ -110,7 +110,7 @@ public class AdminImplementation implements AdminInterface{
 		 int count = 1;
 		 for(Course c : clist)
 		 {
-			 System.out.println(count+"\t\t"+c.getCourseId()+"\t\t"+c.getName());
+			 System.out.println(count+"\t\t\t\t"+c.getCourseId()+"\t\t"+c.getName());
 			 count++;
 		 }
 	}
