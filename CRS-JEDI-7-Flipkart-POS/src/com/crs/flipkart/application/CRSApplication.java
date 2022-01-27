@@ -63,6 +63,12 @@ public class CRSApplication {
 					  			CRSProfessorMenu professorMenu = new CRSProfessorMenu();
 					  			professorMenu.professorMenuMain();
 					  		}
+					  		else if(role!=null&&role.equals(Role.STUDENT))
+					  		{
+					  			CRSStudentMenu studentMenu = new CRSStudentMenu();
+					  			studentMenu.studentMenuMain();
+					  			return;
+					  		}
 					  		else
 					  			System.out.println("\nWrong credentials!!!\n");
 					  		break;

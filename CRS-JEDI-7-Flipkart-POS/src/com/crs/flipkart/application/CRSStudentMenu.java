@@ -17,7 +17,7 @@ public class CRSStudentMenu {
 		System.out.println("\n------------------!!Welcome Student!!-------------------\n");
 		System.out.println("Choose an option:-");
 		System.out.println("----------------------------------------------------------");
-		System.out.println("\t1 : View Course List\n\t2 : Semester Registration\n\t3 : Choose courses\n\t4 : View Grade Card\\n\\t5 : View Profile\n\t6 : Logout");
+		System.out.println("\t1 : View Course List\n\t2 : Semester Registration\n\t3 : Choose courses\n\t4 : View Grade Card\n\t5 : View Profile\n\t6 : Logout");
 		System.out.println("==========================================================");
 		Scanner scanner = new Scanner(System.in);
 		int studentId = CRSApplication.getUserId();
