@@ -26,7 +26,7 @@ public class UpdaterDaoImplementation {
             {
                 String sql = "SELECT * FROM user WHERE username = ?";
                 stmt = conn.prepareStatement(sql);
-                stmt.setString(1, professor.getUsername());
+                stmt.setString(1, username);
                 ResultSet rs = stmt.executeQuery();
                 while (rs.next()) {
                     System.out.println("Username already Taken");
