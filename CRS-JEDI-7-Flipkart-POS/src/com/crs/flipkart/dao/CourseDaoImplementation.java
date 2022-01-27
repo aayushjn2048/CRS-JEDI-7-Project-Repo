@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
+import com.crs.flipkart.utils.DBUtils;
 
 /**
  * @author HP
@@ -18,7 +19,7 @@ import com.crs.flipkart.bean.StudentRegisteredCourses;
  */
 public class CourseDaoImplementation implements CourseDaoInterface{
 	private static CourseDaoImplementation instance = null;
-    private Connection conn = DBConnection.connectDB();
+    private Connection conn = DBUtils.getConnection();
 
     private CourseDaoImplementation() {
     }

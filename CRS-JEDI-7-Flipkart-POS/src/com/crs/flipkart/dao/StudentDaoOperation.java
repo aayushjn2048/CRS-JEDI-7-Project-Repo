@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.crs.flipkart.bean.Student;
+import com.crs.flipkart.bean.StudentCourseChoice;
 import com.crs.flipkart.constants.Gender;
 
 /**
@@ -125,4 +126,33 @@ public class StudentDaoOperation implements StudentDaoInterface {
         }
         return null;
     }
+
+	@Override
+	public void storeStudentCourseChoice(StudentCourseChoice studentCourseChoice) {
+		// TODO Auto-generated method stub
+		try {
+			PreparedStatement stmt = null;
+			String sql = "INSERT INTO registrationDetails(studentId,courseId1,courseId2,courseId3,courseId4,courseId5,courseId6) values(?,?,?,?,?,?,?)";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, studentCourseChoice.getStudentId());
+			stmt.setInt(2, studentCourseChoice.getCourses().get(0).getCourseId());
+			stmt.setInt(3, studentCourseChoice.getCourses().get(1).getCourseId());
+			stmt.setInt(4, studentCourseChoice.getCourses().get(2).getCourseId());
+			stmt.setInt(5, studentCourseChoice.getCourses().get(3).getCourseId());
+			stmt.setInt(6, studentCourseChoice.getCourses().get(4).getCourseId());
+			stmt.setInt(7, studentCourseChoice.getCourses().get(5).getCourseId());
+			
+			int rs = stmt.executeUpdate();
+		
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources // nothing we can do//end finally try
+		}
+		
+	}
 }

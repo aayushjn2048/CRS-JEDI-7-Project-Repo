@@ -20,12 +20,17 @@ public class DBConnection {
 	   //  Database credentials
 	   static final String USER = "ce";
 	   static final String PASS = "Crs12345#";
-	   
+	   private static Connection conn = null;
 	   public static Connection connectDB() {
+		   
 			
 			// Step 2 
-			// Declare the Coneection or prepaidstatement variable here 
-			   Connection conn = null;
+			// Declare the Coneection or prepaidstatement variable here
+		   
+		   if(conn!=null)
+		   {
+			   return conn;
+		   }
 			   PreparedStatement stmt = null;
 			   
 			   try{

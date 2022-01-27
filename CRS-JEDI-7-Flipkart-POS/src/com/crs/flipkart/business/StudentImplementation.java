@@ -30,6 +30,7 @@ public class StudentImplementation implements StudentInterface{
 	private CourseInterface courseImplementation = CourseImplementation.getInstance();
 	private GradeCardDaoInterface gradeCardOperation = GradeCardDaoOperation.getInstance();
 	private CourseDaoInterface courseDaoImplementation = CourseDaoImplementation.getInstance();
+	private StudentDaoInterface studentDaoOperation = StudentDaoOperation.getInstance();
 
 	public StudentImplementation(){}
 
@@ -101,15 +102,17 @@ public class StudentImplementation implements StudentInterface{
 	@Override
 	public StudentCourseChoice selectCourses(int studentId) {
 		// TODO Auto-generated method stub
-		System.out.println("Please select your courses (4 Primary + 2 Alternate):");
+		System.out.println("Following courses are available");
 		displayCourseCatalog();
+		
+		System.out.println("Please select your courses (4 Primary + 2 Alternate):");
 		Scanner sc = new Scanner(System.in);
 		ArrayList<Course> selectedCourses = new ArrayList<Course>();
 		ArrayList<Course> courseCatalog = courseImplementation.getAllCourses();
 		
 		for(int i=1; i<=6; )
 		{
-			System.out.println("Enter course choice-"+i);
+			System.out.println("Enter course(courseId) choice-"+i+":");
 			int courseId = sc.nextInt();
 			Course course = courseImplementation.getCourseFromCatalog(courseId);
 			if(course != null)
@@ -125,7 +128,12 @@ public class StudentImplementation implements StudentInterface{
 		}
 		
 		StudentCourseChoice studentCourseChoice = new StudentCourseChoice();
+		studentCourseChoice.setStudentId(studentId);
 		studentCourseChoice.setCourses(selectedCourses);
+		studentDaoOperation.storeStudentCourseChoice(studentCourseChoice);
+		
+		System.out.println("Semester Registration Successfull");
+		
 		return studentCourseChoice;
 	}
 }
