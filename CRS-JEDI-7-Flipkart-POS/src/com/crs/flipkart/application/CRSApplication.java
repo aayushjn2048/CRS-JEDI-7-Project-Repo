@@ -6,6 +6,8 @@ package com.crs.flipkart.application;
 import java.util.*;
 
 import com.crs.flipkart.business.AuthorizationService;
+import com.crs.flipkart.business.PasswordUpdaterImplementation;
+import com.crs.flipkart.business.PasswordUpdaterInterface;
 import com.crs.flipkart.constants.Role;
 
 /**
@@ -31,7 +33,7 @@ public class CRSApplication {
 		System.out.println("\n----------------!!Welcome to CRS Application!!----------------\n");
 		System.out.println("Choose the following operation:-");
 		System.out.println("--------------------------------------------------------------");
-		System.out.println("\t1 : Login User\n\t2 : Self Register Student\n\t3 : Forgot/Change Password\n\t4 : Quit");
+		System.out.println("\t1 : Login User\n\t2 : Self Register Student\n\t3 : Change Password\n\t4 : Quit");
 		System.out.println("==============================================================");
 		Scanner scanner = new Scanner(System.in);
 		AuthorizationService authorizationService = new AuthorizationService();
@@ -70,6 +72,8 @@ public class CRSApplication {
 			}
 			case 3: {
 				// Forgot password implementation
+				PasswordUpdaterInterface updater = new PasswordUpdaterImplementation();
+				updater.update();
 				break;
 			}
 			}
