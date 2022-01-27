@@ -15,6 +15,7 @@ import java.util.Random;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Professor;
+import com.crs.flipkart.constants.SqlQueryConstants;
 
 /**
  * @author HP
@@ -26,12 +27,14 @@ public class AdminDaoOperation implements AdminDaoInterface {
 
 	@Override
 	public Boolean addCourse(Course course) {
-
+		PreparedStatement stmt = null;
+		//add the course to 'course' table
 		try {
-			PreparedStatement stmt = null;
-			String sql = "INSERT INTO courseCatalog(name) values(?)";
-			stmt = conn.prepareStatement(sql);
-			stmt.setString(1, course.getName());
+
+			stmt = conn.prepareStatement(SqlQueryConstants.ADD_COURSE_QUERY);
+			stmt.setInt(1, course.getCourseId());
+			stmt.setString(2, course.getName());
+			stmt.setInt(3,course.getCourseFee());
 			int rs = stmt.executeUpdate();
 			if (rs == 0)
 				return false;
@@ -45,6 +48,28 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
+
+		//add (catalogId,courseId) to catalog table
+		try {
+			
+			stmt = conn.prepareStatement(SqlQueryConstants.ADD_COURSE_TO_CATALOG_QUERY);
+			stmt.setInt(1, course.getCatalogId());
+			stmt.setInt(2, course.getCourseId());
+			int rs = stmt.executeUpdate();
+			if (rs == 0)
+				return false;
+			return true;
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources // nothing we can do//end finally try
+		}
+
+
 		return false;
 	}
 
@@ -53,8 +78,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		// TODO Auto-generated method stub
 		try {
 			PreparedStatement stmt = null;
-			String sql = "DELETE FROM courseCatalog WHERE courseId = ?";
-			stmt = conn.prepareStatement(sql);
+			stmt = conn.prepareStatement(SqlQueryConstants.DELETE_COURSE_QUERY);
 			stmt.setInt(1, courseId);		//we can only pass string as argument in setString
 			int rs = stmt.executeUpdate();
 			if (rs == 0)
@@ -79,9 +103,11 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		// TODO Auto-generated method stub
 		try {
 			PreparedStatement stmt = null;
-			String sql = "UPDATE courseCatalog SET ";
+			String sql = "UPDATE course SET ";
 			if(course.getName()!=null)
 				sql += " name = ?,";
+			if(course.getCourseFee()!=-1)
+				sql += " courseFee = ?,";
 			if(course.getProfessorId() !=-1)
 				sql += " professorId = ?,";
 			sql = sql.substring(0, sql.length() - 1);
@@ -93,7 +119,11 @@ public class AdminDaoOperation implements AdminDaoInterface {
 				stmt.setString(count, course.getName());
 				count++;
 			}
-			
+			if(course.getCourseFee()!=-1)
+			{
+				stmt.setInt(count, course.getCourseFee());
+				count++;
+			}
 			if(course.getProfessorId() !=-1)
 			{
 				stmt.setInt(count, course.getProfessorId());
@@ -121,13 +151,16 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		try {
 			 
 		PreparedStatement stmt = null;
-		String sql = "SELECT * FROM professor";
-		stmt = conn.prepareStatement(sql);
-		 ResultSet rs = stmt.executeQuery(sql);
+		stmt = conn.prepareStatement(SqlQueryConstants.VIEW_PROFESSORS_QUERY);
+		 ResultSet rs = stmt.executeQuery();
 		 while(rs.next()){
 	            //Display values
 	            System.out.print("ProfessorId: " + rs.getInt("professorId")+" ");
-	            System.out.print("Professor Designation: " + rs.getString("designation"));
+	            System.out.print("Professor Name: " + rs.getString("name"));
+				System.out.print("Professor Address: " + rs.getString("address"));
+				System.out.print("Professor Gender: " + rs.getString("gender"));
+				System.out.print("Professor Contact No: " + rs.getString("contactNo"));
+				System.out.print("Professor Designation: " + rs.getString("designation"));
 	            System.out.println("\n");
 	         }
 		}
@@ -145,15 +178,15 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		try {
 			ArrayList<Course> clist = new ArrayList<Course>();
 			PreparedStatement stmt = null;
-			String sql = "SELECT * FROM course";
-			stmt = conn.prepareStatement(sql);
-			 ResultSet rs = stmt.executeQuery(sql);
+			stmt = conn.prepareStatement(SqlQueryConstants.VIEW_COURSES_QUERY);
+			 ResultSet rs = stmt.executeQuery(SqlQueryConstants.VIEW_COURSES_QUERY);
 			 while(rs.next()){
 		            //Display values
 				 	Course c = new Course();
 				 	c.setCourseId(rs.getInt("courseId"));
 				 	c.setName(rs.getString("name"));
-				 	c.setProfessorId(rs.getInt("professorId"));
+				 	c.setProfessorId(rs.getInt("professorId"));	//handle if no professor is yet alloted
+					c.setCourseFee(rs.getInt("courseFee"));
 				 	clist.add(c);
 		         }
 			 return clist;
@@ -196,8 +229,10 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		// TODO Auto-generated method stub
 		PreparedStatement stmt = null;
 		int val;
-		// As per current schema this whole query is supposed to be run as a Transaction , but right now there are no concurrent queries so left it simple.
+		// As per current schema this whole query is supposed to be run as a Transaction , but right now there are no concurrent queries and assumng connection doesn't break so left it simple.
 		try {
+
+			//Checting if username is already taken or not
 			{
 				String sql = "SELECT * FROM user WHERE username = ?";
 				stmt = conn.prepareStatement(sql);
@@ -209,46 +244,43 @@ public class AdminDaoOperation implements AdminDaoInterface {
 					return false;
 				}
 			}
-			String sql = "INSERT INTO user(userId,username,password,name,address,gender,contactNo,role) values(?,?,?,?,?,?,?,?)";
-			stmt = conn.prepareStatement(sql);
-			Random rand = new Random();
-			val = rand.nextInt(900000)+100000;
-			stmt.setInt(1, val);
-			stmt.setString(2, professor.getUsername());
-			stmt.setString(3, professor.getPasswordHash());
-			stmt.setString(4, professor.getName());
-			stmt.setString(5, professor.getAddress());
-			stmt.setString(6, professor.getGender().toString());
-			stmt.setString(7, professor.getContactNo());
-			stmt.setString(8, "Professor");
-			int rs = stmt.executeUpdate();
-			if (rs == 0)
-				return false;
-		} catch (SQLException se) {
-			// Handle errors for JDBC
-			se.printStackTrace();
-			return false;
-		} catch (Exception e) {
-			// Handle errors for Class.forName
-			e.printStackTrace();
-			return false;
-		} finally {
-			// finally block used to close resources // nothing we can do//end finally try
-		}
 
-		
-		//add this professor and his designation to the professor table
+			//adding user
+			{
+				stmt = conn.prepareStatement(SqlQueryConstants.ADD_USER_QUERY);
+				stmt.setInt(1, professor.getUserId());
+				stmt.setString(2, professor.getUsername());
+				stmt.setString(3, professor.getPasswordHash());
+				int rs = stmt.executeUpdate();
+				if (rs == 0)
+					return false;
+			}
 
-		try {
-			String sql = "INSERT INTO professor(professorId,designation) values(?,?)";
-			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1,val);
-			//stmt.setString(2, professor.getDesignation().toString());
-			stmt.setString(2,professor.getDesignation().toString());	//for now the value is hardcoded , change it once Designation enum is implemented
-			int rs = stmt.executeUpdate();
-			if (rs == 0)
-				return false;
+			//adding role
+			{
+				stmt = conn.prepareStatement(SqlQueryConstants.ADD_ROLE_QUERY);
+				stmt.setInt(1, professor.getUserId());
+				stmt.setString(2,"PROFESSOR");
+				int rs = stmt.executeUpdate();
+				if (rs == 0)
+					return false;
+			}
+
+			//adding professor
+			{
+				stmt = conn.prepareStatement(SqlQueryConstants.ADD_PROFESSOR_QUERY);
+				stmt.setInt(1, professor.getUserId());
+				stmt.setString(2, professor.getName());
+				stmt.setString(3, professor.getAddress());
+				stmt.setString(4, professor.getGender().toString());
+				stmt.setString(5, professor.getContactNo());
+				stmt.setString(6, professor.getDesignation().toString());
+				int rs = stmt.executeUpdate();
+				if (rs == 0)
+					return false;
+			}
 			return true;
+
 		} catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
@@ -267,15 +299,14 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		// TODO Auto-generated method stub
 		PreparedStatement stmt = null;
 		try {
-			//Should we remove this professor from user as well or will he still be the user ?
-			String sql = "DELETE FROM professor WHERE professorId = ?";
-			stmt = conn.prepareStatement(sql);
+
+			stmt = conn.prepareStatement(SqlQueryConstants.DELETE_PROFESSOR_QUERY);
 			stmt.setInt(1, professorId);		
 			int rs = stmt.executeUpdate();
 			if (rs == 0)
 				return false;
-			sql = "DELETE FROM user WHERE userId = ?";
-			stmt = conn.prepareStatement(sql);
+
+			stmt = conn.prepareStatement(SqlQueryConstants.DELETE_USER_QUERY);
 			stmt.setInt(1, professorId);		
 			rs = stmt.executeUpdate();
 			if (rs == 0)
@@ -390,12 +421,11 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		try {
 			ArrayList<Course> courseDetails = this.getAllCourseDetails();
 			PreparedStatement stmt = null;
-			String sql = "SELECT * FROM studentCourseChoices";
 			Map<Integer,Course> courseDetailer = new HashMap<>();
 			for(Course c: courseDetails)
 				courseDetailer.put(c.getCourseId(), c);
-			stmt = conn.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery(sql);
+			stmt = conn.prepareStatement(SqlQueryConstants.VIEW_COURSES_QUERY);
+			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next())
 			{
@@ -420,7 +450,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 
 	@Override
 	public Boolean addStudentCourseChoices(int studentId, ArrayList<Integer> courseList) {
-		
+		//include paymentStatus and payment number in this as well
 		try {
 			PreparedStatement stmt = null;
 			String sql = "INSERT INTO studentCourseChoices values(?,?,?,?,?,?,?)";
@@ -450,7 +480,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		try {
 			for(Map.Entry<Integer,ArrayList<Integer>> entry: list.entrySet())
 			{
-				String sql = "INSERT INTO studentRegisteredCourses values (?,?,?,?,?,?) ";
+				String sql = "INSERT INTO studentRegisteredDetails values (?,?,?,?,?,?) ";
 				PreparedStatement stmt = conn.prepareStatement(sql);
 				stmt.setInt(1, entry.getKey());
 				stmt.setInt(2, entry.getKey());

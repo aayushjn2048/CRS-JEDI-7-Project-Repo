@@ -57,7 +57,7 @@ public class ProfessorImplementation {
 	public void viewAvailableCourses() {
 		ProfessorDaoInterface profdao = new ProfessorDaoOperation();
 		ArrayList<Course> clist = profdao.viewAvailableCourses();
-		 System.out.println("Serial No\tCourse Id\tCourse Name\tOffered Sem");
+		 System.out.println("Serial No\tCourse Id\tCourse Name");
 		 int count = 1;
 		 for(Course c : clist)
 		 {
