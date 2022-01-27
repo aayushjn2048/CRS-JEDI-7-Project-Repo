@@ -69,9 +69,18 @@ public class ProfessorImplementation {
 	public void viewEnrolledStudents(int professorid) {
 		ProfessorDaoInterface professorDaoOperation = new ProfessorDaoOperation();
 		Map<Integer,ArrayList<Student>> stulist = professorDaoOperation.viewEnrolledStudents(professorid);
+		if(stulist==null) {
+			System.out.println("Cannot fetch data");
+			return ;
+		}
 		for(Map.Entry<Integer,ArrayList<Student>> entry: stulist.entrySet())
 		{
 			System.out.println("\nCourse Id: "+entry.getKey()+"\n");
+			if(entry.getValue().size()==0)
+			{
+				System.out.println("No students enrolled");
+				continue;
+			}
 			System.out.println("Student Id\t\tStudent Name\t\tContact No");
 			for(Student st: entry.getValue())
 				System.out.println(st.getStudentId()+"\t\t\t"+st.getName()+"\t\t\t"+st.getContactNo());
@@ -84,9 +93,9 @@ public class ProfessorImplementation {
 		return professorDaoOperation.selectCourse(professorId,courseId);
 	}
 	
-	public void assignGrade(int studentId, int courseId, int semesterNumber) {
+	public void assignGrade(int studentId, int courseId, float grade) {
 		ProfessorDaoInterface professorDaoOperation = new ProfessorDaoOperation();
-		professorDaoOperation.assignGrade(studentId,courseId,semesterNumber);
+		professorDaoOperation.assignGrade(studentId,courseId,grade);
 	}
 	
 }

@@ -12,7 +12,7 @@ import com.crs.flipkart.bean.Course;
  *
  */
 public interface CourseInterface {
-	public boolean removeCourse(int courseId);
+	public void removeCourse(int courseId);
     public void addCourse(Course course);
     public void updateCourse(Course course);
     public ArrayList<Course> getAllCourses();

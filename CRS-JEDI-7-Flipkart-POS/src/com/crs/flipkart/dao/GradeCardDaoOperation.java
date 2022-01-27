@@ -44,7 +44,13 @@ public class GradeCardDaoOperation implements GradeCardDaoInterface{
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, studentId);
 			ResultSet rs = stmt.executeQuery();
+			sql = "select * from student where studentId = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, studentId);
+			ResultSet rs1 = stmt.executeQuery();
 			GradeCard gradeCard = new GradeCard();
+			while(rs1.next())
+				gradeCard.setPublished(rs1.getInt("gradeCardVisibility")==1);
 			float cgpa = (float)0.0;
 			ArrayList<Course> courseList = new ArrayList<>();
 			gradeCard.setStudentId(studentId);
@@ -53,7 +59,7 @@ public class GradeCardDaoOperation implements GradeCardDaoInterface{
 				cgpa += rs.getFloat("grade");
 				courseList.add(courseDaoOperation.getCourseFromCourseId(rs.getInt("courseId")));
 			}
-			gradeCard.setSgpa((float)(cgpa/6.0));
+			gradeCard.setSgpa((float)(cgpa/4.0));
 			gradeCard.setRegisteredCourse(courseList);
 			return gradeCard;
 			
@@ -71,13 +77,17 @@ public class GradeCardDaoOperation implements GradeCardDaoInterface{
 		// TODO Auto-generated method stub
 		 try {
 	            PreparedStatement stmt = null;
-	            String sql = "select grade from GradeCard where studentId = ? AND courseId=?";
+	            String sql = "select grade from gradeCard where studentId = ? AND courseId=?";
 	            stmt = conn.prepareStatement(sql);
 	            stmt.setInt(1, studentId);
 	            stmt.setInt(2, courseId);
 	            ResultSet rs = stmt.executeQuery();
-	            
-	            return rs.getInt("grade");
+	            int grade = 0;
+	            while(rs.next()){
+					grade=rs.getInt("grade");
+
+				}
+	            return grade;
 	        } catch (SQLException se) {
 	            // Handle errors for JDBC
 	            se.printStackTrace();

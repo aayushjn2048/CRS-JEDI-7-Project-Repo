@@ -14,14 +14,8 @@ import com.crs.flipkart.dao.AuthorizeDaoOperation;
 public class AuthorizationService {
 	public Role authorize(String username, String password)
 	{
-		Role role;
-		if(username.equals("admin") &&password.equals("password"))
-		{
-			role = Role.ADMIN;
-			return role;
-		}
 		AuthorizeDaoInterface auth = new AuthorizeDaoOperation();
-		return auth.authorizeUser(username, password);
-		
+		Role role = auth.authorizeUser(username, password);
+		return role;
 	}
 }

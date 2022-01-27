@@ -6,6 +6,8 @@ package com.crs.flipkart.application;
 import java.util.*;
 
 import com.crs.flipkart.business.AuthorizationService;
+import com.crs.flipkart.business.PasswordUpdaterImplementation;
+import com.crs.flipkart.business.PasswordUpdaterInterface;
 import com.crs.flipkart.constants.Role;
 
 /**
@@ -43,7 +45,7 @@ public class CRSApplication {
 			System.out.print("Enter Choice Number: ");
 			int choice = scanner.nextInt();
 			if(choice==4)
-				break;
+				return;
 			switch(choice)
 			{
 				case 1: {
@@ -80,8 +82,9 @@ public class CRSApplication {
 							break;
 				}
 				case 3: {
-							//Forgot password implementation
-							break;
+						PasswordUpdaterInterface updater = new PasswordUpdaterImplementation();
+						updater.update();
+						break;
 				}
 			}
 		}

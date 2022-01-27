@@ -18,5 +18,5 @@ public interface ProfessorDaoInterface {
 	
 	public boolean selectCourse(int professorId, int courseId);
 	public ArrayList<Course> viewAvailableCourses();
-	public void assignGrade(int studentId, int courseId, int semesterNumber);
+	public Boolean assignGrade(int studentId, int courseId,float grade);
 }

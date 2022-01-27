@@ -6,6 +6,7 @@ package com.crs.flipkart.business;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.GradeCard;
@@ -29,7 +30,7 @@ public class StudentImplementation implements StudentInterface{
 	private CourseInterface courseImplementation = CourseImplementation.getInstance();
 	private GradeCardDaoInterface gradeCardOperation = GradeCardDaoOperation.getInstance();
 	private CourseDaoInterface courseDaoImplementation = CourseDaoImplementation.getInstance();
-
+	private StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
 	public StudentImplementation(){}
 
 	public static StudentImplementation getInstance(){
@@ -41,8 +42,6 @@ public class StudentImplementation implements StudentInterface{
 		return instance;
 	}
 
-	private StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
-	
 	
 	public void addStudentdata(Student student) {
 		StudentDaoInterface studentDaoOperation = new StudentDaoOperation();
@@ -62,9 +61,15 @@ public class StudentImplementation implements StudentInterface{
 	
 	@Override
 	public void displayCourseCatalog() {
-		AdminInterface adminImplementation = new AdminImplementation();
-		adminImplementation.viewAllCourses();
-		// TODO Auto-generated method stub
+		StudentDaoInterface studentdao = new StudentDaoOperation();
+		ArrayList<Course> clist = studentdao.viewAllCourses();
+		System.out.println("Course Id\tCourse Name\tProfessor Id\tCourse Fee");
+		 int count = 1;
+		 for(Course c : clist)
+		 {
+			 System.out.println(c.getCourseId()+"\t\t"+c.getName()+"\t\t"+c.getProfessorId()+"\t\t"+c.getCourseFee());
+			 count++;
+		 }
 		
 	}
 
@@ -85,10 +90,10 @@ public class StudentImplementation implements StudentInterface{
 			System.out.println("Student Id: "+ gradeCard.getStudentId());
 			System.out.println("Semester: "+ gradeCard.getSemester());
 			System.out.println("SGPA: "+ gradeCard.getSgpa());
-			System.out.println("Course-1: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId1()) +" Grade:" + grade1);
-			System.out.println("Course-2: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId2()) +" Grade:" + grade1);
-			System.out.println("Course-3: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId3()) +" Grade:" + grade1);
-			System.out.println("Course-4: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId4()) +" Grade:" + grade1);
+			System.out.println("Course-1: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId1()) +"\t: Grade:" + grade1);
+			System.out.println("Course-2: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId2()) +"\t: Grade:" + grade1);
+			System.out.println("Course-3: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId3()) +"\t: Grade:" + grade1);
+			System.out.println("Course-4: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId4()) +"\t: Grade:" + grade1);
 		}
 		else
 		{
@@ -100,6 +105,53 @@ public class StudentImplementation implements StudentInterface{
 	@Override
 	public StudentCourseChoice selectCourses(int studentId) {
 		// TODO Auto-generated method stub
-		return null;
+		System.out.println("Following courses are available");
+		displayCourseCatalog();
+		
+		System.out.println("Please select your courses (4 Primary + 2 Alternate):");
+		Scanner sc = new Scanner(System.in);
+		ArrayList<Course> selectedCourses = new ArrayList<Course>();
+		ArrayList<Course> courseCatalog = courseImplementation.getAllCourses();
+		Map<Integer,Course> courseList = new HashMap<>();
+		for(Course c: courseCatalog)
+			courseList.put(c.getCourseId(), c);
+		for(int i=1; i<=6; )
+		{
+			System.out.print("Enter course(courseId) choice-"+i+": ");
+			int courseId = sc.nextInt();
+			
+			Course course = null;
+			if(courseList.containsKey(courseId))
+				course = courseList.get(courseId);
+			if(course != null)
+			{
+				i++;
+				selectedCourses.add(course);
+			}
+			else
+			{
+				System.out.println("Course not found!!");
+			}
+			
+		}
+		
+		StudentCourseChoice studentCourseChoice = new StudentCourseChoice();
+		studentCourseChoice.setStudentId(studentId);
+		studentCourseChoice.setCourses(selectedCourses);
+		studentDaoImplementation.storeStudentCourseChoice(studentCourseChoice);
+		
+		System.out.println("Registration form submitted!!");
+		
+		return studentCourseChoice;
+	}
+
+	@Override
+	public Boolean studentAlreadyRegistered(int studentId) {
+		return studentDaoImplementation.studentAlreadyRegistered(studentId);
+	}
+
+	@Override
+	public void makePaymentSuccessful(int studentId) {
+		studentDaoImplementation.makePaymentSuccessful(studentId);
 	}
 }

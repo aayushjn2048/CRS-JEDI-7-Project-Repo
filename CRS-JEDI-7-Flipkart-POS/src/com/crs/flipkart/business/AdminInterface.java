@@ -19,11 +19,11 @@ import com.crs.flipkart.validator.StandardResponse;
  */
 public interface AdminInterface {
 	public void activateGradeCard();//1
-	public String addProfessor(Professor professor);
-	public String removeProfessor(int professorId);
-	public String updateProfessor(Professor professor);
+	public void addProfessor(Professor professor);
+	public void removeProfessor(int professorId);
+	public void updateProfessor(Professor professor);
 	public Boolean approveStudentRegistration(int studentId);
-	public ArrayList<Student> viewAllStudents();
+	public void viewAllStudents();
 	public void viewAllProfessors();
 	public void viewAllCourses();
 	public void allocatePendingCourses();

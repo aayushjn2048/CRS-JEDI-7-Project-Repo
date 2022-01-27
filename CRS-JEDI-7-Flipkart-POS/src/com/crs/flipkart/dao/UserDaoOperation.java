@@ -22,17 +22,32 @@ public class UserDaoOperation implements UserDaoInterface {
 		
 		try {
 			PreparedStatement stmt = null;
-			String sql = "INSERT INTO user(userId,username,password,name,address,gender,contactNO,role) values(?,?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO user(userId,username,password) values(?,?,?)";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, user.getUserId());
 			stmt.setString(2, user.getUsername());
 			stmt.setString(3, user.getPasswordHash());
-			stmt.setString(4, user.getName());
-			stmt.setString(5, user.getAddress());
-			stmt.setString(6, user.getGender().toString());
-			stmt.setString(7, user.getContactNo());
-			stmt.setString(8, user.getRole().toString());
 			int rs = stmt.executeUpdate();
+			if (rs == 0)
+				return false;
+			
+			sql = "INSERT INTO student(studentId,name,address,gender,contactNo,gradeCardVisibility) values(?,?,?,?,?,?)";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, user.getUserId());
+			stmt.setString(2, user.getName());
+			stmt.setString(3, user.getAddress());
+			stmt.setString(4, user.getGender().toString());
+			stmt.setString(5, user.getContactNo());
+			stmt.setInt(6, 0);
+			rs = stmt.executeUpdate();
+			if (rs == 0)
+				return false;
+			
+			sql = "INSERT INTO role(userId,roleName) values(?,?)";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, user.getUserId());
+			stmt.setString(2, user.getRole().toString());
+			rs = stmt.executeUpdate();
 			if (rs == 0)
 				return false;
 			return true;

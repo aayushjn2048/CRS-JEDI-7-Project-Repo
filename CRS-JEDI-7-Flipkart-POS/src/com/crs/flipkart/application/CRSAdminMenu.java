@@ -39,61 +39,12 @@ public class CRSAdminMenu {
 	
 	public void adminMenuMain() {
 		// TODO Auto-generated method stub
-
-		final int nos = 14;
-		final int noc = 10;
-		ArrayList<Student> student = new ArrayList<Student>();
-		for(int i=1;i<=nos;i++)
-		{
-			Student s = new Student();
-			s.setUsername("s"+i);
-			s.setStudentId(i);
-			s.setName("Student"+i);
-			student.add(s);
-		}
-		ArrayList<Course> course = new ArrayList<Course>();
-		for(int i=1;i<=noc;i++)
-		{
-			Course c = new Course();
-			c.setCourseId(i);
-			c.setName("Course"+i);
-			course.add(c);
-		}
-		Map<Integer,ArrayList<Course>> courseChoices = new HashMap<>();
-		for(int i=0;i<nos;i++)
-		{
-			Random random = new Random();  
-			ArrayList<Course> tmp = new ArrayList<Course>();
-			ArrayList<Integer> tmp2 = new ArrayList<Integer>();
-			
-			courseChoices.put(i+1, tmp);
-			boolean flag[]=new boolean[noc];
-			for(int j=0;j<noc;j++)
-				flag[j] = false;
-			for(int j=0;j<6;j++)
-			{
-				int x;
-				while(true)
-				{
-					x = random.nextInt(noc);
-					if(flag[x]==false)
-					{
-						flag[x] = true;
-						break;
-					}
-				}
-				courseChoices.get(i+1).add(course.get(x));
-				tmp2.add(x+4);
-			}
-			//AdminDaoOperation admindao = new AdminDaoOperation();
-			//admindao.addStudentCourseChoices(i+1, tmp2);
-		}
 		System.out.println("\n-----------------------!!Welcome Admin!!----------------------\n");
 		System.out.println("Choose an option:-");
 		System.out.println("--------------------------------------------------------------");
 		System.out.println("\t1 : Add Course\n\t2 : Delete Course\n\t3 : Update Course\n\t4 : Activate Grade Card");
 		System.out.println("\t5 : Add Professor Details\n\t6 : Delete Professor Details\n\t7 : Update Professor Details\n\t8 : Approve Student Registration");
-		System.out.println("\t9 : View Students Data\n\t10: View Professors Data\n\t11: View All Courses\n\t12: Student Course Allocation\n\t13: Logout");
+		System.out.println("\t9 : View Student Details\n\t10: View Professor Details\n\t11: View All Courses\n\t12: Student Course Allocation\n\t13: Logout");
 		System.out.println("==============================================================");
 		AdminImplementation admin = new AdminImplementation();
 		while(true)
@@ -114,18 +65,20 @@ public class CRSAdminMenu {
 							System.out.print("Enter course name: ");
 							newCourse.setName(scanner.next());
 							
-							System.out.print("Enter Professor Id: ");
-							newCourse.setProfessorId(scanner.nextInt());
+							System.out.print("Enter Professor Id(or NA): ");
+							String ans = scanner.next();
+							if(!ans.equals("NA"))
+								newCourse.setProfessorId(Integer.parseInt(ans));
+							
+							System.out.print("Enter Course Fee: ");
+							newCourse.setCourseFee(scanner.nextInt());
 							
 							courseImplementation.addCourse(newCourse);
 							break;
 						}
 				case 2: {
 							System.out.print("Enter CourseId: ");
-							if(courseImplementation.removeCourse(scanner.nextInt()))
-								System.out.println("Course details deleted from the database");
-							else
-								System.out.println("Course with entered courseId does not exist");
+							courseImplementation.removeCourse(scanner.nextInt());
 							break;
 						}
 				case 3: {
@@ -144,6 +97,11 @@ public class CRSAdminMenu {
 							s = scanner.next();
 							if(!s.equals("NA"))
 								newCourse1.setProfessorId(Integer.parseInt(s));
+							
+							System.out.print("Enter new Course Fee: ");
+							s = scanner.next();
+							if(!s.equals("NA"))
+								newCourse1.setCourseFee(Integer.parseInt(s));
 							
 							courseImplementation.updateCourse(newCourse1);
 							
@@ -177,16 +135,14 @@ public class CRSAdminMenu {
 							System.out.print("Enter designation('ASSOCIATE'/'ASSISTANT'/'PROFESSOR'): ");		//this is not role , role will always be professor , this is designation
 							String designation = scanner.next();
 							professor.setDesignation(Designation.valueOf(designation)); //Designation enum is not yet implemented , so uncomment it after imiplementation
-							String response = admin.addProfessor(professor);
-							System.out.println(response);
+							admin.addProfessor(professor);
 							break;
 						}
 				//for deleting professor
 				case 6: {
 							System.out.print("Enter ProfessorId: ");
 							int ProfessorId = scanner.nextInt();
-							String response = admin.removeProfessor(ProfessorId);
-							System.out.println(response);
+							admin.removeProfessor(ProfessorId);
 							break;
 						}
 				case 7: {
@@ -212,8 +168,7 @@ public class CRSAdminMenu {
 							System.out.print("Enter ProfessorId: ");
 							int ProfessorId = scanner.nextInt();
 							professor.setProfessorId(ProfessorId);
-							String response = admin.updateProfessor(professor);
-							System.out.println(response);
+							admin.updateProfessor(professor);
 							break;
 						}
 				case 8: {
@@ -223,10 +178,7 @@ public class CRSAdminMenu {
 							break;
 						}
 				case 9: {
-							ArrayList<Student> studentData = admin.viewAllStudents();
-							System.out.println("Student Id\t\tStudent Name");
-							for(Student stu: studentData)
-								System.out.println(stu.getStudentId() + "\t\t\t" + stu.getName());
+							admin.viewAllStudents();
 							break;
 						}
 				case 10: {

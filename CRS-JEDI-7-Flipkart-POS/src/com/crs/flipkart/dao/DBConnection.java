@@ -35,7 +35,7 @@ public class DBConnection {
 
 				   // Step 4 make/open  a connection 
 				   
-				      System.out.println("Connecting to database...");
+				      //System.out.println("Connecting to database...");
 				      conn = DriverManager.getConnection(DB_URL,USER,PASS);				      
 				      return conn;
 				      

@@ -11,8 +11,8 @@ public class Course {
 	private int courseId;
 	private String name = null;
 	private int professorId = -1;
-	private int courseFee;
-	private int catalogId;
+	private int courseFee = -1;
+	private int catalogId = -1;
 
 	/**
 	 * @return the catalogId

@@ -13,6 +13,7 @@ import java.util.Random;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Student;
+import com.crs.flipkart.constants.SqlQueryConstants;
 
 /**
  * @author HP
@@ -29,7 +30,7 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 		try {
 			 
 			PreparedStatement stmt = null;
-			String sql = "SELECT * FROM courseCatalog";
+			String sql = SqlQueryConstants.SELECT_COURSES_QUERY;
 			stmt = conn.prepareStatement(sql);
 			 ResultSet rs = stmt.executeQuery(sql);
 			 
@@ -39,9 +40,7 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 					 if(rs.getInt("professorId")==0) {
 						 
 						 PreparedStatement stmt1 = null;
-						 String sqlUpdate = "UPDATE courseCatalog "
-					                + "SET professorId = ? "
-					                + "WHERE courseId = ?";
+						 String sqlUpdate = SqlQueryConstants.SELECT_COURSES_QUERY1;
 						 stmt1=conn.prepareStatement(sqlUpdate);
 						
 						 stmt1.setInt(1,professorId);
@@ -69,43 +68,62 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 	
 	
 	@Override
-	public Map<Integer,ArrayList<Student>> viewEnrolledStudents(int professorId) {
+	public Map<Integer,ArrayList<Student>> viewEnrolledStudents(int professorid) {
 		// TODO Auto-generated method stub
 		try {
-			 
+			// System.out.println("hello");
 			PreparedStatement stmt = null;
-			String sql = "SELECT * FROM courseCatalog WHERE professorId = ?";
+			String sql = "SELECT * FROM course WHERE professorId = ?";
 			stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, professorId);
-			ResultSet rs = stmt.executeQuery(sql);
-			Map<Integer,ArrayList<Student>> registeredstudents = new HashMap<>();
+			stmt.setInt(1, professorid);
+			ResultSet rs = stmt.executeQuery();
+			
+			Map<Integer,ArrayList<Student>> registered = new HashMap<>();
 			while(rs.next()){
-				ArrayList<Student> stulist = new ArrayList<Student>();
-			 	int courseid=rs.getInt("courseId");
+				ArrayList<Integer> temp = new ArrayList<Integer>();
+				 
+				ArrayList<Student> registeredstudents = new ArrayList<Student>();
+				int courseid=rs.getInt("courseId");
 		 		PreparedStatement stmt1 = null;
-				String sql1 = "SELECT * FROM studentRegisteredCourses sc JOIN user ON (sc.studentId = user.userId) WHERE (courseId1 = ? OR courseId2 = ? OR courseId3 = ? OR courseId4 = ?)";
+				String sql1 = SqlQueryConstants.VIEW_ENROLLED_STUDENTS_QUERY1;
 				stmt1 = conn.prepareStatement(sql1);
-				stmt1.setInt(1, courseid);
-				stmt1.setInt(2, courseid);
-				stmt1.setInt(3, courseid);
-				stmt1.setInt(4, courseid);
-				ResultSet rs1 = stmt1.executeQuery(sql1);
-				while(rs1.next()) {
-					Student stu = new Student();
-					stu.setStudentId(rs.getInt("studentId"));
-					stu.setName(rs.getString("name"));
-					stu.setContactNo(rs.getString("contactNo"));
-					stulist.add(stu);	
+				 ResultSet rs1 = stmt1.executeQuery(sql1);
+				 while(rs1.next()) {
+					
+					 int courseid1=rs1.getInt("courseId1");
+					 int courseid2=rs1.getInt("courseId2");
+					 int courseid3=rs1.getInt("courseId3");
+					 int courseid4=rs1.getInt("courseId4");
+					
+					 if(courseid1==courseid || courseid2==courseid || courseid3==courseid || courseid4==courseid) {
+						
+						 temp.add(rs1.getInt("studentId"));
+							 
+					 }
+				 }
+				for(int i=0;i<temp.size();i++) {
+					int k=temp.get(i);
+					PreparedStatement stmt2 = null;
+					String sql2 = SqlQueryConstants.VIEW_ENROLLED_STUDENTS_QUERY2;
+					stmt2 = conn.prepareStatement(sql2);
+					stmt2.setInt(1, k);
+					ResultSet rs3 = stmt2.executeQuery();
+					Map<Student,Integer> check = new HashMap<>();
+					while(rs3.next()) {
+						Student stu = new Student();
+						stu.setStudentId(rs3.getInt("studentId"));
+						stu.setName(rs3.getString("name"));
+						stu.setContactNo(rs3.getString("contactNo"));
+							registeredstudents.add(stu);
+							check.put(stu,1);
+						
+					}			
 				}
-				registeredstudents.put(courseid, stulist);
+					
+				
+				registered.put(courseid,registeredstudents );
 			}
-			 
-		 	if(registeredstudents.size()==0) {
-		 		System.out.println("No students enrolled");
-		 	}
-		 	else {
-		 		return registeredstudents;
-		 	}
+			 return registered;
 		}
 		catch(Exception e){
 			
@@ -114,37 +132,25 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 	}
 	
 	
-	public void assignGrade(int studentId, int courseId, int semesterNumber) {
-		ArrayList<Integer> semester = new ArrayList<Integer>();
-		semester.add(1);
-		semester.add(2);
-		semester.add(3);
-		semester.add(4);
-		semester.add(5);
-		semester.add(6);
-		semester.add(7);
-		semester.add(8);
-		semester.add(9);
-		semester.add(10);
-		Random random = new Random();
-		int index = random.nextInt(9);
+	public Boolean assignGrade(int studentId, int courseId,float grade) {
 		try {
 			PreparedStatement stmt = null;
 			
-			String sql = "INSERT INTO grade(studentId,courseId,semenster,grade) values(?,?,?,?)";
+			String sql = SqlQueryConstants.ASSIGN_GRADES_QUERY;
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, studentId);
 			stmt.setInt(2, courseId);
-			stmt.setInt(3, semesterNumber);
-			stmt.setInt(4, semester.get(index));
+			stmt.setFloat(3, grade);
 			int rs = stmt.executeUpdate();
-			
+			if(rs==0)
+				return false;
+			return true;
 		} catch (Exception e) {
 			
 		} finally {
 			
 		}
-		
+		return false;
 	}
 
 
@@ -153,7 +159,7 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 		try {
 			ArrayList<Course> clist = new ArrayList<Course>();
 			PreparedStatement stmt = null;
-			String sql = "SELECT * FROM courseCatalog WHERE professorId IS NULL";
+			String sql = SqlQueryConstants.AVAILABLE_COURSE_QUERY;
 			stmt = conn.prepareStatement(sql);
 			 ResultSet rs = stmt.executeQuery(sql);
 			 while(rs.next()){

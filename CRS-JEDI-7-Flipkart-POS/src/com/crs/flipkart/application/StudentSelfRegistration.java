@@ -25,7 +25,7 @@ public class StudentSelfRegistration {
 	public void selfRegistration()  {
 		Scanner scanner=new Scanner(System.in);
 		
-		System.out.println("\n==========================================\n");
+		System.out.println("\n=====================STUDENT REGISTRATION=====================\n");
 		
 		System.out.print("Enter scholar no: ");
 		int studentId = scanner.nextInt();
@@ -65,14 +65,10 @@ public class StudentSelfRegistration {
 			user.setRole(Role.STUDENT);
 			UserImplementation userImplementation = new UserImplementation();
 			userImplementation.addUserdata(user);
-			Student student = new Student();
-			student.setGradeCardVisibility(false);
-			student.setStudentId(studentId);
-			studentImplementation.addStudentdata(student);
 			System.out.println("Student is registerd succesfully");
 		}
 		else {
-			System.out.println("User unauthorized");
+			System.out.println("Error occured while registering");
 		}
 		
 	}

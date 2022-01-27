@@ -27,7 +27,9 @@ public interface AdminDaoInterface {
 	public Boolean updateAllocatedStudentCourses(Map<Integer,ArrayList<Integer>> list);
 	public ArrayList<Course> getAllCourseDetails();
 	public Map<Integer,ArrayList<Course>> getAllCourseChoices();
-	public void viewAllProfessor();
+	public ArrayList<Professor> getAllProfessorDetails();
 	public ArrayList<Course> viewAllCourses();
 	public boolean studentSelfRegistration(int studentId);
+	public Boolean studentAlreadyRegistered(int studentId);
+	public Boolean updatePaymentStatus(ArrayList<Integer> studentList);
 }

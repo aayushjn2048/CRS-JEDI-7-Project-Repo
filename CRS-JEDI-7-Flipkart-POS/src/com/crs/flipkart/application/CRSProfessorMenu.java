@@ -59,9 +59,9 @@ public class CRSProfessorMenu {
 					int studentId= scanner.nextInt();
 					System.out.println("Enter CourseId");
 					int courseId= scanner.nextInt();
-					System.out.println("Enter SemesterNumber");
-					int semesternumber= scanner.nextInt();
-					professorImplementation.assignGrade(studentId,courseId,semesternumber);
+					System.out.println("Enter Grade");
+					float grade= scanner.nextFloat();
+					professorImplementation.assignGrade(studentId,courseId,grade);
 					break;
 				}
 			}

@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Random;
 
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Professor;
+import com.crs.flipkart.constants.Designation;
 import com.crs.flipkart.constants.SqlQueryConstants;
 
 /**
@@ -32,8 +34,11 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		try {
 
 			stmt = conn.prepareStatement(SqlQueryConstants.ADD_COURSE_QUERY);
-			stmt.setInt(1, course.getCourseId());
-			stmt.setString(2, course.getName());
+			stmt.setString(1, course.getName());
+			if(course.getProfessorId()==-1)
+				stmt.setNull(2, Types.NULL);
+			else
+				stmt.setInt(2, course.getProfessorId());
 			stmt.setInt(3,course.getCourseFee());
 			int rs = stmt.executeUpdate();
 			if (rs == 0)
@@ -147,28 +152,29 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	}
 	
 	@Override
-	public void viewAllProfessor()  {
+	public ArrayList<Professor> getAllProfessorDetails()  {
 		try {
 			 
-		PreparedStatement stmt = null;
-		stmt = conn.prepareStatement(SqlQueryConstants.VIEW_PROFESSORS_QUERY);
-		 ResultSet rs = stmt.executeQuery();
-		 while(rs.next()){
-	            //Display values
-	            System.out.print("ProfessorId: " + rs.getInt("professorId")+" ");
-	            System.out.print("Professor Name: " + rs.getString("name"));
-				System.out.print("Professor Address: " + rs.getString("address"));
-				System.out.print("Professor Gender: " + rs.getString("gender"));
-				System.out.print("Professor Contact No: " + rs.getString("contactNo"));
-				System.out.print("Professor Designation: " + rs.getString("designation"));
-	            System.out.println("\n");
-	         }
+			 PreparedStatement stmt = null;
+			 stmt = conn.prepareStatement(SqlQueryConstants.VIEW_PROFESSORS_QUERY);
+			 ResultSet rs = stmt.executeQuery();
+			 ArrayList<Professor> profList = new ArrayList<Professor>();
+			 while(rs.next()){
+		            //Display values
+				 System.out.println("ID: "+rs.getInt("professorId"));
+				 	Professor prof = new Professor();
+				 	prof.setProfessorId(rs.getInt("professorId"));
+				 	prof.setName(rs.getString("name"));
+				 	prof.setDesignation(Designation.valueOf(rs.getString("designation").toUpperCase()));
+				 	profList.add(prof);
+		         }
+			 return profList;
 		}
 		catch(Exception e){
 			
 		}
 		
-		
+		return null;
 		
 	}
 
@@ -197,23 +203,21 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		return null;
 	}
 	
+	
+	
 	@Override
 	public boolean studentSelfRegistration(int studentId) {
 		// TODO Auto-generated method stub
 		
 		try {
 			PreparedStatement stmt = null;
-			String sql = "SELECT * FROM studentdetails";
+			String sql = "SELECT * FROM studentDetails WHERE studentId = ?";
 			stmt = conn.prepareStatement(sql);
-			 ResultSet rs = stmt.executeQuery(sql);
+			stmt.setInt(1, studentId);
+			 ResultSet rs = stmt.executeQuery();
 			 while(rs.next()){
-		           int id=rs.getInt("studentid");
-		           if(id==studentId) {
-		        	   return true;
-		        	   
-		           }
-		           
-		        }
+				 return !this.studentAlreadyRegistered(studentId);
+		     }
 			 return false;
 			 
 			} catch (SQLException e) {
@@ -248,7 +252,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			//adding user
 			{
 				stmt = conn.prepareStatement(SqlQueryConstants.ADD_USER_QUERY);
-				stmt.setInt(1, professor.getUserId());
+				stmt.setInt(1, professor.getProfessorId());
 				stmt.setString(2, professor.getUsername());
 				stmt.setString(3, professor.getPasswordHash());
 				int rs = stmt.executeUpdate();
@@ -259,7 +263,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			//adding role
 			{
 				stmt = conn.prepareStatement(SqlQueryConstants.ADD_ROLE_QUERY);
-				stmt.setInt(1, professor.getUserId());
+				stmt.setInt(1, professor.getProfessorId());
 				stmt.setString(2,"PROFESSOR");
 				int rs = stmt.executeUpdate();
 				if (rs == 0)
@@ -269,7 +273,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			//adding professor
 			{
 				stmt = conn.prepareStatement(SqlQueryConstants.ADD_PROFESSOR_QUERY);
-				stmt.setInt(1, professor.getUserId());
+				stmt.setInt(1, professor.getProfessorId());
 				stmt.setString(2, professor.getName());
 				stmt.setString(3, professor.getAddress());
 				stmt.setString(4, professor.getGender().toString());
@@ -307,6 +311,12 @@ public class AdminDaoOperation implements AdminDaoInterface {
 				return false;
 
 			stmt = conn.prepareStatement(SqlQueryConstants.DELETE_USER_QUERY);
+			stmt.setInt(1, professorId);		
+			rs = stmt.executeUpdate();
+			if (rs == 0)
+				return false;
+			
+			stmt = conn.prepareStatement(SqlQueryConstants.DELETE_ROLE_QUERY);
 			stmt.setInt(1, professorId);		
 			rs = stmt.executeUpdate();
 			if (rs == 0)
@@ -391,7 +401,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		ArrayList<Course> courseDetails = new ArrayList<Course>();
 		try {
 			PreparedStatement stmt = null;
-			String sql = "SELECT * FROM courseCatalog";
+			String sql = "SELECT * FROM course WHERE professorId IS NOT NULL";
 			stmt = conn.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery(sql);
 			
@@ -424,7 +434,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			Map<Integer,Course> courseDetailer = new HashMap<>();
 			for(Course c: courseDetails)
 				courseDetailer.put(c.getCourseId(), c);
-			stmt = conn.prepareStatement(SqlQueryConstants.VIEW_COURSES_QUERY);
+			stmt = conn.prepareStatement("SELECT * FROM registrationDetails");
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next())
@@ -480,13 +490,58 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		try {
 			for(Map.Entry<Integer,ArrayList<Integer>> entry: list.entrySet())
 			{
-				String sql = "INSERT INTO studentRegisteredDetails values (?,?,?,?,?,?) ";
+				String sql = "INSERT INTO studentRegisteredDetails values (?,?,?,?,?) ";
 				PreparedStatement stmt = conn.prepareStatement(sql);
 				stmt.setInt(1, entry.getKey());
-				stmt.setInt(2, entry.getKey());
 				ArrayList<Integer> tmp = entry.getValue();
 				for(int i=0;i<tmp.size();i++)
-					stmt.setInt(i+3, tmp.get(i));
+					stmt.setInt(i+2, tmp.get(i));
+				int rs = stmt.executeUpdate();
+				if (rs == 0)
+					return false;
+			}
+			return true;
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			e.printStackTrace();
+		} finally {
+			// finally block used to close resources // nothing we can do//end finally try
+		}
+		return false;
+	}
+
+	@Override
+	public Boolean studentAlreadyRegistered(int studentId) {
+		try {
+			PreparedStatement stmt = null;
+			String sql = "SELECT * FROM student WHERE studentId = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, studentId);
+			 ResultSet rs = stmt.executeQuery();
+			 while(rs.next()){
+				 return true;
+		     }
+			 return false;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+					e.printStackTrace();
+			}
+		
+		return true;
+	}
+
+	@Override
+	public Boolean updatePaymentStatus(ArrayList<Integer> studentList) {
+		try {
+			for(int i=0;i<studentList.size();i++)
+			{
+				String sql = "UPDATE registrationDetails SET paymentStatus = ? WHERE studentId = ?";
+				PreparedStatement stmt = conn.prepareStatement(sql);
+				stmt.setString(1, "PENDING");
+				stmt.setInt(2, studentList.get(i));
 				int rs = stmt.executeUpdate();
 				if (rs == 0)
 					return false;

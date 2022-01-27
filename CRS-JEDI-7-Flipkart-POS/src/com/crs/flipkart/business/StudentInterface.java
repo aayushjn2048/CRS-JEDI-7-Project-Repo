@@ -18,4 +18,6 @@ public interface StudentInterface {
 	 public StudentCourseChoice selectCourses(int studentId);
 	 public void displayCourseCatalog();
 	 public void displayGradeCard(int studentId);
+	 public Boolean studentAlreadyRegistered(int studentId);
+	 public void makePaymentSuccessful(int studentId);
 }
