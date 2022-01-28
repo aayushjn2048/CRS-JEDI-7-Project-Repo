@@ -29,34 +29,32 @@ public class AdminDaoOperation implements AdminDaoInterface {
 
 	@Override
 	public Boolean addCourse(Course course) {
-		PreparedStatement stmt = null;
+
 		//add the course to 'course' table
 		try {
-
+			PreparedStatement stmt = null;
 			stmt = conn.prepareStatement(SqlQueryConstants.ADD_COURSE_QUERY);
-			stmt.setString(1, course.getName());
-			if(course.getProfessorId()==-1)
-				stmt.setNull(2, Types.NULL);
-			else
-				stmt.setInt(2, course.getProfessorId());
+			stmt.setInt(1, course.getCourseId());
+			stmt.setString(2, course.getName());
 			stmt.setInt(3,course.getCourseFee());
 			int rs = stmt.executeUpdate();
 			if (rs == 0)
 				return false;
-			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
 			se.printStackTrace();
+			return false;
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			e.printStackTrace();
+			return false;
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
 
 		//add (catalogId,courseId) to catalog table
 		try {
-			
+			PreparedStatement stmt = null;
 			stmt = conn.prepareStatement(SqlQueryConstants.ADD_COURSE_TO_CATALOG_QUERY);
 			stmt.setInt(1, course.getCatalogId());
 			stmt.setInt(2, course.getCourseId());
