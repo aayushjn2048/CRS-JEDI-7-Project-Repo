@@ -61,18 +61,19 @@ public class CRSAdminMenu {
 			switch(choice)
 			{
 				case 1: {
-							Course newCourse = new Course();							
+							Course newCourse = new Course();
+							System.out.print("Enter CourseId: ");
+							newCourse.setCourseId(scanner.nextInt());
+		
 							System.out.print("Enter course name: ");
 							newCourse.setName(scanner.next());
-							
-							System.out.print("Enter Professor Id(or NA): ");
-							String ans = scanner.next();
-							if(!ans.equals("NA"))
-								newCourse.setProfessorId(Integer.parseInt(ans));
-							
+		
 							System.out.print("Enter Course Fee: ");
 							newCourse.setCourseFee(scanner.nextInt());
-							
+		
+							System.out.print("Enter CatalogId");
+							newCourse.setCatalogId(scanner.nextInt());
+		
 							courseImplementation.addCourse(newCourse);
 							break;
 						}

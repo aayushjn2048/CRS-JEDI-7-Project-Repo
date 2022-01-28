@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 // import javax.xml.crypto.Data;
 
 import com.crs.flipkart.bean.Challan;
@@ -42,18 +44,24 @@ class Pair{
 
 public class AdminImplementation implements AdminInterface{
 	
+	private static Logger logger = Logger.getLogger(AdminImplementation.class);
+	
+	
+	
+	
 	private PaymentsDaoInterface paymentsDaoImplementation = PaymentsDaoImplementation.getInstance();
 	//Group 1
 	public void activateGradeCard(){
+		logger.info("Instance creation of service class");
 		StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
 		try {
 			if(studentDaoImplementation.activateGradeCard())
-				System.out.println("Grade Card Visibility Activated");
+				logger.debug("Grade Card Visibility Activated");
 			else
-				System.out.println("Grade card visibility activation failed");
+				logger.debug("Grade card visibility activation failed");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Exception raised"+e.getMessage());
 		}
 	}
 

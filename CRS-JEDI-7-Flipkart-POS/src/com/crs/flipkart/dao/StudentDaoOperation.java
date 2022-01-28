@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import com.crs.flipkart.bean.Course;
@@ -211,7 +212,7 @@ public class StudentDaoOperation implements StudentDaoInterface {
 
 			String sql = "UPDATE registrationDetails SET paymentStatus = ? WHERE studentId = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, "SUCCESS");
+			stmt.setString(1,"SUCCESS");
 			stmt.setInt(2, studentId);
 			stmt.executeUpdate();
 		} catch (SQLException se) {
