@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
@@ -26,6 +27,7 @@ import com.crs.flipkart.dao.PaymentsDaoImplementation;
 import com.crs.flipkart.dao.PaymentsDaoInterface;
 import com.crs.flipkart.dao.StudentDaoInterface;
 import com.crs.flipkart.dao.StudentDaoOperation;
+import com.crs.flipkart.exceptions.ProfessorNotFoundException;
 import com.crs.flipkart.utils.ServiceUtils;
 
 /**
@@ -56,9 +58,9 @@ public class AdminImplementation implements AdminInterface{
 		StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
 		try {
 			if(studentDaoImplementation.activateGradeCard())
-				logger.debug("Grade Card Visibility Activated");
+				System.out.println("Grade Card Visibility Activated");
 			else
-				logger.debug("Grade card visibility activation failed");
+				System.out.println("Grade card visibility activation failed");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("Exception raised"+e.getMessage());
@@ -67,29 +69,31 @@ public class AdminImplementation implements AdminInterface{
 
 
 	//Group 2
-	public void addProfessor(Professor professor) {
+	public void addProfessor(Professor professor) throws ProfessorNotFoundException {
 		
 		//ProfessorImplementation.addProfessor data(professor);
 		professor.setProfessorId(ServiceUtils.createUserId());
 		AdminDaoInterface admin = new AdminDaoOperation();
 		if(admin.addProfessor(professor))
 			System.out.println("Professor is successfully created"); 
-		else
-			System.out.println("Professor is not created");
+		else {
+			throw new ProfessorNotFoundException();
+			//System.out.println("Professor is not removed. Please enter valid professor id");
+		}
 	}
 	
-	public void removeProfessor(int professorId) {
+	public void removeProfessor(int professorId) throws ProfessorNotFoundException{
 
 		AdminDaoInterface admin = new AdminDaoOperation();
 		if(admin.removeProfessor(professorId)){
 			System.out.println("Professor is succesfully removed");
 		}
-		else {
-			System.out.println("Professor is not removed. Please enter valid professor id");
+		else{
+			throw new ProfessorNotFoundException();
 		}
 	}
 	
-	public void updateProfessor(Professor professor) {
+	public void updateProfessor(Professor professor) throws ProfessorNotFoundException{
 		
 
 		AdminDaoInterface admindao = new AdminDaoOperation();
@@ -98,7 +102,7 @@ public class AdminImplementation implements AdminInterface{
 
 		}
 		else{
-			System.out.println("Professor not updated");
+			throw new ProfessorNotFoundException();
 		}
 		
 	}
@@ -113,26 +117,24 @@ public class AdminImplementation implements AdminInterface{
 		StudentInterface studentImplementation = StudentImplementation.getInstance();
 		ArrayList<Student> studentData = studentImplementation.viewStudentData();
 		System.out.println("Student Id\t\tStudent Name");
-		for(Student stu: studentData)
-			System.out.println(stu.getStudentId() + "\t\t\t" + stu.getName());
+		studentData.forEach( (stu) -> {System.out.println(stu.getStudentId() + "\t\t\t" + stu.getName());});
 	}//3
 	public void viewAllProfessors(){
 		AdminDaoInterface admindaooperation = new AdminDaoOperation();
 		ArrayList<Professor> profList = admindaooperation.getAllProfessorDetails();
 		System.out.println("Professor ID\t\tProfessor Name\t\tDesignation");
-		for(Professor prof: profList)
-			System.out.println(prof.getProfessorId()+"\t\t\t"+prof.getName()+"\t\t\t"+prof.getDesignation().toString());
+		profList.forEach((prof) -> {System.out.println(prof.getProfessorId()+"\t\t\t"+prof.getName()+"\t\t\t"+prof.getDesignation().toString());});
 	}
 	public void viewAllCourses(){
 		 AdminDaoInterface admindaooperation = new AdminDaoOperation();
 		 ArrayList<Course> clist = admindaooperation.viewAllCourses();
 		 System.out.println("Course Id\tCourse Name\tCourse Fee");
-		 int count = 1;
-		 for(Course c : clist)
-		 {
+		 AtomicInteger count = new AtomicInteger(1);
+
+		 clist.forEach((c) ->{
 			 System.out.println(c.getCourseId()+"\t\t"+c.getName()+"\t\t"+c.getCourseFee());
-			 count++;
-		 }
+			 count.getAndIncrement();
+		 });
 	}
 
 	public void allocatePendingCourses(){

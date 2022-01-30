@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.Student;
 
 /**
@@ -15,8 +17,14 @@ import com.crs.flipkart.bean.Student;
  */
 public class UserDaoOperation implements UserDaoInterface {
 	
+	private static Logger logger = Logger.getLogger(UserDaoOperation.class);
 	Connection conn = DBConnection.connectDB();
 	
+	/**
+	 * Method to add credentials of Users to DataBase
+	 * @param user contains the student details
+	 * @return boolean
+	 */
 	@Override
 	public boolean addUsertData(Student user) {
 		
@@ -53,10 +61,10 @@ public class UserDaoOperation implements UserDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}

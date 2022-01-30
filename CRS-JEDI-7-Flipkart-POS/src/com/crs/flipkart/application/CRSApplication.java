@@ -9,6 +9,9 @@ import com.crs.flipkart.business.AuthorizationService;
 import com.crs.flipkart.business.PasswordUpdaterImplementation;
 import com.crs.flipkart.business.PasswordUpdaterInterface;
 import com.crs.flipkart.constants.Role;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.exceptions.ProfessorNotFoundException;
+import com.crs.flipkart.exceptions.UserNotFoundException;
 
 /**
  * @author HP
@@ -31,7 +34,7 @@ public class CRSApplication {
 		userId = val;
 	}
 	
-	public static void startApplication()
+	public static void startApplication() throws CourseNotFoundException, ProfessorNotFoundException
 	{
 		System.out.println("\n----------------!!Welcome to CRS Application!!----------------\n");
 		System.out.println("Choose the following operation:-");
@@ -54,7 +57,15 @@ public class CRSApplication {
 					  		String username = scanner.next();
 					  		System.out.print("Enter Password: ");
 					  		String password = scanner.next();
-					  		Role role = authorizationService.authorize(username, password);
+					  		Role role = null;
+					  		try {
+					  			role = authorizationService.authorize(username, password);
+			
+					  		}
+					  		catch(UserNotFoundException u)
+					  		{
+					  			break;
+					  		}
 					  		if(role!=null&&role.equals(Role.ADMIN))
 					  		{
 					  			CRSAdminMenu adminMenu = new CRSAdminMenu();
@@ -90,7 +101,7 @@ public class CRSApplication {
 		}
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws CourseNotFoundException, ProfessorNotFoundException {
 		// TODO Auto-generated method stub
 		startApplication();
 	}

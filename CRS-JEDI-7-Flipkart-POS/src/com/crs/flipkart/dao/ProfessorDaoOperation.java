@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.constants.SqlQueryConstants;
@@ -22,8 +24,14 @@ import com.crs.flipkart.constants.SqlQueryConstants;
 public class ProfessorDaoOperation implements ProfessorDaoInterface {
 
 	Connection conn = DBConnection.connectDB();
+	private static Logger logger = Logger.getLogger(ProfessorDaoOperation.class);
 	
-	
+	/**
+	 * Method to get Courses by Professor Id using SQL Commands
+	 * @param professorId the id of professor
+	 * @param courseId the id of course
+	 * @return get the courses offered by the professor.
+*/
 	@Override
 	public boolean selectCourse(int professorId, int courseId) {
 		// TODO Auto-generated method stub
@@ -60,13 +68,18 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 			 	
 			}
 			catch(Exception e){
-				
+				logger.error("Exception raised" + e.getMessage());
 			}
 		return false;
 		
 	}
 	
-	
+	/**
+	 * Method to view list of enrolled Students using SQL Commands
+	 * @param: professorId the id of professor
+	 * @return: return the enrolled students for the corresponding professor and course code.
+*/
+
 	@Override
 	public Map<Integer,ArrayList<Student>> viewEnrolledStudents(int professorid) {
 		// TODO Auto-generated method stub
@@ -126,12 +139,18 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 			 return registered;
 		}
 		catch(Exception e){
-			
+			logger.error("Exception raised" + e.getMessage());
 		}
 		return null;
 	}
 	
-	
+	/**
+	 * Assign grades to student using SQL commands
+	 * @param studentId the student id
+	 * @param courseId the course id
+     * @param grade the grade to be assigned
+	 * @return Grades to student
+*/
 	public Boolean assignGrade(int studentId, int courseId,float grade) {
 		try {
 			PreparedStatement stmt = null;
@@ -146,14 +165,17 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 				return false;
 			return true;
 		} catch (Exception e) {
-			
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			
 		}
 		return false;
 	}
 
-
+	/**
+	 * Method to view all the available courses using SQL Commands
+	 * @return: return the list of all the available courses
+	 */
 	@Override
 	public ArrayList<Course> viewAvailableCourses() {
 		try {
@@ -172,7 +194,7 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 			 return clist;
 			}
 			catch(Exception e){
-				
+				logger.error("Exception raised" + e.getMessage());
 			}
 		return null;
 	}

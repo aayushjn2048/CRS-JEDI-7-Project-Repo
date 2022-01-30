@@ -28,7 +28,13 @@ public interface StudentDaoInterface {
     
     public Boolean studentAlreadyRegistered(int studentId);
     
-    public void makePaymentSuccessful(int studentId);
+    public void makePaymentSuccessful(int studentId, String referenceNo);
+    
+    public String getPaymentStatus(int studentId);
 
     public Boolean update(String username,String oldPassword,String newPassword);
+    
+    public Boolean isStudentRegistered(int studentId);
+
+
 }

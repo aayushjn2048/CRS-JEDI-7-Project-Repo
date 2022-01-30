@@ -11,13 +11,18 @@ import com.crs.flipkart.business.PaymentInterface;
 import com.crs.flipkart.business.ProfessorImplementation;
 import com.crs.flipkart.business.StudentImplementation;
 import com.crs.flipkart.business.StudentInterface;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.exceptions.GradeCardNotPublishedException;
+import com.crs.flipkart.exceptions.ProfessorNotFoundException;
+import com.crs.flipkart.utils.DateAndTimeUtil;
 
 /**
  * @author HP
  *
  */
 public class CRSStudentMenu {
-	public void studentMenuMain() {
+	public void studentMenuMain() throws CourseNotFoundException, ProfessorNotFoundException {
+		DateAndTimeUtil.loginDisplayDateAndTime();
 		System.out.println("\n------------------!!Welcome Student!!-------------------\n");
 		System.out.println("Choose an option:-");
 		System.out.println("----------------------------------------------------------");
@@ -32,6 +37,8 @@ public class CRSStudentMenu {
 			int choice = scanner.nextInt();
 			if(choice == 6)
 			{
+				System.out.println("\nBye!!!");
+				DateAndTimeUtil.logoutDisplayDateAndTime();
 				System.out.println("");
 				CRSApplication.startApplication();
 				break;
@@ -58,13 +65,25 @@ public class CRSStudentMenu {
 				}
 				case 3:{
 					//Payment
-					System.out.println("Fees to be paid for current semester is: " + paymentImplementation.calculateFees(studentId));
-					studentImplementation.makePaymentSuccessful(CRSApplication.getUserId());
+					String paymentStatus=studentImplementation.getPaymentStatus(studentId);
+					if(!paymentStatus.equals("SUCCESS")) {
+						System.out.println("Fees to be paid for current semester is: " + paymentImplementation.calculateFees(studentId));
+						String referenceNo = paymentImplementation.displayPaymentMethods();
+						studentImplementation.makePaymentSuccessful(CRSApplication.getUserId(),referenceNo);
+					}
+					System.out.println("Payment done successfully!");
 					break;
 				}
 				case 4:{
 					//System.out.println("Grade card for current semester is: ");
-					studentImplementation.displayGradeCard(studentId);
+					try {
+						if(studentImplementation.isStudentRegistered(CRSApplication.getUserId()))
+							studentImplementation.displayGradeCard(studentId);
+						else
+							System.out.println("Student not registered");
+					}
+					catch(GradeCardNotPublishedException g)
+					{}
 					break;
 				}
 				case 5: {

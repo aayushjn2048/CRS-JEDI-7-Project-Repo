@@ -36,6 +36,7 @@ public class Catalogue {
 		this.courseName = courseName;
 	}
 	/**
+	 * @param courseId the courseId for which amount to be returned
 	 * @return the courseAmount
 	 */
 	public int getCourseAmount(int courseId) {

@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.Challan;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Professor;
@@ -24,6 +26,9 @@ import com.crs.flipkart.constants.Designation;
 import com.crs.flipkart.constants.Gender;
 import com.crs.flipkart.constants.Role;
 import com.crs.flipkart.dao.AdminDaoOperation;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.exceptions.ProfessorNotFoundException;
+import com.crs.flipkart.utils.DateAndTimeUtil;
 
 /**
  * @author HP
@@ -36,8 +41,9 @@ public class CRSAdminMenu {
 	 */
 	CourseInterface courseImplementation = CourseImplementation.getInstance();
 	StudentImplementation studentImplementation = StudentImplementation.getInstance();
+	private static Logger logger = Logger.getLogger(CRSAdminMenu.class);
 	
-	public void adminMenuMain() {
+	public void adminMenuMain() throws CourseNotFoundException, ProfessorNotFoundException{
 		// TODO Auto-generated method stub
 		System.out.println("\n-----------------------!!Welcome Admin!!----------------------\n");
 		System.out.println("Choose an option:-");
@@ -54,6 +60,8 @@ public class CRSAdminMenu {
 			int choice = scanner.nextInt();
 			if(choice == 13)
 			{
+				System.out.println("\nBye!!! ");
+				DateAndTimeUtil.logoutDisplayDateAndTime();
 				System.out.println("");
 				CRSApplication.startApplication();
 				break;
@@ -79,7 +87,13 @@ public class CRSAdminMenu {
 						}
 				case 2: {
 							System.out.print("Enter CourseId: ");
-							courseImplementation.removeCourse(scanner.nextInt());
+							try {
+								courseImplementation.removeCourse(scanner.nextInt());
+							} catch (CourseNotFoundException ce) {
+								// TODO: handle exception
+								logger.error("Exception raised" + ce.getMessage());
+							}
+
 							break;
 						}
 				case 3: {
@@ -104,7 +118,11 @@ public class CRSAdminMenu {
 							if(!s.equals("NA"))
 								newCourse1.setCourseFee(Integer.parseInt(s));
 							
-							courseImplementation.updateCourse(newCourse1);
+							try {
+								courseImplementation.updateCourse(newCourse1);
+							} catch (CourseNotFoundException ce) {
+								logger.error("Exception raised" + ce.getMessage());
+							}
 							
 							break;
 						}
@@ -143,7 +161,11 @@ public class CRSAdminMenu {
 				case 6: {
 							System.out.print("Enter ProfessorId: ");
 							int ProfessorId = scanner.nextInt();
-							admin.removeProfessor(ProfessorId);
+							try {
+								admin.removeProfessor(ProfessorId);
+							} catch (ProfessorNotFoundException pe) {
+								logger.error("Exception raised" + pe.getMessage());
+							}
 							break;
 						}
 				case 7: {
@@ -169,7 +191,11 @@ public class CRSAdminMenu {
 							System.out.print("Enter ProfessorId: ");
 							int ProfessorId = scanner.nextInt();
 							professor.setProfessorId(ProfessorId);
-							admin.updateProfessor(professor);
+							try {
+								admin.updateProfessor(professor);
+							} catch (ProfessorNotFoundException pe) {
+								logger.error("Exception raised" + pe.getMessage());
+							}
 							break;
 						}
 				case 8: {

@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.application.CRSApplication;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.constants.Role;
@@ -20,7 +22,14 @@ import com.crs.flipkart.utils.DBUtils;
  */
 public class AuthorizeDaoOperation implements AuthorizeDaoInterface{
 
+	private static Logger logger = Logger.getLogger(AuthorizeDaoOperation.class);
 	private Connection conn = DBUtils.getConnection();
+	
+	/**
+	 * Method for authorizeUser
+	 * @param username of user , password of user
+	 * returns The role of user
+	 */
 	@Override
 	public Role authorizeUser(String username, String password) {
 		try {
@@ -36,7 +45,7 @@ public class AuthorizeDaoOperation implements AuthorizeDaoInterface{
 			 }
 			}
 			catch(Exception e){
-				
+				logger.error("Exception raised"+e.getMessage());
 			}
 		return null;
 	}

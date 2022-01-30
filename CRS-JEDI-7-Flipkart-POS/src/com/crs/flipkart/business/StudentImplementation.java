@@ -14,6 +14,7 @@ import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.bean.StudentCourseChoice;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
 import com.crs.flipkart.dao.StudentDaoOperation;
+import com.crs.flipkart.exceptions.GradeCardNotPublishedException;
 import com.crs.flipkart.dao.CourseDaoImplementation;
 import com.crs.flipkart.dao.CourseDaoInterface;
 import com.crs.flipkart.dao.GradeCardDaoInterface;
@@ -74,30 +75,32 @@ public class StudentImplementation implements StudentInterface{
 	}
 
 	@Override
-	public void displayGradeCard(int studentId) {
+	public void displayGradeCard(int studentId) throws GradeCardNotPublishedException {
 		// TODO Auto-generated method stub
 		
 		StudentRegisteredCourses studentRegisteredCourses = courseDaoImplementation.getStudentRegisteredCourses(studentId);
 		
 		GradeCard gradeCard = gradeCardOperation.getGradeCard(studentId);
-		int grade1 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId1());
-		int grade2 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId2());
-		int grade3 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId3());
-		int grade4 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId4());
+		float grade1 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId1());
+		float grade2 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId2());
+		float grade3 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId3());
+		float grade4 = gradeCardOperation.getGradeFromCourseId(studentId, studentRegisteredCourses.getCourseId4());
 		
 		if(gradeCard.isPublished())
 		{
-			System.out.println("Student Id: "+ gradeCard.getStudentId());
-			System.out.println("Semester: "+ gradeCard.getSemester());
-			System.out.println("SGPA: "+ gradeCard.getSgpa());
-			System.out.println("Course-1: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId1()) +"\t: Grade:" + grade1);
-			System.out.println("Course-2: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId2()) +"\t: Grade:" + grade1);
-			System.out.println("Course-3: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId3()) +"\t: Grade:" + grade1);
-			System.out.println("Course-4: "+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId4()) +"\t: Grade:" + grade1);
+			System.out.println("\n===================GRADE CARD===================\n");
+			System.out.println("  Student Id: "+ gradeCard.getStudentId());
+			System.out.println("\n  Serial No\tCourse Name\tGrade");
+			System.out.println("  1\t\t"+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId1()).getName() +"\t\t" + grade1);
+			System.out.println("  2\t\t"+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId2()).getName() +"\t\t" + grade2);
+			System.out.println("  3\t\t"+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId3()).getName() +"\t\t" + grade3);
+			System.out.println("  4\t\t"+ courseDaoImplementation.getCourseFromCourseId(studentRegisteredCourses.getCourseId4()).getName() +"\t\t" + grade4);
+			System.out.printf("\n  SGPA: %.2f", gradeCard.getSgpa());
+			System.out.println("\n=================================================\n");
 		}
 		else
 		{
-			System.out.println("Grade card is yet not published.");
+			throw new GradeCardNotPublishedException();
 		}
 		
 	}
@@ -151,7 +154,19 @@ public class StudentImplementation implements StudentInterface{
 	}
 
 	@Override
-	public void makePaymentSuccessful(int studentId) {
-		studentDaoImplementation.makePaymentSuccessful(studentId);
+	public void makePaymentSuccessful(int studentId,String referenceNo) {
+		studentDaoImplementation.makePaymentSuccessful(studentId,referenceNo);
+	}
+	
+	@Override
+	public String getPaymentStatus(int studentId) {
+
+		String paymentStatus = studentDaoImplementation.getPaymentStatus(studentId);
+		return paymentStatus;
+	}
+
+	@Override
+	public Boolean isStudentRegistered(int studentId) {
+		return studentDaoImplementation.isStudentRegistered(studentId);
 	}
 }

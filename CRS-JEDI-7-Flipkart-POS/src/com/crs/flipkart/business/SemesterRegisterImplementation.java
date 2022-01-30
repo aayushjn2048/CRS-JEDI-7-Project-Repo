@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.crs.flipkart.bean.Catalogue;
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.validator.StandardResponse;
 
 /**
@@ -29,7 +30,7 @@ public class SemesterRegisterImplementation implements SemesterRegistration {
 	}
 
 	@Override
-	public StandardResponse removeCourse(int courseId) {
+	public StandardResponse removeCourse(int courseId) throws CourseNotFoundException{
 		// TODO Auto-generated method stub
 		courseImplementation.removeCourse(courseId);
 		return new StandardResponse();

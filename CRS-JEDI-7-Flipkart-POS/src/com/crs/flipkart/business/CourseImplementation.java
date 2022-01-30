@@ -12,6 +12,7 @@ import com.crs.flipkart.dao.CourseDaoImplementation;
 import com.crs.flipkart.dao.CourseDaoInterface;
 import com.crs.flipkart.dao.StudentDaoInterface;
 import com.crs.flipkart.dao.StudentDaoOperation;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.validator.StandardResponse;
 
 /**
@@ -34,13 +35,17 @@ public class CourseImplementation implements CourseInterface{
 		return instance;
 	}
 	
-	public void removeCourse(int courseId)
+	public void removeCourse(int courseId) throws CourseNotFoundException
 	{
 		AdminDaoInterface admin = new AdminDaoOperation();
 		if(admin.deleteCourse(courseId))
+		{
 			System.out.println("Course details deleted from the database");
+		}
 		else
-			System.out.println("Course with entered courseId does not exist");
+		{
+			throw new CourseNotFoundException();
+		}
 	}
 	public void addCourse(Course course)
 	{
@@ -51,13 +56,15 @@ public class CourseImplementation implements CourseInterface{
 		else
 			System.out.println("Error while executing operation");
 	}
-	public void updateCourse(Course course){
+	public void updateCourse(Course course) throws CourseNotFoundException{
 
 		AdminDaoInterface admin = new AdminDaoOperation();
 		if(admin.updateCourse(course))	//we need to change in the menu so that users can only add the details they can update
 			System.out.println("Course updated successfully!!!");
 		else
-			System.out.println("Course with entered course Id does not exist");
+		{
+			throw new CourseNotFoundException();
+		}
 	}
 	
 	@Override
@@ -67,17 +74,24 @@ public class CourseImplementation implements CourseInterface{
 	}
 
 	@Override
-	public Course getCourseFromCatalog(int courseId) {
+	public Course getCourseFromCatalog(int courseId) throws CourseNotFoundException{
 		// TODO Auto-generated method stub
 		ArrayList<Course> courseList = getAllCourses();
-		
-		for(Course course:courseList)
+		if(courseList.size()==0)
 		{
-			if(course.getCourseId() == courseId)
+			throw new CourseNotFoundException();
+		}
+		else
+		{
+			for(Course course:courseList)
 			{
-				return course;
-			}
-		}	
-		return null;
+				if(course.getCourseId() == courseId)
+				{
+					return course;
+				}
+			}	
+			return null;
+			
+		}
 	}
 }

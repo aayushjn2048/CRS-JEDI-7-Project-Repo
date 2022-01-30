@@ -8,11 +8,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 /**
- * @author HP
+ * 
  *
+ * Class to implement DBConnection
  */
 public class DBConnection {
+	
+	private static Logger logger = Logger.getLogger(DBConnection.class);
 	
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";  
 	   static final String DB_URL = "jdbc:mysql://crs-database.ca10tiiqurow.ap-south-1.rds.amazonaws.com/CRS-Flipkart";
@@ -21,10 +26,11 @@ public class DBConnection {
 	   static final String USER = "ce";
 	   static final String PASS = "Crs12345#";
 	   
+	 //method for connecting the MYSQL Database
+	   //returns the Connection 
 	   public static Connection connectDB() {
-			
-			// Step 2 
-			// Declare the Coneection or prepaidstatement variable here 
+
+			// Declare the Connection or prepaidstatement variable here 
 			   Connection conn = null;
 			   PreparedStatement stmt = null;
 			   
@@ -41,16 +47,17 @@ public class DBConnection {
 				      
 				   }catch(SQLException se){
 				      //Handle errors for JDBC
-				      se.printStackTrace();
+					   logger.error("Exception raised"+se.getMessage());
 				   }catch(Exception e){
 				      //Handle errors for Class.forName
-				      e.printStackTrace();
+					   logger.error("Exception raised"+e.getMessage());
 				   }finally{
 				      //finally block used to close resources
 				      try{
 				         if(stmt!=null)
 				            stmt.close();
 				      }catch(SQLException se2){
+				    	  logger.error("Exception raised"+se2.getMessage());
 				      }// nothing we can d
 				   }//end try
 				   System.out.println("Goodbye!");

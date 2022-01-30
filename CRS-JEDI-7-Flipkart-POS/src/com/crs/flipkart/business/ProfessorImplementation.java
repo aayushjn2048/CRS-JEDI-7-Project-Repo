@@ -82,8 +82,9 @@ public class ProfessorImplementation {
 				continue;
 			}
 			System.out.println("Student Id\t\tStudent Name\t\tContact No");
-			for(Student st: entry.getValue())
+			entry.getValue().forEach((st) ->{
 				System.out.println(st.getStudentId()+"\t\t\t"+st.getName()+"\t\t\t"+st.getContactNo());
+			});
 		}
 	}
 	

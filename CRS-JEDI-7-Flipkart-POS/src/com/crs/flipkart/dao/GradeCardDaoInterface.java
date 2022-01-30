@@ -11,5 +11,5 @@ import com.crs.flipkart.bean.GradeCard;
  */
 public interface GradeCardDaoInterface {
 	public GradeCard getGradeCard(int studentId);
-	public int getGradeFromCourseId(int studentId, int CourseId);
+	public float getGradeFromCourseId(int studentId, int CourseId);
 }

@@ -7,18 +7,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.Challan;
 import com.crs.flipkart.bean.PaymentReference;
 
 /**
- * @author HP
+ * 
  *
+ * Class to implement Payment Operations
  */
 public class PaymentsDaoImplementation implements PaymentsDaoInterface {
 
     private static PaymentsDaoImplementation instance = null;
     Connection conn = DBConnection.connectDB();
-
+    private static Logger logger = Logger.getLogger(PaymentsDaoImplementation.class);
     private PaymentsDaoImplementation() {
     }
 
@@ -31,6 +34,11 @@ public class PaymentsDaoImplementation implements PaymentsDaoInterface {
         return instance;
     }
 
+    /**
+	 * Method to store Payment Reference
+	 * @param paymentReference the details of payment
+	 * @return payment reference number
+	 */
     @Override
     public int storePaymentReference(PaymentReference paymentReference) {
         try {
@@ -45,11 +53,14 @@ public class PaymentsDaoImplementation implements PaymentsDaoInterface {
             return generatedKeys.getInt(1); //TODO get payment reference number
         } catch (Exception se) {
             // Handle errors for JDBC
-            se.printStackTrace();
+        	logger.error("Exception raised" + se.getMessage());
         }
         return 0;
     }
 
+    /**
+   	 * Method to store challan
+   	 */
     @Override
     public void storeChallan(Challan challan) {
         try {
@@ -61,7 +72,7 @@ public class PaymentsDaoImplementation implements PaymentsDaoInterface {
             int rs = stmt.executeUpdate();
         } catch (Exception se) {
             // Handle errors for JDBC
-            se.printStackTrace();
+        	logger.error("Exception raised" + se.getMessage());
         }
     }
 }

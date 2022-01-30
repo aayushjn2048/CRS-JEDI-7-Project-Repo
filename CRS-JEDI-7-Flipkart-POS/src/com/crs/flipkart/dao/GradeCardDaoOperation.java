@@ -9,14 +9,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.GradeCard;
 
 /**
- * @author HP
+ * 
  *
+ * Class to implement Grade Card Operations
  */
 public class GradeCardDaoOperation implements GradeCardDaoInterface{
+	
+	private static Logger logger = Logger.getLogger(GradeCardDaoOperation.class);
 	
 	private static GradeCardDaoOperation instance = null;
     private Connection conn = DBConnection.connectDB();
@@ -35,9 +40,14 @@ public class GradeCardDaoOperation implements GradeCardDaoInterface{
     }
 	
 
+    /**
+	 * Method for GettingCard
+	 * @param studentid of student
+	 * @returns GradeCard of student
+	 */
     @Override
 	public GradeCard getGradeCard(int studentId) {
-		// TODO Auto-generated method stub
+    	//logger.info("Instance creation for getting grade card in Dao class");
 		try {
 			PreparedStatement stmt = null;
 			String sql = "select * from gradeCard where studentId = ?";
@@ -65,7 +75,7 @@ public class GradeCardDaoOperation implements GradeCardDaoInterface{
 			
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised"+se.getMessage());
 		}  finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
@@ -73,8 +83,14 @@ public class GradeCardDaoOperation implements GradeCardDaoInterface{
 		return null;
 	}
 
-	public int getGradeFromCourseId(int studentId, int courseId) {
-		// TODO Auto-generated method stub
+    /**
+	 * Method for Getting Grade From CourseId
+	 * @param Studentid of student
+	 * @param courseId of course
+	 * returns The grade
+	 */
+	public float getGradeFromCourseId(int studentId, int courseId) {
+		//logger.info("Instance creation for getting grade from courseId in Dao class");
 		 try {
 	            PreparedStatement stmt = null;
 	            String sql = "select grade from gradeCard where studentId = ? AND courseId=?";
@@ -82,15 +98,15 @@ public class GradeCardDaoOperation implements GradeCardDaoInterface{
 	            stmt.setInt(1, studentId);
 	            stmt.setInt(2, courseId);
 	            ResultSet rs = stmt.executeQuery();
-	            int grade = 0;
+	            float grade = 0;
 	            while(rs.next()){
-					grade=rs.getInt("grade");
+					grade=rs.getFloat("grade");
 
 				}
 	            return grade;
 	        } catch (SQLException se) {
 	            // Handle errors for JDBC
-	            se.printStackTrace();
+	        	logger.error("Exception raised"+se.getMessage());
 	        }
 		return 0;
 	}

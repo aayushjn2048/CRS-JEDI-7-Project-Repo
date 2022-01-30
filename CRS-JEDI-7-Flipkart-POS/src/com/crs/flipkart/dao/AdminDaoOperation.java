@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.constants.Designation;
@@ -25,8 +27,14 @@ import com.crs.flipkart.constants.SqlQueryConstants;
  */
 public class AdminDaoOperation implements AdminDaoInterface {
 	
+	private static Logger logger = Logger.getLogger(AdminDaoOperation.class);
 	Connection conn = DBConnection.connectDB();
 
+	/**
+	 * Method for Adding Course to DataBase
+	 * @param course the course object whose details to be added
+	 * returns whether course is added successfully or not
+	 */
 	@Override
 	public Boolean addCourse(Course course) {
 
@@ -42,11 +50,11 @@ public class AdminDaoOperation implements AdminDaoInterface {
 				return false;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 			return false;
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 			return false;
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
@@ -64,10 +72,10 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
@@ -76,9 +84,15 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		return false;
 	}
 
+	/**
+	 * Method for Deleting Course to DataBase
+	 * @param courseId the id of course which is to be deleted
+	 * returns whether course is deleted successfully or not
+	 */
 	@Override
 	public Boolean deleteCourse(int courseId) {
 		// TODO Auto-generated method stub
+		// logger.info("Instance creation of Deleting Course in Dao class");
 		try {
 			PreparedStatement stmt = null;
 			stmt = conn.prepareStatement(SqlQueryConstants.DELETE_COURSE_QUERY);
@@ -89,10 +103,10 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
@@ -100,9 +114,15 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		
 	}
 
+	/**
+	 * Method for Updating Course to DataBase
+	 * @param course contains the details of updated course
+	 * returns whether course is updated or not
+	 */
 	@Override
 	//Considers the fact that courseId cannot be changed
 	public Boolean updateCourse(Course course) {
+		// logger.info("Instance creation of Updating Course in Dao class");
 		// TODO Auto-generated method stub
 		try {
 			PreparedStatement stmt = null;
@@ -139,16 +159,20 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
 		return false;
 	}
 	
+	/**
+	 * Method for Getting All Professor Details 
+	 * returns Arraylist of professor details
+	 */
 	@Override
 	public ArrayList<Professor> getAllProfessorDetails()  {
 		try {
@@ -169,16 +193,20 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			 return profList;
 		}
 		catch(Exception e){
-			
+			logger.error("Exception raised" + e.getMessage());
 		}
 		
 		return null;
 		
 	}
 
+	/**
+	 * Method for Viewing All Courses Details 
+	 * returns Arraylist of Courses details
+	 */
 	@Override
 	public ArrayList<Course> viewAllCourses() {
-		
+		// logger.info("Instance creation of Getting Course Details in Dao class");
 		try {
 			ArrayList<Course> clist = new ArrayList<Course>();
 			PreparedStatement stmt = null;
@@ -196,13 +224,17 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			 return clist;
 			}
 			catch(Exception e){
-				
+				logger.error("Exception raised" + e.getMessage());
 			}
 		return null;
 	}
 	
 	
-	
+	/**
+	 * Method for Student Self Registration
+	 * @param  studentId of Student
+	 * returns whether studentselfregistration is succesful or not
+	 */
 	@Override
 	public boolean studentSelfRegistration(int studentId) {
 		// TODO Auto-generated method stub
@@ -219,16 +251,21 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			 return false;
 			 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-					e.printStackTrace();
+				logger.error("Exception raised" + e.getMessage());
 			}
 		
 		return false;
 	}
 
+	/**
+	 * Method for Adding Professor to DataBase
+	 * @param professor the professor object whose details to be added
+	 * returns whether AddingProfessor is successfully or not
+	 */
 	@Override
 	public Boolean addProfessor(Professor professor) {
 		// TODO Auto-generated method stub
+		// logger.info("Instance creation of Adding Professor in Dao class");
 		PreparedStatement stmt = null;
 		int val;
 		// As per current schema this whole query is supposed to be run as a Transaction , but right now there are no concurrent queries and assumng connection doesn't break so left it simple.
@@ -285,20 +322,26 @@ public class AdminDaoOperation implements AdminDaoInterface {
 
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 			return false;
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 			return false;
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
 	}
 
+	/**
+	 * Method for Removing Professor to DataBase
+	 * @param professorId the id of professor whose details need to be removed
+	 * returns whether removal of Professor is successful or not
+	 */
 	@Override
 	public Boolean removeProfessor(int professorId) {
 		// TODO Auto-generated method stub
+		// logger.info("Instance creation of Removing Professor in Dao class");
 		PreparedStatement stmt = null;
 		try {
 
@@ -322,10 +365,10 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
@@ -333,6 +376,11 @@ public class AdminDaoOperation implements AdminDaoInterface {
 		
 	}
 
+	/**
+	 * Method for Updating Professor to DataBase
+	 * @param professorOld object, professorNew object
+	 * returns whether updating professor is succesfully or not
+	 */
 	@Override
 	public Boolean updateProfessor(Professor professorOld,Professor professorNew) {
 		// TODO Auto-generated method stub
@@ -352,48 +400,43 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 			return false;
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 			return false;
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
 
-		/* We are not taking change in Designation for now
-		if(!professorOld.getDesignation().equals(professorNew.getDesignation())) {
-			
-			try {
-				String sql = "UPDATE professor SET designation = ? WHERE professorId = ?";
-				stmt = conn.prepareStatement(sql);
-				stmt.setString(1, professorNew.getDesignation().toString());
-				stmt.setInt(2, professorOld.getProfessorId());
-				int rs = stmt.executeUpdate();
-				if (rs == 0)
-					return false;
-				return true;
-				
-			} catch (SQLException se) {
-				// Handle errors for JDBC
-				se.printStackTrace();
-				return false;
-			} catch (Exception e) {
-				// Handle errors for Class.forName
-				e.printStackTrace();
-				return false;
-			} finally {
-				// finally block used to close resources // nothing we can do//end finally try
-			}
-			
-		}
+		/*
+		 * We are not taking change in Designation for now
+		 * if(!professorOld.getDesignation().equals(professorNew.getDesignation())) {
+		 * 
+		 * try { String sql =
+		 * "UPDATE professor SET designation = ? WHERE professorId = ?"; stmt =
+		 * conn.prepareStatement(sql); stmt.setString(1,
+		 * professorNew.getDesignation().toString()); stmt.setInt(2,
+		 * professorOld.getProfessorId()); int rs = stmt.executeUpdate(); if (rs == 0)
+		 * return false; return true;
+		 * 
+		 * } catch (SQLException se) { // Handle errors for JDBC se.printStackTrace();
+		 * return false; } catch (Exception e) { // Handle errors for Class.forName
+		 * e.printStackTrace(); return false; } finally { // finally block used to close
+		 * resources // nothing we can do//end finally try }
+		 * 
+		 * }
 		 */
 		
 		return true;
 		
 	}
 
+	/**
+	 * Method for Geting All Course Details from database
+	 * returns Arraylists of course
+	 */
 	@Override
 	public ArrayList<Course> getAllCourseDetails() {
 		ArrayList<Course> courseDetails = new ArrayList<Course>();
@@ -413,16 +456,20 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return courseDetails;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
 		return null;
 	}
 
+	/**
+	 * Method for Get All Course Choices 
+	 * returns Map of studentid with his choices of coursesid
+	 */
 	@Override
 	public Map<Integer, ArrayList<Course>> getAllCourseChoices() {
 		Map<Integer, ArrayList<Course>> mp = new HashMap<>();
@@ -446,16 +493,21 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return mp;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
 		return null;
 	}
 
+	/**
+	 * Method for AddStudentCourseChoices to DataBase
+	 * @param studentId and arrayList of courseList 
+	 * returns whether addStudentCourseChoices is succesfully or not
+	 */
 	@Override
 	public Boolean addStudentCourseChoices(int studentId, ArrayList<Integer> courseList) {
 		//include paymentStatus and payment number in this as well
@@ -472,16 +524,21 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
 		return false;
 	}
 
+	/**
+	 * Method for updateAllocatedStudentCoursesto DataBase
+	 * @param list contains student id and its choices of courses 
+	 * returns whether updateAllocatedStudentCourses is successfully or not
+	 */
 	@Override
 	public Boolean updateAllocatedStudentCourses(Map<Integer, ArrayList<Integer>> list) {
 		// TODO Auto-generated method stub
@@ -501,16 +558,21 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
 		return false;
 	}
 
+	/**
+	 * Method for studentAlreadyRegistered 
+	 * @param studentId of student
+	 * returns whether studentAlreadyRegistered is succesfully or not
+	 */
 	@Override
 	public Boolean studentAlreadyRegistered(int studentId) {
 		try {
@@ -525,12 +587,17 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			 return false;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-					e.printStackTrace();
+				logger.error("Exception raised" + e.getMessage());
 			}
 		
 		return true;
 	}
 
+	/**
+	 * Method for updatePaymentStatus to DataBase
+	 * @param studentList the list of student Ids
+	 * returns whether updatePaymentStatus is succesfully or not
+	 */
 	@Override
 	public Boolean updatePaymentStatus(ArrayList<Integer> studentList) {
 		try {
@@ -547,10 +614,10 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}

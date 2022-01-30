@@ -10,20 +10,23 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.bean.StudentCourseChoice;
 import com.crs.flipkart.constants.Gender;
 import com.crs.flipkart.constants.SqlQueryConstants;
 
-/**
- * @author HP
- *
- */
+/*
+* Class to implement Student Dao Operations
+*
+*/
 public class StudentDaoOperation implements StudentDaoInterface {
 
     private static StudentDaoOperation instance = null;
     private Connection conn = DBConnection.connectDB();
+    private static Logger logger = Logger.getLogger(StudentDaoOperation.class);
 
     private void StudentImplementation(){}
 
@@ -36,6 +39,11 @@ public class StudentDaoOperation implements StudentDaoInterface {
         return instance;
     }
     
+    /**
+	 * Method to add student to database
+	 * @param student: student object containing all the fields
+	 * @return true if student is added, else false
+	 */
     @Override
 	public boolean addStudentData(Student student) {
 		try {
@@ -51,10 +59,10 @@ public class StudentDaoOperation implements StudentDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
@@ -62,6 +70,10 @@ public class StudentDaoOperation implements StudentDaoInterface {
 		
 	}
 
+    /**
+	 * Method to view all students from database
+	 * @return List of student 
+	 */
     @Override
     public ArrayList<Student> viewAllStudents() {
         try {
@@ -84,11 +96,15 @@ public class StudentDaoOperation implements StudentDaoInterface {
             return list;
         } catch (SQLException se) {
             // Handle errors for JDBC
-            se.printStackTrace();
+        	logger.error("Exception raised" + se.getMessage());
         }
         return null;
     }
 
+    /**
+	 * Method to view activate grade card for students
+	 * @return true if grade card is activated for student, else false
+	 */
     @Override
     public Boolean activateGradeCard() {
         try {
@@ -102,10 +118,16 @@ public class StudentDaoOperation implements StudentDaoInterface {
             return false;
         } catch (SQLException se) {
             // Handle errors for JDBC
-            se.printStackTrace();
+        	logger.error("Exception raised" + se.getMessage());
         }
         return false;
     }
+
+    /**
+	 * Method to view student from database
+	 * @param studentId: studentId
+	 * @return student: student object containing all the fields
+	 */
 
     @Override
     public Student viewStudentDetails(int studentId) {
@@ -130,11 +152,15 @@ public class StudentDaoOperation implements StudentDaoInterface {
 
         } catch (SQLException se) {
             // Handle errors for JDBC
-            se.printStackTrace();
+        	logger.error("Exception raised" + se.getMessage());
         }
         return null;
     }
     
+    /**
+	 * Method to Store student course choice to database
+	 * @param studentCourseChoice StudentCourseChoice object containing all the fields
+	 */
     @Override
 	public void storeStudentCourseChoice(StudentCourseChoice studentCourseChoice) {
 		// TODO Auto-generated method stub
@@ -154,16 +180,20 @@ public class StudentDaoOperation implements StudentDaoInterface {
 		
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
 		
 	}
 
+    /**
+	 * Method to view all courses from database
+	 * @return List of course 
+	 */
 	@Override
 	public ArrayList<Course> viewAllCourses() {
 		try {
@@ -183,10 +213,16 @@ public class StudentDaoOperation implements StudentDaoInterface {
 			 return clist;
 			}
 			catch(Exception e){
-				
+				logger.error("Exception raised" + e.getMessage());
 			}
 		return null;
 	}
+
+	/**
+	 * Method to view student is registered or not.
+	 * @param studentId: studentId
+	 * @return true if student is already registered, else false
+	 */
 
 	@Override
 	public Boolean studentAlreadyRegistered(int studentId) {
@@ -201,31 +237,69 @@ public class StudentDaoOperation implements StudentDaoInterface {
 			 return false;
 			}
 			catch(Exception e){
-				
+				logger.error("Exception raised" + e.getMessage());
 			}
 		return true;
 	}
 
+	/**
+	 * Method to make payment succesfull.
+	 * @param studentId: studentId
+	 */
 	@Override
-	public void makePaymentSuccessful(int studentId) {
+	public void makePaymentSuccessful(int studentId, String referenceNo) {
 		try {
 
-			String sql = "UPDATE registrationDetails SET paymentStatus = ? WHERE studentId = ?";
+			String sql = "UPDATE registrationDetails SET paymentStatus = ?, paymentNo = ? WHERE studentId = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1,"SUCCESS");
-			stmt.setInt(2, studentId);
+			stmt.setString(2,referenceNo);
+			stmt.setInt(3, studentId);
 			stmt.executeUpdate();
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			se.printStackTrace();
+			logger.error("Exception raised" + se.getMessage());
 		} catch (Exception e) {
 			// Handle errors for Class.forName
-			e.printStackTrace();
+			logger.error("Exception raised" + e.getMessage());
 		} finally {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
 	}
 	
+	@Override
+	public  String getPaymentStatus(int studentId) {
+		String result = null;
+		try {
+
+			String sql = "SELECT paymentStatus FROM registrationDetails where studentId = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, studentId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String s = rs.getString("paymentStatus");
+				result = s;
+				break;
+			}
+		} catch (SQLException se) {
+			// Handle errors for JDBC
+			logger.error("Exception raised" + se.getMessage());
+		} catch (Exception e) {
+			// Handle errors for Class.forName
+			logger.error("Exception raised" + e.getMessage());
+		} finally {
+			// finally block used to close resources // nothing we can do//end finally try
+		}
+		return result;
+	}
+
+	
+	/**
+	 * Method to update student's password.
+	 * @param username the username of user
+	 * @param oldPassword the old password of user
+	 * @param newPassword the new password of user
+	 * */
 	public Boolean update(String username,String oldPassword,String newPassword) {
         PreparedStatement stmt = null;
 
@@ -272,15 +346,37 @@ public class StudentDaoOperation implements StudentDaoInterface {
 
         } catch (SQLException se) {
             // Handle errors for JDBC
-            se.printStackTrace();
+        	logger.error("Exception raised" + se.getMessage());
         } catch (Exception e) {
             // Handle errors for Class.forName
-            e.printStackTrace();
+        	logger.error("Exception raised" + e.getMessage());
         } finally {
             // finally block used to close resources // nothing we can do//end finally try
         }
 
         return true;
     }
+
+	@Override
+	public Boolean isStudentRegistered(int studentId) {
+		// TODO Auto-generated method stub
+		PreparedStatement stmt = null;
+		try
+		{
+            String sql = "SELECT * FROM registrationDetails WHERE studentId = ? AND paymentStatus = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, studentId);
+            stmt.setString(2, "SUCCESS");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+            return false;
+		} catch (Exception e) {
+	        // Handle errors for Class.forName
+	    	logger.error("Exception raised" + e.getMessage());
+	    }
+		return false;
+	}
 
 }

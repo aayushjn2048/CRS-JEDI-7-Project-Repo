@@ -6,6 +6,9 @@ package com.crs.flipkart.application;
 import java.util.Scanner;
 
 import com.crs.flipkart.business.ProfessorImplementation;
+import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.exceptions.ProfessorNotFoundException;
+import com.crs.flipkart.utils.DateAndTimeUtil;
 
 /**
  * @author HP
@@ -13,7 +16,7 @@ import com.crs.flipkart.business.ProfessorImplementation;
  */
 public class CRSProfessorMenu {
 	
-	public void professorMenuMain() {
+	public void professorMenuMain() throws CourseNotFoundException, ProfessorNotFoundException{
 		System.out.println("\n------------------!!Welcome Professor!!-------------------\n");
 		System.out.println("Choose an option:-");
 		System.out.println("----------------------------------------------------------");
@@ -27,6 +30,8 @@ public class CRSProfessorMenu {
 			int choice = scanner.nextInt();
 			if(choice == 5)
 			{
+				System.out.println("\nBye!!!");
+				DateAndTimeUtil.logoutDisplayDateAndTime();
 				System.out.println("");
 				CRSApplication.startApplication();
 				break;
@@ -55,11 +60,11 @@ public class CRSProfessorMenu {
 					break;
 				}
 				case 4:{
-					System.out.println("Enter StudentId");
+					System.out.print("Enter StudentId: ");
 					int studentId= scanner.nextInt();
-					System.out.println("Enter CourseId");
+					System.out.print("Enter CourseId: ");
 					int courseId= scanner.nextInt();
-					System.out.println("Enter Grade");
+					System.out.print("Enter Grade: ");
 					float grade= scanner.nextFloat();
 					professorImplementation.assignGrade(studentId,courseId,grade);
 					break;

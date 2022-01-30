@@ -8,7 +8,7 @@ package com.crs.flipkart.constants;
  *
  */
 public class SqlQueryConstants {
-    public static final String ADD_COURSE_QUERY = "INSERT INTO course(name,professorId,courseFee) values(?,?,?)";
+    public static final String ADD_COURSE_QUERY = "INSERT INTO course(courseId,name,courseFee) values(?,?,?)";
     public static final String ADD_COURSE_TO_CATALOG_QUERY = "INSERT INTO catalog(catalogId,courseId) values(?,?)";
     public static final String DELETE_COURSE_QUERY = "DELETE FROM course WHERE courseId = ?";
     public static final String VIEW_PROFESSORS_QUERY = "SELECT * FROM professor";

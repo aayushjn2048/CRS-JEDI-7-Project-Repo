@@ -19,9 +19,6 @@ import com.crs.flipkart.constants.Role;
  */
 public class StudentSelfRegistration {
 
-	/**
-	 * @param args
-	 */
 	public void selfRegistration()  {
 		Scanner scanner=new Scanner(System.in);
 		
