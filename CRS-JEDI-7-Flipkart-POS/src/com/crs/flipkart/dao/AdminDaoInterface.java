@@ -17,12 +17,12 @@ import com.crs.flipkart.validator.StandardResponse;
  */
 public interface AdminDaoInterface {
 	
-	public Boolean addCourse(Course course);
-	public Boolean deleteCourse(int courseId);
-	public Boolean updateCourse(Course course);
-	public Boolean addProfessor(Professor professor);
-	public Boolean removeProfessor(int professorId);
-	public Boolean updateProfessor(Professor professorOld,Professor professorNew);
+	public Boolean addCourse(Course course) throws DatabaseException;
+	public Boolean deleteCourse(int courseId) throws DatabaseException;
+	public Boolean updateCourse(Course course) throws DatabaseException;
+	public Boolean addProfessor(Professor professor) throws DatabaseException;
+	public Boolean removeProfessor(int professorId) throws DatabaseException;
+	public Boolean updateProfessor(Professor professorOld,Professor professorNew) throws DatabaseException;
 	public Boolean addStudentCourseChoices(int studentId,ArrayList<Integer> courseList);
 	public Boolean updateAllocatedStudentCourses(Map<Integer,ArrayList<Integer>> list);
 	public ArrayList<Course> getAllCourseDetails();

@@ -36,7 +36,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 * returns whether course is added successfully or not
 	 */
 	@Override
-	public Boolean addCourse(Course course) {
+	public Boolean addCourse(Course course) throws DatabaseException{
 
 		//add the course to 'course' table
 		try {
@@ -50,8 +50,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 				return false;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
-			return false;
+			throw new DatabaseException();
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
@@ -90,7 +89,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 * returns whether course is deleted successfully or not
 	 */
 	@Override
-	public Boolean deleteCourse(int courseId) {
+	public Boolean deleteCourse(int courseId) throws DatabaseException{
 		// TODO Auto-generated method stub
 		// logger.info("Instance creation of Deleting Course in Dao class");
 		try {
@@ -103,7 +102,8 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
+			throw new DatabaseException();
+
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
@@ -121,7 +121,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 */
 	@Override
 	//Considers the fact that courseId cannot be changed
-	public Boolean updateCourse(Course course) {
+	public Boolean updateCourse(Course course) throws DatabaseException{
 		// logger.info("Instance creation of Updating Course in Dao class");
 		// TODO Auto-generated method stub
 		try {
@@ -159,7 +159,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
+			throw new DatabaseException();
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
@@ -176,7 +176,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	@Override
 	public ArrayList<Professor> getAllProfessorDetails()  {
 		try {
-			 
+
 			 PreparedStatement stmt = null;
 			 stmt = conn.prepareStatement(SqlQueryConstants.VIEW_PROFESSORS_QUERY);
 			 ResultSet rs = stmt.executeQuery();
@@ -263,7 +263,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 * returns whether AddingProfessor is successfully or not
 	 */
 	@Override
-	public Boolean addProfessor(Professor professor) {
+	public Boolean addProfessor(Professor professor) throws DatabaseException{
 		// TODO Auto-generated method stub
 		// logger.info("Instance creation of Adding Professor in Dao class");
 		PreparedStatement stmt = null;
@@ -322,8 +322,8 @@ public class AdminDaoOperation implements AdminDaoInterface {
 
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
-			return false;
+			throw new DatabaseException();
+
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
@@ -339,7 +339,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 * returns whether removal of Professor is successful or not
 	 */
 	@Override
-	public Boolean removeProfessor(int professorId) {
+	public Boolean removeProfessor(int professorId) throws DatabaseException{
 		// TODO Auto-generated method stub
 		// logger.info("Instance creation of Removing Professor in Dao class");
 		PreparedStatement stmt = null;
@@ -365,7 +365,8 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
+			throw new DatabaseException();
+
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
@@ -382,7 +383,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 * returns whether updating professor is succesfully or not
 	 */
 	@Override
-	public Boolean updateProfessor(Professor professorOld,Professor professorNew) {
+	public Boolean updateProfessor(Professor professorOld,Professor professorNew) throws DatabaseException{
 		// TODO Auto-generated method stub
 		PreparedStatement stmt = null;
 		try {
@@ -400,8 +401,8 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
-			return false;
+			throw new DatabaseException();
+
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
