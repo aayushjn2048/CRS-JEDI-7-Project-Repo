@@ -112,19 +112,21 @@ public class AdminImplementation implements AdminInterface{
 		 return(admindaooperation.studentSelfRegistration(studentId));
 	}
 	
-	//Group 3
+	
 	public void viewAllStudents(){
 		StudentInterface studentImplementation = StudentImplementation.getInstance();
 		ArrayList<Student> studentData = studentImplementation.viewStudentData();
 		System.out.println("Student Id\t\tStudent Name");
 		studentData.forEach( (stu) -> {System.out.println(stu.getStudentId() + "\t\t\t" + stu.getName());});
-	}//3
+	}
+	
 	public void viewAllProfessors(){
 		AdminDaoInterface admindaooperation = new AdminDaoOperation();
 		ArrayList<Professor> profList = admindaooperation.getAllProfessorDetails();
 		System.out.println("Professor ID\t\tProfessor Name\t\tDesignation");
 		profList.forEach((prof) -> {System.out.println(prof.getProfessorId()+"\t\t\t"+prof.getName()+"\t\t\t"+prof.getDesignation().toString());});
 	}
+	
 	public void viewAllCourses(){
 		 AdminDaoInterface admindaooperation = new AdminDaoOperation();
 		 ArrayList<Course> clist = admindaooperation.viewAllCourses();

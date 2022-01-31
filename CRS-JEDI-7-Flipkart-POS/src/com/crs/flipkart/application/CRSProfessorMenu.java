@@ -17,6 +17,7 @@ import com.crs.flipkart.utils.DateAndTimeUtil;
 public class CRSProfessorMenu {
 	
 	public void professorMenuMain() throws CourseNotFoundException, ProfessorNotFoundException{
+		DateAndTimeUtil.loginDisplayDateAndTime();
 		System.out.println("\n------------------!!Welcome Professor!!-------------------\n");
 		System.out.println("Choose an option:-");
 		System.out.println("----------------------------------------------------------");

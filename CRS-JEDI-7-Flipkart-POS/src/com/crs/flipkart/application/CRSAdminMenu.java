@@ -44,7 +44,7 @@ public class CRSAdminMenu {
 	private static Logger logger = Logger.getLogger(CRSAdminMenu.class);
 	
 	public void adminMenuMain() throws CourseNotFoundException, ProfessorNotFoundException{
-		// TODO Auto-generated method stub
+		DateAndTimeUtil.loginDisplayDateAndTime();
 		System.out.println("\n-----------------------!!Welcome Admin!!----------------------\n");
 		System.out.println("Choose an option:-");
 		System.out.println("--------------------------------------------------------------");
