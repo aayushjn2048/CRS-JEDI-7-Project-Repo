@@ -23,6 +23,7 @@ public class CRSApplication {
 	 * @param args
 	 */
 	private static int userId = 0;
+	private static String userName = null;
 	
 	public static int getUserId()
 	{
@@ -34,9 +35,19 @@ public class CRSApplication {
 		userId = val;
 	}
 	
+	public static String getUserName()
+	{
+		return userName;
+	}
+	
+	public static void setUserName(String val)
+	{
+		userName = val;
+	}
+	
 	public static void startApplication() throws CourseNotFoundException, ProfessorNotFoundException
 	{
-		System.out.println("\n----------------!!Welcome to CRS Application!!----------------\n");
+		System.out.println("\033[0;1m" +"\n----------------!!Welcome to CRS Application!!----------------\n"+"\033[0m");
 		System.out.println("Choose the following operation:-");
 		System.out.println("--------------------------------------------------------------");
 		System.out.println("\t1 : Login User\n\t2 : Self Register Student\n\t3 : Forgot/Change Password\n\t4 : Quit");

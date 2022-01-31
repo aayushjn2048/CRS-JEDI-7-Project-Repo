@@ -41,6 +41,7 @@ public class AuthorizeDaoOperation implements AuthorizeDaoInterface{
 			 ResultSet rs = stmt.executeQuery();
 			 while(rs.next()){
 				 	CRSApplication.setUserId(rs.getInt("userId"));
+				 	CRSApplication.setUserName(rs.getString("username"));
 		            return Role.stringToName(rs.getString("roleName"));
 			 }
 			}

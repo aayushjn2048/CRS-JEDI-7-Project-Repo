@@ -18,7 +18,7 @@ public class CRSProfessorMenu {
 	
 	public void professorMenuMain() throws CourseNotFoundException, ProfessorNotFoundException{
 		DateAndTimeUtil.loginDisplayDateAndTime();
-		System.out.println("\n------------------!!Welcome Professor!!-------------------\n");
+		System.out.println("\033[0;1m" +"\n---------------------!!Welcome "+CRSApplication.getUserName()+"!!-----------------------\n"+"\033[0m");
 		System.out.println("Choose an option:-");
 		System.out.println("----------------------------------------------------------");
 		System.out.println("\t1 : View Available Courses\n\t2 : View enrolled students\n\t3 : Select Course\n\t4 : Assign Grade\n\t5 : Logout");

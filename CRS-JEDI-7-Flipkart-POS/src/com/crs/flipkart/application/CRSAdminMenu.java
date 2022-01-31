@@ -45,7 +45,7 @@ public class CRSAdminMenu {
 	
 	public void adminMenuMain() throws CourseNotFoundException, ProfessorNotFoundException{
 		DateAndTimeUtil.loginDisplayDateAndTime();
-		System.out.println("\n-----------------------!!Welcome Admin!!----------------------\n");
+		System.out.println("\033[0;1m" +"\n-----------------------!!Welcome Admin!!----------------------\n"+"\033[0m" );
 		System.out.println("Choose an option:-");
 		System.out.println("--------------------------------------------------------------");
 		System.out.println("\t1 : Add Course\n\t2 : Delete Course\n\t3 : Update Course\n\t4 : Activate Grade Card");
