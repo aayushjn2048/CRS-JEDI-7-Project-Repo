@@ -6,8 +6,10 @@ package com.crs.flipkart.bean;
 import java.util.Date;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * Notification Class
+ * 
  */
 public abstract class Notification {
 	

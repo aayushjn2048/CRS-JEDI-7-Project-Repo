@@ -2,10 +2,11 @@
  * 
  */
 package com.crs.flipkart.bean;
-
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * StudentRegisteredCourses Class
+ * 
  */
 public class StudentRegisteredCourses {
 	private int studentId;

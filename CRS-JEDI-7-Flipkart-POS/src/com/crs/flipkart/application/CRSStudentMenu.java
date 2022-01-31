@@ -5,6 +5,7 @@ package com.crs.flipkart.application;
 
 import java.util.Scanner;
 
+
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.business.PaymentImplementation;
 import com.crs.flipkart.business.PaymentInterface;
@@ -15,12 +16,18 @@ import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.exceptions.GradeCardNotPublishedException;
 import com.crs.flipkart.exceptions.ProfessorNotFoundException;
 import com.crs.flipkart.utils.DateAndTimeUtil;
-
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ *  The class displays the menu for student 
+ *  
  */
 public class CRSStudentMenu {
+	
+	/**
+	 * Method to generate Student Menu 
+	 * @throws  CourseNotFoundException, ProfessorNotFoundException
+	 */
 	public void studentMenuMain() throws CourseNotFoundException, ProfessorNotFoundException {
 		DateAndTimeUtil.loginDisplayDateAndTime();
 		System.out.println("\n------------------!!Welcome Student!!-------------------\n");

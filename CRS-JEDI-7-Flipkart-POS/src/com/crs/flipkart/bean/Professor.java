@@ -4,10 +4,11 @@
 package com.crs.flipkart.bean;
 
 import com.crs.flipkart.constants.Designation;
-
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * Professor Class
+ * 
  */
 public class Professor extends User{
 	private int professorId;

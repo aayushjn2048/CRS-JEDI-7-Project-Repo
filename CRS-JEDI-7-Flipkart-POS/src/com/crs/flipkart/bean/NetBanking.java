@@ -4,8 +4,10 @@
 package com.crs.flipkart.bean;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * NetBanking Class
+ * 
  */
 public class NetBanking {
 	private String accountNumber;

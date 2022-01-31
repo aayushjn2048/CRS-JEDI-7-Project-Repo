@@ -6,8 +6,10 @@ package com.crs.flipkart.bean;
 import com.crs.flipkart.constants.PaymentStatus;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * Challan Class
+ * 
  */
 public class Challan{
 	private int challanNo;

@@ -16,8 +16,10 @@ import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.validator.StandardResponse;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * Implementations of Course Operations
+ * 
  */
 public class CourseImplementation implements CourseInterface{
 	
@@ -25,6 +27,11 @@ public class CourseImplementation implements CourseInterface{
 	private CourseDaoInterface courseDaoImplementation = CourseDaoImplementation.getInstance();
 
 	private CourseImplementation(){}
+	
+	
+	/**
+	 * Method to make CourseImplementation Singleton
+	 */
 	
 	public static CourseImplementation getInstance(){
 		if(instance==null){
@@ -35,6 +42,11 @@ public class CourseImplementation implements CourseInterface{
 		return instance;
 	}
 	
+	 /**
+		 * Method for Removing Course to Catalog DataBase
+		 * @param courseId
+		 * throws CourseNotFoundException
+	 */
 	public void removeCourse(int courseId) throws CourseNotFoundException
 	{
 		AdminDaoInterface admin = new AdminDaoOperation();
@@ -47,6 +59,11 @@ public class CourseImplementation implements CourseInterface{
 			throw new CourseNotFoundException();
 		}
 	}
+	
+	 /**
+		 * Method for Adding Course to Catalog DataBase
+		 * @param course the course object whose details need to be added
+	 */
 	public void addCourse(Course course)
 	{
 		AdminDaoInterface admin = new AdminDaoOperation();
@@ -56,6 +73,12 @@ public class CourseImplementation implements CourseInterface{
 		else
 			System.out.println("Error while executing operation");
 	}
+	
+	 /**
+	 * Method for Updating Course to Catalog DataBase
+	 * @param course object
+	 * @throws CourseNotFoundException
+	 */
 	public void updateCourse(Course course) throws CourseNotFoundException{
 
 		AdminDaoInterface admin = new AdminDaoOperation();
@@ -67,12 +90,22 @@ public class CourseImplementation implements CourseInterface{
 		}
 	}
 	
+	/**
+	 * Method to get all the courses
+	 * @return List of courses
+	 */
 	@Override
 	public ArrayList<Course> getAllCourses() {
 		StudentDaoInterface studao = new StudentDaoOperation();
 		return studao.viewAllCourses();
 	}
 
+	/**
+	 * Method to get the course from course catalog
+	 * @param courseId
+	 * @throws CourseNotFoundException
+	 * @return course object
+	 */
 	@Override
 	public Course getCourseFromCatalog(int courseId) throws CourseNotFoundException{
 		// TODO Auto-generated method stub

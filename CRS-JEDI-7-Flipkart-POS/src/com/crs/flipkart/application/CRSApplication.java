@@ -12,10 +12,12 @@ import com.crs.flipkart.constants.Role;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.exceptions.ProfessorNotFoundException;
 import com.crs.flipkart.exceptions.UserNotFoundException;
-
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * This class is used as the main entry point of the application
+ * In main menu to login, register are displayed
+ * 
  */
 public class CRSApplication {
 
@@ -24,15 +26,28 @@ public class CRSApplication {
 	 */
 	private static int userId = 0;
 	
+	/**
+	 * Method for get UserId
+	 */
+	
 	public static int getUserId()
 	{
 		return userId;
 	}
 	
+	/**
+	 * Method for set UserId
+	 */
+	
+	
 	public static void setUserId(int val)
 	{
 		userId = val;
 	}
+	
+	/**
+	 * Method for Start Application
+	 */
 	
 	public static void startApplication() throws CourseNotFoundException, ProfessorNotFoundException
 	{

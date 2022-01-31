@@ -4,8 +4,10 @@
 package com.crs.flipkart.bean;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * PaymentNotification Class
+ * 
  */
 public class PaymentNotification extends Notification{
 	private int transactionId;

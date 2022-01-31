@@ -9,8 +9,10 @@ import com.crs.flipkart.dao.StudentDaoInterface;
 import com.crs.flipkart.dao.StudentDaoOperation;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * Implementations of Password Updation Operations
+ * 
  */
 public class PasswordUpdaterImplementation implements PasswordUpdaterInterface {
     public void update(){

@@ -7,8 +7,10 @@ import com.crs.flipkart.constants.Gender;
 import com.crs.flipkart.constants.Role;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * User Class
+ * 
  */
 public abstract class User {
 	

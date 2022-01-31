@@ -4,8 +4,10 @@
 package com.crs.flipkart.bean;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * Catalogue Class
+ * 
  */
 public class Catalogue {
 	private int courseId;

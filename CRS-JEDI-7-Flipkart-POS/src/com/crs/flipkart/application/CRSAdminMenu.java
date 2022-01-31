@@ -31,7 +31,7 @@ import com.crs.flipkart.exceptions.ProfessorNotFoundException;
 import com.crs.flipkart.utils.DateAndTimeUtil;
 
 /**
- * @author HP
+ * @author JEDI-03
  *
  */
 public class CRSAdminMenu {
@@ -43,6 +43,9 @@ public class CRSAdminMenu {
 	StudentImplementation studentImplementation = StudentImplementation.getInstance();
 	private static Logger logger = Logger.getLogger(CRSAdminMenu.class);
 	
+	/**
+	 * Method to Create Admin Menu
+	 */
 	public void adminMenuMain() throws CourseNotFoundException, ProfessorNotFoundException{
 		DateAndTimeUtil.loginDisplayDateAndTime();
 		System.out.println("\n-----------------------!!Welcome Admin!!----------------------\n");

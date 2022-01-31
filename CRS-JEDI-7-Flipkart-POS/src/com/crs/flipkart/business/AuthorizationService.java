@@ -9,10 +9,20 @@ import com.crs.flipkart.dao.AuthorizeDaoOperation;
 import com.crs.flipkart.exceptions.UserNotFoundException;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * AuthorizationService Class
+ * 
  */
 public class AuthorizationService {
+	
+	/**
+	 * Method for Authorization
+	 * @param username
+	 * @param password
+	 * @throws UserNotFoundException
+	 * @return Role object
+	 */
 	public Role authorize(String username, String password) throws UserNotFoundException
 	{
 		AuthorizeDaoInterface auth = new AuthorizeDaoOperation();

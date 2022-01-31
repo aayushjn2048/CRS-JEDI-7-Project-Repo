@@ -14,11 +14,17 @@ import com.crs.flipkart.constants.Gender;
 import com.crs.flipkart.constants.Role;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ *  The class for Student Self Registration
+ *  
  */
 public class StudentSelfRegistration {
 
+	/**
+	 * Method for student self registration
+	 */
+	
 	public void selfRegistration()  {
 		Scanner scanner=new Scanner(System.in);
 		

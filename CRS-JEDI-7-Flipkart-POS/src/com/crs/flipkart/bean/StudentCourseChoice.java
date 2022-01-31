@@ -6,8 +6,10 @@ package com.crs.flipkart.bean;
 import java.util.ArrayList;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * StudentCourseChoice Class
+ * 
  */
 public class StudentCourseChoice {
 	private int studentId;

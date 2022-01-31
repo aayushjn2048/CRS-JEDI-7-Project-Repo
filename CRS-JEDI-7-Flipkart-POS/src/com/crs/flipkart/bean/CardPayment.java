@@ -4,10 +4,11 @@
 package com.crs.flipkart.bean;
 
 import java.util.Date;
-
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * CardPayment Class
+ * 
  */
 public class CardPayment {
 	private String cardNo;

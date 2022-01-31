@@ -31,9 +31,12 @@ import com.crs.flipkart.exceptions.ProfessorNotFoundException;
 import com.crs.flipkart.utils.ServiceUtils;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * Implementations of Admin Operations
+ * 
  */
+
 class Pair{
 	int noOfStudents;
 	int courseId;
@@ -49,10 +52,10 @@ public class AdminImplementation implements AdminInterface{
 	private static Logger logger = Logger.getLogger(AdminImplementation.class);
 	
 	
-	
-	
 	private PaymentsDaoInterface paymentsDaoImplementation = PaymentsDaoImplementation.getInstance();
-	//Group 1
+	/**
+	 * Method for Activating GradeCard
+	 */
 	public void activateGradeCard(){
 		logger.info("Instance creation of service class");
 		StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
@@ -68,7 +71,13 @@ public class AdminImplementation implements AdminInterface{
 	}
 
 
-	//Group 2
+	
+	/**
+	 * Method for Adding Professor
+	 * @param professor object
+	 * @throws ProfessorNotFoundException
+	 */
+	
 	public void addProfessor(Professor professor) throws ProfessorNotFoundException {
 		
 		//ProfessorImplementation.addProfessor data(professor);
@@ -82,6 +91,12 @@ public class AdminImplementation implements AdminInterface{
 		}
 	}
 	
+	/**
+	 * Method for Removing Professor
+	 * @param professor Id
+	 * @throws ProfessorNotFoundException
+	 */
+	
 	public void removeProfessor(int professorId) throws ProfessorNotFoundException{
 
 		AdminDaoInterface admin = new AdminDaoOperation();
@@ -92,6 +107,12 @@ public class AdminImplementation implements AdminInterface{
 			throw new ProfessorNotFoundException();
 		}
 	}
+	
+	/**
+	 * Method for Updating Professor
+	 * @param professor object
+	 * @throws ProfessorNotFoundException
+	 */
 	
 	public void updateProfessor(Professor professor) throws ProfessorNotFoundException{
 		
@@ -107,11 +128,20 @@ public class AdminImplementation implements AdminInterface{
 		
 	}
 	
+	/**
+	 * Method for Approving Student Registration
+	 * @param student id
+	 * @return boolean object, student approved or not
+	 */
+	
 	public Boolean approveStudentRegistration(int studentId) {
 		AdminDaoInterface admindaooperation = new AdminDaoOperation();
 		 return(admindaooperation.studentSelfRegistration(studentId));
 	}
 	
+	/**
+	 * Method for Viewing All Student Details 
+	 */
 	
 	public void viewAllStudents(){
 		StudentInterface studentImplementation = StudentImplementation.getInstance();
@@ -120,12 +150,19 @@ public class AdminImplementation implements AdminInterface{
 		studentData.forEach( (stu) -> {System.out.println(stu.getStudentId() + "\t\t\t" + stu.getName());});
 	}
 	
+	/**
+	 * Method for Viewing All Professor Details 
+	 */
 	public void viewAllProfessors(){
 		AdminDaoInterface admindaooperation = new AdminDaoOperation();
 		ArrayList<Professor> profList = admindaooperation.getAllProfessorDetails();
 		System.out.println("Professor ID\t\tProfessor Name\t\tDesignation");
 		profList.forEach((prof) -> {System.out.println(prof.getProfessorId()+"\t\t\t"+prof.getName()+"\t\t\t"+prof.getDesignation().toString());});
 	}
+	
+	/**
+	 * Method for Viewing All Course Details 
+	 */
 	
 	public void viewAllCourses(){
 		 AdminDaoInterface admindaooperation = new AdminDaoOperation();
@@ -139,6 +176,10 @@ public class AdminImplementation implements AdminInterface{
 		 });
 	}
 
+	/**
+	 * Method for Allocating Pending Courses 
+	 */
+	
 	public void allocatePendingCourses(){
 		//Contains number of request made by students for particular course 
 		ArrayList<StudentRegisteredCourses> registeredCourses = new ArrayList<StudentRegisteredCourses>();
@@ -339,6 +380,10 @@ public class AdminImplementation implements AdminInterface{
 		admindao.updatePaymentStatus(studentList);
 	}
 	
+	/**
+	 * Method for Generating Challan
+	 * @returns Challan object
+	 */
 	public Challan generateChallan(SemesterRegistration semesterRegistration) {
 		int fee = semesterRegistration.getTotalFee();
 		int studentId = semesterRegistration.getStudentId();
@@ -351,6 +396,11 @@ public class AdminImplementation implements AdminInterface{
 		return challan;
 	}
 
+	/**
+	 * Method for Getting Payment Reference
+	 * @return PaymentReference object
+	 */
+	
 	private PaymentReference getPaymentReference(int fee, int studentId) {
 		PaymentReference paymentReference = new PaymentReference();
 		StudentInterface studentImplementation = StudentImplementation.getInstance();
