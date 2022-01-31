@@ -14,7 +14,7 @@ import com.crs.flipkart.bean.PaymentReference;
 
 /**
  * 
- *
+ * @author JEDI-03
  * Class to implement Payment Operations
  */
 public class PaymentsDaoImplementation implements PaymentsDaoInterface {
@@ -22,9 +22,17 @@ public class PaymentsDaoImplementation implements PaymentsDaoInterface {
     private static PaymentsDaoImplementation instance = null;
     Connection conn = DBConnection.connectDB();
     private static Logger logger = Logger.getLogger(PaymentsDaoImplementation.class);
+    
+    /**
+	 * Default Constructor
+	 */
     private PaymentsDaoImplementation() {
     }
 
+    /**
+	 * Method to make PaymentsDaoOperation Singleton
+	 * @return
+	 */
     public static PaymentsDaoImplementation getInstance() {
         if (instance == null) {
             synchronized (PaymentsDaoImplementation.class) {

@@ -18,8 +18,9 @@ import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.constants.SqlQueryConstants;
 
 /**
- * @author HP
- *
+ * @author JEDI-03
+ * Dao Class Operations for Professor
+ * 
  */
 public class ProfessorDaoOperation implements ProfessorDaoInterface {
 
@@ -31,7 +32,7 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 	 * @param professorId the id of professor
 	 * @param courseId the id of course
 	 * @return get the courses offered by the professor.
-*/
+	 */
 	@Override
 	public boolean selectCourse(int professorId, int courseId) {
 		// TODO Auto-generated method stub
@@ -78,7 +79,7 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 	 * Method to view list of enrolled Students using SQL Commands
 	 * @param: professorId the id of professor
 	 * @return: return the enrolled students for the corresponding professor and course code.
-*/
+	 */
 
 	@Override
 	public Map<Integer,ArrayList<Student>> viewEnrolledStudents(int professorid) {
@@ -150,7 +151,7 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
 	 * @param courseId the course id
      * @param grade the grade to be assigned
 	 * @return Grades to student
-*/
+	 */
 	public Boolean assignGrade(int studentId, int courseId,float grade) {
 		try {
 			PreparedStatement stmt = null;

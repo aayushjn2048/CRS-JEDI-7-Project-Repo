@@ -22,8 +22,9 @@ import com.crs.flipkart.constants.Designation;
 import com.crs.flipkart.constants.SqlQueryConstants;
 
 /**
- * @author HP
- *
+ * @author JEDI-03
+ * Dao Class Operations for Admin
+ * 
  */
 public class AdminDaoOperation implements AdminDaoInterface {
 	
@@ -434,7 +435,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	}
 
 	/**
-	 * Method for Geting All Course Details from database
+	 * Method for Getting All Course Details from database
 	 * returns Arraylists of course
 	 */
 	@Override

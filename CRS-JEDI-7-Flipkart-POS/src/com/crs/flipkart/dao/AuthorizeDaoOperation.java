@@ -15,10 +15,10 @@ import com.crs.flipkart.application.CRSApplication;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.constants.Role;
 import com.crs.flipkart.utils.DBUtils;
-
 /**
- * @author HP
- *
+ * @author JEDI-03
+ * Dao Class Operations for Authorization
+ * 
  */
 public class AuthorizeDaoOperation implements AuthorizeDaoInterface{
 

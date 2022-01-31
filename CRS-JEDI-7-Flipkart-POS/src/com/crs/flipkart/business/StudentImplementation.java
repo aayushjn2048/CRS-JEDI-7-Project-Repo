@@ -20,10 +20,11 @@ import com.crs.flipkart.dao.CourseDaoInterface;
 import com.crs.flipkart.dao.GradeCardDaoInterface;
 import com.crs.flipkart.dao.GradeCardDaoOperation;
 import com.crs.flipkart.dao.StudentDaoInterface;
-
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * class StudentImplementation
+ * 
  */
 public class StudentImplementation implements StudentInterface{
 	
@@ -34,6 +35,10 @@ public class StudentImplementation implements StudentInterface{
 	private StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
 	public StudentImplementation(){}
 
+	
+	/**
+	 * Method to make StudentImplementation Singleton
+	 */
 	public static StudentImplementation getInstance(){
 		if(instance==null){
 			synchronized (StudentImplementation.class){
@@ -43,6 +48,10 @@ public class StudentImplementation implements StudentInterface{
 		return instance;
 	}
 
+	  /**
+		 * Method to add student
+		 * @param student: student object containing all the fields
+	  */
 	
 	public void addStudentdata(Student student) {
 		StudentDaoInterface studentDaoOperation = new StudentDaoOperation();
@@ -51,14 +60,29 @@ public class StudentImplementation implements StudentInterface{
 		}
 	}
 
+	/**
+	 * Method to view  student details
+	 * @param StudentId
+	 * @return student object 
+	 */
+	
 	public Student viewStudentDetails(int studentId)
 	{
 		return studentDaoImplementation.viewStudentDetails(studentId);
 	}
+	
+	/**
+	 * Method to view all student details
+	 * @return list of student objects 
+	 */
 	public ArrayList<Student> viewStudentData()
 	{
 		return studentDaoImplementation.viewAllStudents();
 	}
+	
+	/**
+	 * Method to display course catalog
+	 */
 	
 	@Override
 	public void displayCourseCatalog() {
@@ -74,6 +98,11 @@ public class StudentImplementation implements StudentInterface{
 		
 	}
 
+	/**
+	 * Method to display grade card
+	 * @param StudentId
+	 * @throws GradeCardNotPublishedException
+	 */
 	@Override
 	public void displayGradeCard(int studentId) throws GradeCardNotPublishedException {
 		// TODO Auto-generated method stub
@@ -105,6 +134,12 @@ public class StudentImplementation implements StudentInterface{
 		
 	}
 
+	
+	/**
+	 * Method for Selecting Courses
+	 * @param StudentId
+	 * @return StudentCourseChoice object
+	 */
 	@Override
 	public StudentCourseChoice selectCourses(int studentId) {
 		// TODO Auto-generated method stub
@@ -148,16 +183,35 @@ public class StudentImplementation implements StudentInterface{
 		return studentCourseChoice;
 	}
 
+	
+
+	/**
+	 * Method for checking already registered or not
+	 * @param StudentId
+	 * @return boolean object
+	 */
 	@Override
 	public Boolean studentAlreadyRegistered(int studentId) {
 		return studentDaoImplementation.studentAlreadyRegistered(studentId);
 	}
 
+	
+	/**
+	 * Method for making payment successful
+	 * @param StudentId
+	 * @param referenceNo
+	 */
 	@Override
 	public void makePaymentSuccessful(int studentId,String referenceNo) {
 		studentDaoImplementation.makePaymentSuccessful(studentId,referenceNo);
 	}
 	
+	
+	/**
+	 * Method to get the payment status
+	 * @param StudentId
+	 * @param payment status 
+	 */
 	@Override
 	public String getPaymentStatus(int studentId) {
 
@@ -165,6 +219,11 @@ public class StudentImplementation implements StudentInterface{
 		return paymentStatus;
 	}
 
+	/**
+	 * Method for checking student registered or not
+	 * @param StudentId
+	 * @return boolean object
+	 */
 	@Override
 	public Boolean isStudentRegistered(int studentId) {
 		return studentDaoImplementation.isStudentRegistered(studentId);

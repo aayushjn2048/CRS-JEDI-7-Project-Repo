@@ -12,8 +12,10 @@ import org.apache.log4j.Logger;
 import com.crs.flipkart.bean.Student;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * Implementations of user Dao Operations
+ * 
  */
 public class UserDaoOperation implements UserDaoInterface {
 	

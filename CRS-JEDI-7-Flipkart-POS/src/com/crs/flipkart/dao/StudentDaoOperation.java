@@ -19,6 +19,7 @@ import com.crs.flipkart.constants.Gender;
 import com.crs.flipkart.constants.SqlQueryConstants;
 
 /*
+ *@author JEDI-03
 * Class to implement Student Dao Operations
 *
 */
@@ -28,8 +29,16 @@ public class StudentDaoOperation implements StudentDaoInterface {
     private Connection conn = DBConnection.connectDB();
     private static Logger logger = Logger.getLogger(StudentDaoOperation.class);
 
+
+	/**
+	 * Default Constructor
+	 */
     private void StudentImplementation(){}
 
+    /**
+	 * Method to make StudentDaoOperation Singleton
+	 * @return instance
+	 */
     public static StudentDaoOperation getInstance(){
         if(instance==null){
             synchronized (com.crs.flipkart.business.StudentImplementation.class){
@@ -267,6 +276,12 @@ public class StudentDaoOperation implements StudentDaoInterface {
 		}
 	}
 	
+	
+	/**
+	 * Method to Getting Payment status
+	 * @param studentId: studentId
+	 * @return payment status
+	 */
 	@Override
 	public  String getPaymentStatus(int studentId) {
 		String result = null;
@@ -357,6 +372,11 @@ public class StudentDaoOperation implements StudentDaoInterface {
         return true;
     }
 
+	/**
+	 * Method to check student Registered or not
+	 * @param studentId
+	 * @return Boolean object
+	 * */
 	@Override
 	public Boolean isStudentRegistered(int studentId) {
 		// TODO Auto-generated method stub

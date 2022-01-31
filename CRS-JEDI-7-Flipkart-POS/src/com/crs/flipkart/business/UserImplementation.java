@@ -8,11 +8,17 @@ import com.crs.flipkart.dao.UserDaoInterface;
 import com.crs.flipkart.dao.UserDaoOperation;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * Implementations of User Operations
+ * 
  */
 public class UserImplementation implements UserInterface {
 
+	/**
+	 * Method to add credentials of Users
+	 * @param user contains the student details
+	 */
 	@Override
 	public void addUserdata(Student user) {
 		// TODO Auto-generated method stub

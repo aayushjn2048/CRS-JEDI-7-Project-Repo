@@ -6,10 +6,17 @@ package com.crs.flipkart.utils;
 import java.util.Random;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * ServiceUtils class
+ * 
  */
 public class ServiceUtils {
+	
+	/**
+	 * Method for creating userId
+	 * @return userId
+	 */
 	public static int createUserId()
 	{
 		Random rand = new Random();

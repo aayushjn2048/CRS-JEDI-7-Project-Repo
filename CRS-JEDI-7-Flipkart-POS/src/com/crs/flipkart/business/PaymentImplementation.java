@@ -3,10 +3,6 @@
  */
 package com.crs.flipkart.business;
 
-/**
- * @author HP
- *
- */
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,13 +13,20 @@ import com.crs.flipkart.dao.CourseDaoInterface;
 import com.crs.flipkart.utils.ServiceUtils;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * PaymentImplementation class
+ * 
  */
 public class PaymentImplementation implements PaymentInterface {
 
 	private CourseDaoInterface courseDaoImplementation = CourseDaoImplementation.getInstance();
 
+	/**
+	 * Method to calculate the total fee for student
+	 * @param StudentId
+	 * @return totalFee
+	 */
 	@Override
 	public int calculateFees(int studentId) {
 		// TODO Auto-generated method stub
@@ -42,6 +45,9 @@ public class PaymentImplementation implements PaymentInterface {
 	}
 	Scanner scn;
 	@Override
+	/**
+	 * Method to Display the payment methods
+	 */
 	public String displayPaymentMethods() {
 		// TODO Auto-generated method stub
 		scn = new Scanner(System.in);
@@ -57,6 +63,10 @@ public class PaymentImplementation implements PaymentInterface {
 		return null;
 	}
 
+	/**
+	 * Method to Display the online mode methods
+	 * @return returns the reference number
+	 */
 	private String displayOnline() {
 		// TODO Auto-generated method stub
 		System.out.println("\nEnter Debit/Credit Card Details:-");
@@ -70,6 +80,9 @@ public class PaymentImplementation implements PaymentInterface {
 		return refNo;
 	}
 
+	/**
+	 * Method to Display the offline mode methods
+	 */
 	private String displayOffline() {
 		// TODO Auto-generated method stub
 		System.out.print("Enter Reference Details for Offline payment: ");

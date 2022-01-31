@@ -12,12 +12,19 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * @author HP
- *
+ * 
+ * @author JEDI-03
+ * DBUtils class
+ * 
  */
 public class DBUtils {
 	
 	private static Connection connection = null;
+	
+	/**
+	 * Method to establish the connection
+	 * @return Connection object
+	 */
 	
 	public static Connection getConnection() {
 		

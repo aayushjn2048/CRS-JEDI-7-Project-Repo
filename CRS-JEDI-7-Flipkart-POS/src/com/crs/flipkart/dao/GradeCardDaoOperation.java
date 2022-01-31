@@ -16,7 +16,7 @@ import com.crs.flipkart.bean.GradeCard;
 
 /**
  * 
- *
+ * @author JEDI-03
  * Class to implement Grade Card Operations
  */
 public class GradeCardDaoOperation implements GradeCardDaoInterface{
@@ -27,9 +27,18 @@ public class GradeCardDaoOperation implements GradeCardDaoInterface{
     private Connection conn = DBConnection.connectDB();
     private CourseDaoInterface courseDaoOperation = CourseDaoImplementation.getInstance();
 
+    
+    /**
+	 * Default Constructor
+	 */
     private GradeCardDaoOperation() {
     }
 
+
+	/**
+	 * Method to make GradeCardDaoOperation Singleton
+	 * @return instance
+	 */
     public static GradeCardDaoOperation getInstance() {
         if (instance == null) {
             synchronized (GradeCardDaoOperation.class) {

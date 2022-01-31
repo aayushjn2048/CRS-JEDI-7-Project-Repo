@@ -16,9 +16,9 @@ import com.crs.flipkart.bean.StudentRegisteredCourses;
 import com.crs.flipkart.utils.DBUtils;
 
 /**
+ * @author JEDI-03
+ * Dao Class Operations for Course
  * 
- *
- * Class to implement Courses  Operations
  */
 public class CourseDaoImplementation implements CourseDaoInterface{
 	private static Logger logger = Logger.getLogger(CourseDaoImplementation.class);
@@ -28,6 +28,10 @@ public class CourseDaoImplementation implements CourseDaoInterface{
     private CourseDaoImplementation() {
     }
 
+    /**
+	 * Method to make CourseDaoOperation Singleton
+	 * @return instance
+	 */
     public static CourseDaoImplementation getInstance() {
         if (instance == null) {
             synchronized (CourseDaoImplementation.class) {

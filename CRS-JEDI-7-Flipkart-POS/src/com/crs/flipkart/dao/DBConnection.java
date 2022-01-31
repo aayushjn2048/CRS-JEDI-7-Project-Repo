@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
 /**
- * 
+* @author JEDI-03
  *
  * Class to implement DBConnection
  */
@@ -28,6 +28,11 @@ public class DBConnection {
 	   
 	 //method for connecting the MYSQL Database
 	   //returns the Connection 
+	   
+	   /**
+		 * Method to Establish the connection
+		 * @return connection object
+		 */
 	   public static Connection connectDB() {
 
 			// Declare the Connection or prepaidstatement variable here 
