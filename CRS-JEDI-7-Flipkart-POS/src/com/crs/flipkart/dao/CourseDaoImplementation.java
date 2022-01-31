@@ -17,8 +17,8 @@ import com.crs.flipkart.utils.DBUtils;
 
 /**
  * 
- *
- * Class to implement Courses  Operations
+ * Dao Class Operations for Course
+ * 
  */
 public class CourseDaoImplementation implements CourseDaoInterface{
 	private static Logger logger = Logger.getLogger(CourseDaoImplementation.class);

@@ -4,7 +4,8 @@
 package com.crs.flipkart.exceptions;
 
 /**
- * @author HP
+ * Exception to check if the professor is not found or not
+ * @author JEDI-03
  *
  */
 public class ProfessorNotFoundException extends Exception{

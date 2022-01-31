@@ -4,17 +4,22 @@
 package com.crs.flipkart.business;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.crs.flipkart.application.CRSApplication;
 import com.crs.flipkart.bean.Course;
 import com.crs.flipkart.bean.GradeCard;
+import com.crs.flipkart.bean.Notification;
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.bean.StudentCourseChoice;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
 import com.crs.flipkart.dao.StudentDaoOperation;
 import com.crs.flipkart.exceptions.GradeCardNotPublishedException;
+import com.crs.flipkart.dao.AdminDaoInterface;
+import com.crs.flipkart.dao.AdminDaoOperation;
 import com.crs.flipkart.dao.CourseDaoImplementation;
 import com.crs.flipkart.dao.CourseDaoInterface;
 import com.crs.flipkart.dao.GradeCardDaoInterface;
@@ -23,7 +28,8 @@ import com.crs.flipkart.dao.StudentDaoInterface;
 
 /**
  * @author HP
- *
+ * class StudentImplementation
+ * 
  */
 public class StudentImplementation implements StudentInterface{
 	
@@ -34,6 +40,9 @@ public class StudentImplementation implements StudentInterface{
 	private StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
 	public StudentImplementation(){}
 
+	/**
+	 * Method to make StudentImplementation Singleton
+	 */
 	public static StudentImplementation getInstance(){
 		if(instance==null){
 			synchronized (StudentImplementation.class){
@@ -43,7 +52,11 @@ public class StudentImplementation implements StudentInterface{
 		return instance;
 	}
 
-	
+	/**
+	 * Method to add student
+	 * @param student: student object containing all the fields
+  */
+	@Override
 	public void addStudentdata(Student student) {
 		StudentDaoInterface studentDaoOperation = new StudentDaoOperation();
 		if(studentDaoOperation.addStudentData(student)) {
@@ -51,15 +64,30 @@ public class StudentImplementation implements StudentInterface{
 		}
 	}
 
+	/**
+	 * Method to view  student details
+	 * @param StudentId
+	 * @return student object 
+	 */
+	@Override
 	public Student viewStudentDetails(int studentId)
 	{
 		return studentDaoImplementation.viewStudentDetails(studentId);
 	}
+	
+	/**
+	 * Method to view all student details
+	 * @return list of student objects 
+	 */
+	@Override
 	public ArrayList<Student> viewStudentData()
 	{
 		return studentDaoImplementation.viewAllStudents();
 	}
 	
+	/**
+	 * Method to display course catalog
+	 */
 	@Override
 	public void displayCourseCatalog() {
 		StudentDaoInterface studentdao = new StudentDaoOperation();
@@ -74,6 +102,11 @@ public class StudentImplementation implements StudentInterface{
 		
 	}
 
+	/**
+	 * Method to display grade card
+	 * @param StudentId
+	 * @throws GradeCardNotPublishedException
+	 */
 	@Override
 	public void displayGradeCard(int studentId) throws GradeCardNotPublishedException {
 		// TODO Auto-generated method stub
@@ -105,6 +138,11 @@ public class StudentImplementation implements StudentInterface{
 		
 	}
 
+	/**
+	 * Method for Selecting Courses
+	 * @param StudentId
+	 * @return StudentCourseChoice object
+	 */
 	@Override
 	public StudentCourseChoice selectCourses(int studentId) {
 		// TODO Auto-generated method stub
@@ -144,20 +182,41 @@ public class StudentImplementation implements StudentInterface{
 		studentDaoImplementation.storeStudentCourseChoice(studentCourseChoice);
 		
 		System.out.println("Registration form submitted!!");
-		
+		Notification notification = new Notification();
+		notification.setUserId(CRSApplication.getUserId());
+		notification.setMessage("Your application form has been submitted for the further process.");
+		Date date = new Date();
+		notification.setDateTime(date);
+		AdminDaoInterface adminDao = new AdminDaoOperation();
+		adminDao.generateNotification(notification);
 		return studentCourseChoice;
 	}
 
+	/**
+	 * Method for checking already registered or not
+	 * @param StudentId
+	 * @return boolean object
+	 */
 	@Override
 	public Boolean studentAlreadyRegistered(int studentId) {
 		return studentDaoImplementation.studentAlreadyRegistered(studentId);
 	}
 
+	/**
+	 * Method for making payment successful
+	 * @param StudentId
+	 * @param referenceNo
+	 */
 	@Override
 	public void makePaymentSuccessful(int studentId,String referenceNo) {
 		studentDaoImplementation.makePaymentSuccessful(studentId,referenceNo);
 	}
 	
+	/**
+	 * Method to get the payment status
+	 * @param StudentId
+	 * @param payment status 
+	 */
 	@Override
 	public String getPaymentStatus(int studentId) {
 
@@ -165,6 +224,11 @@ public class StudentImplementation implements StudentInterface{
 		return paymentStatus;
 	}
 
+	/**
+	 * Method for checking student registered or not
+	 * @param StudentId
+	 * @return boolean object
+	 */
 	@Override
 	public Boolean isStudentRegistered(int studentId) {
 		return studentDaoImplementation.isStudentRegistered(studentId);

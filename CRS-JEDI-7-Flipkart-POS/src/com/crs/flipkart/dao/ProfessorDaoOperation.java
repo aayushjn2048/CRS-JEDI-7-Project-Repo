@@ -19,7 +19,8 @@ import com.crs.flipkart.constants.SqlQueryConstants;
 
 /**
  * @author HP
- *
+ * Dao Class Operations for Professor
+ * 
  */
 public class ProfessorDaoOperation implements ProfessorDaoInterface {
 

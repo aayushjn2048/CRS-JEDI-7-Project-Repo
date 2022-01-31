@@ -26,8 +26,10 @@ public class DBConnection {
 	   static final String USER = "ce";
 	   static final String PASS = "Crs12345#";
 	   
-	 //method for connecting the MYSQL Database
-	   //returns the Connection 
+	   /**
+		 * Method to Establish the connection
+		 * @return connection object
+		 */
 	   public static Connection connectDB() {
 
 			// Declare the Connection or prepaidstatement variable here 

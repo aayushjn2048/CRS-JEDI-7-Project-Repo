@@ -4,7 +4,8 @@
 package com.crs.flipkart.exceptions;
 
 /**
- * @author HP
+ * Exception to check if GradeCard not published 
+ * @author JEDI-03
  *
  */
 public class GradeCardNotPublishedException extends Exception{

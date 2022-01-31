@@ -8,22 +8,34 @@ package com.crs.flipkart.business;
  *
  */
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
+import com.crs.flipkart.application.CRSApplication;
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.bean.Notification;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
+import com.crs.flipkart.constants.Role;
+import com.crs.flipkart.dao.AdminDaoInterface;
+import com.crs.flipkart.dao.AdminDaoOperation;
 import com.crs.flipkart.dao.CourseDaoImplementation;
 import com.crs.flipkart.dao.CourseDaoInterface;
 import com.crs.flipkart.utils.ServiceUtils;
 
 /**
  * @author HP
- *
+ * PaymentImplementation class
+ * 
  */
 public class PaymentImplementation implements PaymentInterface {
 
 	private CourseDaoInterface courseDaoImplementation = CourseDaoImplementation.getInstance();
 
+	/**
+	 * Method to calculate the total fee for student
+	 * @param StudentId
+	 * @return totalFee
+	 */
 	@Override
 	public int calculateFees(int studentId) {
 		// TODO Auto-generated method stub
@@ -39,41 +51,6 @@ public class PaymentImplementation implements PaymentInterface {
 		totalFee += courseDaoImplementation.getCourseFromCourseId(studentRegistereCourses.getCourseId4())
 				.getCourseFee();
 		return totalFee;
-	}
-	Scanner scn;
-	@Override
-	public String displayPaymentMethods() {
-		// TODO Auto-generated method stub
-		scn = new Scanner(System.in);
-		System.out.println("Choose payment mode\n\t1)Offline\n\t2)Online");
-		System.out.print("Enter Choice: ");
-		int paymentMethod = scn.nextInt();
-		switch (paymentMethod) {
-		case 1:
-			return displayOffline();
-		case 2:
-			return displayOnline();
-		}
-		return null;
-	}
-
-	private String displayOnline() {
-		// TODO Auto-generated method stub
-		System.out.println("\nEnter Debit/Credit Card Details:-");
-		System.out.print("\n\tCard number: ");
-		scn.next();
-		System.out.print("\n\tExpiry Date: ");
-		scn.next();
-		System.out.print("\n\tCVV: ");
-		scn.next();
-		String refNo = "R"+ServiceUtils.createUserId();
-		return refNo;
-	}
-
-	private String displayOffline() {
-		// TODO Auto-generated method stub
-		System.out.print("Enter Reference Details for Offline payment: ");
-		return scn.next();
 	}
 
 }

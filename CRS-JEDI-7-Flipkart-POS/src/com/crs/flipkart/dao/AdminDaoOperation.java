@@ -8,22 +8,32 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
 
+import com.crs.flipkart.application.CRSApplication;
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.bean.Notification;
 import com.crs.flipkart.bean.Professor;
 import com.crs.flipkart.constants.Designation;
+import com.crs.flipkart.constants.Role;
 import com.crs.flipkart.constants.SqlQueryConstants;
+import com.crs.flipkart.exceptions.DatabaseException;
 
 /**
  * @author HP
- *
+ * Dao Class Operations for Admin
+ * 
  */
 public class AdminDaoOperation implements AdminDaoInterface {
 	
@@ -36,7 +46,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 * returns whether course is added successfully or not
 	 */
 	@Override
-	public Boolean addCourse(Course course) {
+	public Boolean addCourse(Course course) throws DatabaseException{
 
 		//add the course to 'course' table
 		try {
@@ -50,8 +60,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 				return false;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
-			return false;
+			throw new DatabaseException();
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
@@ -90,7 +99,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 * returns whether course is deleted successfully or not
 	 */
 	@Override
-	public Boolean deleteCourse(int courseId) {
+	public Boolean deleteCourse(int courseId) throws DatabaseException{
 		// TODO Auto-generated method stub
 		// logger.info("Instance creation of Deleting Course in Dao class");
 		try {
@@ -103,7 +112,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
+			throw new DatabaseException();
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
@@ -121,7 +130,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 */
 	@Override
 	//Considers the fact that courseId cannot be changed
-	public Boolean updateCourse(Course course) {
+	public Boolean updateCourse(Course course) throws DatabaseException{
 		// logger.info("Instance creation of Updating Course in Dao class");
 		// TODO Auto-generated method stub
 		try {
@@ -159,7 +168,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
+			throw new DatabaseException();
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
@@ -263,7 +272,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 * returns whether AddingProfessor is successfully or not
 	 */
 	@Override
-	public Boolean addProfessor(Professor professor) {
+	public Boolean addProfessor(Professor professor) throws DatabaseException{
 		// TODO Auto-generated method stub
 		// logger.info("Instance creation of Adding Professor in Dao class");
 		PreparedStatement stmt = null;
@@ -322,8 +331,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
-			return false;
+			throw new DatabaseException();
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
@@ -339,7 +347,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 * returns whether removal of Professor is successful or not
 	 */
 	@Override
-	public Boolean removeProfessor(int professorId) {
+	public Boolean removeProfessor(int professorId) throws DatabaseException{
 		// TODO Auto-generated method stub
 		// logger.info("Instance creation of Removing Professor in Dao class");
 		PreparedStatement stmt = null;
@@ -365,7 +373,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			return true;
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
+			throw new DatabaseException();
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
@@ -382,7 +390,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 	 * returns whether updating professor is succesfully or not
 	 */
 	@Override
-	public Boolean updateProfessor(Professor professorOld,Professor professorNew) {
+	public Boolean updateProfessor(Professor professorOld,Professor professorNew) throws DatabaseException{
 		// TODO Auto-generated method stub
 		PreparedStatement stmt = null;
 		try {
@@ -400,8 +408,7 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			
 		} catch (SQLException se) {
 			// Handle errors for JDBC
-			logger.error("Exception raised" + se.getMessage());
-			return false;
+			throw new DatabaseException();
 		} catch (Exception e) {
 			// Handle errors for Class.forName
 			logger.error("Exception raised" + e.getMessage());
@@ -610,6 +617,16 @@ public class AdminDaoOperation implements AdminDaoInterface {
 				int rs = stmt.executeUpdate();
 				if (rs == 0)
 					return false;
+				else
+				{
+					Notification notification = new Notification();
+					notification.setUserId(studentList.get(i));
+					notification.setMessage("Course has been allocated!!! Next, you need to pay the course fee for the courses allocated to you.");
+					Date date = new Date();
+					notification.setDateTime(date);
+					notification.setUserType(Role.STUDENT);
+					generateNotification(notification);
+				}
 			}
 			return true;
 		} catch (SQLException se) {
@@ -622,6 +639,54 @@ public class AdminDaoOperation implements AdminDaoInterface {
 			// finally block used to close resources // nothing we can do//end finally try
 		}
 		return false;
+	}
+
+	@Override
+	public void generateNotification(Notification notification) {
+		if(notification.getUserType().toString().equals("STUDENT"))
+		{
+			try {
+				String sql = "INSERT INTO notification(userId,message,dateTime) values (?,?,?) ";
+				PreparedStatement stmt = conn.prepareStatement(sql);
+				stmt.setInt(1,notification.getUserId());
+				stmt.setString(2, notification.getMessage());
+				Timestamp timestamp = new Timestamp(notification.getDateTime().getTime());
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+				stmt.setTimestamp(3, timestamp);
+				stmt.executeUpdate();
+			} catch (SQLException se) {
+				// Handle errors for JDBC
+				logger.error("Exception raised" + se.getMessage());
+			} catch (Exception e) {
+				// Handle errors for Class.forName
+				logger.error("Exception raised" + e.getMessage());
+			} finally {
+				// finally block used to close resources // nothing we can do//end finally try
+			}
+		}
+	}
+
+	@Override
+	public ArrayList<Notification> viewNotifications(int userId) {
+		try {
+			PreparedStatement stmt = null;
+			String sql = "SELECT * FROM notification WHERE userId = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, userId);
+			 ResultSet rs = stmt.executeQuery();
+			 ArrayList<Notification> notifications = new ArrayList<Notification>();
+			 while(rs.next()){
+				 Notification noti = new Notification();
+				 noti.setMessage(rs.getString("message"));
+				 noti.setDateTime(new Date(rs.getTimestamp("dateTime").getTime()));
+				 notifications.add(noti);
+		     }
+			 return notifications;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				logger.error("Exception raised" + e.getMessage());
+			}
+		return null;
 	}
 	
 

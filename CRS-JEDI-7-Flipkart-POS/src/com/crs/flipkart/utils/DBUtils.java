@@ -19,6 +19,10 @@ public class DBUtils {
 	
 	private static Connection connection = null;
 	
+	/**
+	 * Method to establish the connection
+	 * @return Connection object
+	 */
 	public static Connection getConnection() {
 		
         if (connection != null)

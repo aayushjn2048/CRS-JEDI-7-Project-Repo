@@ -12,7 +12,9 @@ import com.crs.flipkart.dao.CourseDaoImplementation;
 import com.crs.flipkart.dao.CourseDaoInterface;
 import com.crs.flipkart.dao.StudentDaoInterface;
 import com.crs.flipkart.dao.StudentDaoOperation;
+import com.crs.flipkart.exceptions.CourseNotDeletedException;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.exceptions.DatabaseException;
 import com.crs.flipkart.validator.StandardResponse;
 
 /**
@@ -35,22 +37,33 @@ public class CourseImplementation implements CourseInterface{
 		return instance;
 	}
 	
-	public void removeCourse(int courseId) throws CourseNotFoundException
+	public void removeCourse(int courseId) throws CourseNotDeletedException
 	{
 		AdminDaoInterface admin = new AdminDaoOperation();
-		if(admin.deleteCourse(courseId))
-		{
-			System.out.println("Course details deleted from the database");
-		}
-		else
-		{
-			throw new CourseNotFoundException();
+		try {
+			if(admin.deleteCourse(courseId))
+			{
+				System.out.println("Course details deleted from the database");
+			}
+			else
+			{
+				throw new CourseNotFoundException();
+			}
+		} catch (DatabaseException | CourseNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	public void addCourse(Course course)
 	{
 		AdminDaoInterface admin = new AdminDaoOperation();
-		Boolean ans = admin.addCourse(course);
+		Boolean ans = null;
+		try {
+			ans = admin.addCourse(course);
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(ans)
 			System.out.println("Course added successfully!!!");
 		else
@@ -59,11 +72,16 @@ public class CourseImplementation implements CourseInterface{
 	public void updateCourse(Course course) throws CourseNotFoundException{
 
 		AdminDaoInterface admin = new AdminDaoOperation();
-		if(admin.updateCourse(course))	//we need to change in the menu so that users can only add the details they can update
-			System.out.println("Course updated successfully!!!");
-		else
-		{
-			throw new CourseNotFoundException();
+		try {
+			if(admin.updateCourse(course))	//we need to change in the menu so that users can only add the details they can update
+				System.out.println("Course updated successfully!!!");
+			else
+			{
+				throw new CourseNotFoundException();
+			}
+		} catch (DatabaseException | CourseNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

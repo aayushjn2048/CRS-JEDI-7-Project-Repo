@@ -5,20 +5,24 @@ package com.crs.flipkart.bean;
 
 import java.util.Date;
 
+import com.crs.flipkart.constants.Role;
+
 /**
  * @author HP
  *
  */
-public abstract class Notification {
+public class Notification {
 	
+	private int userId;
 	private String username;
 	private int notificationId;
 	private String message;
-	private String userType;
+	private Role userType;
 	private Date dateTime;
 	/**
 	 * @return the username
 	 */
+	
 	public String getUsername() {
 		return username;
 	}
@@ -55,13 +59,13 @@ public abstract class Notification {
 	/**
 	 * @return the userType
 	 */
-	public String getUserType() {
+	public Role getUserType() {
 		return userType;
 	}
 	/**
 	 * @param userType the userType to set
 	 */
-	public void setUserType(String userType) {
+	public void setUserType(Role userType) {
 		this.userType = userType;
 	}
 	/**
@@ -75,6 +79,12 @@ public abstract class Notification {
 	 */
 	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
+	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 }

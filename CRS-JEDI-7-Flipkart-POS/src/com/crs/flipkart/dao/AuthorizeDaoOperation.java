@@ -18,7 +18,8 @@ import com.crs.flipkart.utils.DBUtils;
 
 /**
  * @author HP
- *
+ * Dao Class Operations for Authorization
+ * 
  */
 public class AuthorizeDaoOperation implements AuthorizeDaoInterface{
 

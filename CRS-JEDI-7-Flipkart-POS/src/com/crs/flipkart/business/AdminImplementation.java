@@ -27,6 +27,8 @@ import com.crs.flipkart.dao.PaymentsDaoImplementation;
 import com.crs.flipkart.dao.PaymentsDaoInterface;
 import com.crs.flipkart.dao.StudentDaoInterface;
 import com.crs.flipkart.dao.StudentDaoOperation;
+import com.crs.flipkart.exceptions.DatabaseException;
+import com.crs.flipkart.exceptions.GradeCardNotPublishedException;
 import com.crs.flipkart.exceptions.ProfessorNotFoundException;
 import com.crs.flipkart.utils.ServiceUtils;
 
@@ -53,14 +55,14 @@ public class AdminImplementation implements AdminInterface{
 	
 	private PaymentsDaoInterface paymentsDaoImplementation = PaymentsDaoImplementation.getInstance();
 	//Group 1
-	public void activateGradeCard(){
+	public void activateGradeCard() throws GradeCardNotPublishedException{
 		logger.info("Instance creation of service class");
 		StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
 		try {
 			if(studentDaoImplementation.activateGradeCard())
 				System.out.println("Grade Card Visibility Activated");
 			else
-				System.out.println("Grade card visibility activation failed");
+				throw new GradeCardNotPublishedException();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("Exception raised"+e.getMessage());
@@ -74,22 +76,38 @@ public class AdminImplementation implements AdminInterface{
 		//ProfessorImplementation.addProfessor data(professor);
 		professor.setProfessorId(ServiceUtils.createUserId());
 		AdminDaoInterface admin = new AdminDaoOperation();
-		if(admin.addProfessor(professor))
-			System.out.println("Professor is successfully created"); 
-		else {
-			throw new ProfessorNotFoundException();
-			//System.out.println("Professor is not removed. Please enter valid professor id");
+		try {
+			if(admin.addProfessor(professor))
+				System.out.println("Professor is successfully created"); 
+			else {
+				throw new ProfessorNotFoundException();
+				//System.out.println("Professor is not removed. Please enter valid professor id");
+			}
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ProfessorNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
 	public void removeProfessor(int professorId) throws ProfessorNotFoundException{
 
 		AdminDaoInterface admin = new AdminDaoOperation();
-		if(admin.removeProfessor(professorId)){
-			System.out.println("Professor is succesfully removed");
-		}
-		else{
-			throw new ProfessorNotFoundException();
+		try {
+			if(admin.removeProfessor(professorId)){
+				System.out.println("Professor is succesfully removed");
+			}
+			else{
+				throw new ProfessorNotFoundException();
+			}
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ProfessorNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -97,12 +115,20 @@ public class AdminImplementation implements AdminInterface{
 		
 
 		AdminDaoInterface admindao = new AdminDaoOperation();
-		if(admindao.updateProfessor(professor,professor)){	//Ultimately we should update only the details that were newly changed
-			System.out.println("Professor is updated");
+		try {
+			if(admindao.updateProfessor(professor,professor)){	//Ultimately we should update only the details that were newly changed
+				System.out.println("Professor is updated");
 
-		}
-		else{
-			throw new ProfessorNotFoundException();
+			}
+			else{
+				throw new ProfessorNotFoundException();
+			}
+		} catch (DatabaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ProfessorNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}

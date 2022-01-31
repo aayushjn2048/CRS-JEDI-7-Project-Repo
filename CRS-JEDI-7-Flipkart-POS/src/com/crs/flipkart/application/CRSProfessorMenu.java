@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 import com.crs.flipkart.business.ProfessorImplementation;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.exceptions.GradeCardNotPublishedException;
+import com.crs.flipkart.exceptions.PasswordIsWeakException;
 import com.crs.flipkart.exceptions.ProfessorNotFoundException;
 import com.crs.flipkart.utils.DateAndTimeUtil;
 
@@ -16,7 +18,7 @@ import com.crs.flipkart.utils.DateAndTimeUtil;
  */
 public class CRSProfessorMenu {
 	
-	public void professorMenuMain() throws CourseNotFoundException, ProfessorNotFoundException{
+	public void professorMenuMain()  throws CourseNotFoundException, ProfessorNotFoundException, GradeCardNotPublishedException, PasswordIsWeakException{
 		DateAndTimeUtil.loginDisplayDateAndTime();
 		System.out.println("\033[0;1m" +"\n---------------------!!Welcome "+CRSApplication.getUserName()+"!!-----------------------\n"+"\033[0m");
 		System.out.println("Choose an option:-");

@@ -10,6 +10,8 @@ import com.crs.flipkart.business.PasswordUpdaterImplementation;
 import com.crs.flipkart.business.PasswordUpdaterInterface;
 import com.crs.flipkart.constants.Role;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.exceptions.GradeCardNotPublishedException;
+import com.crs.flipkart.exceptions.PasswordIsWeakException;
 import com.crs.flipkart.exceptions.ProfessorNotFoundException;
 import com.crs.flipkart.exceptions.UserNotFoundException;
 
@@ -45,7 +47,7 @@ public class CRSApplication {
 		userName = val;
 	}
 	
-	public static void startApplication() throws CourseNotFoundException, ProfessorNotFoundException
+	public static void startApplication() throws CourseNotFoundException, ProfessorNotFoundException, GradeCardNotPublishedException, PasswordIsWeakException
 	{
 		System.out.println("\033[0;1m" +"\n----------------!!Welcome to CRS Application!!----------------\n"+"\033[0m");
 		System.out.println("Choose the following operation:-");
@@ -112,7 +114,7 @@ public class CRSApplication {
 		}
 	}
 	
-	public static void main(String[] args) throws CourseNotFoundException, ProfessorNotFoundException {
+	public static void main(String[] args) throws CourseNotFoundException, ProfessorNotFoundException, GradeCardNotPublishedException, PasswordIsWeakException  {
 		// TODO Auto-generated method stub
 		startApplication();
 	}
