@@ -27,6 +27,7 @@ import com.crs.flipkart.dao.PaymentsDaoImplementation;
 import com.crs.flipkart.dao.PaymentsDaoInterface;
 import com.crs.flipkart.dao.StudentDaoInterface;
 import com.crs.flipkart.dao.StudentDaoOperation;
+import com.crs.flipkart.exceptions.GradeCardNotPublishedException;
 import com.crs.flipkart.exceptions.ProfessorNotFoundException;
 import com.crs.flipkart.utils.ServiceUtils;
 
@@ -53,14 +54,14 @@ public class AdminImplementation implements AdminInterface{
 	
 	private PaymentsDaoInterface paymentsDaoImplementation = PaymentsDaoImplementation.getInstance();
 	//Group 1
-	public void activateGradeCard(){
+	public void activateGradeCard() throws GradeCardNotPublishedException {
 		logger.info("Instance creation of service class");
 		StudentDaoInterface studentDaoImplementation = StudentDaoOperation.getInstance();
 		try {
 			if(studentDaoImplementation.activateGradeCard())
 				System.out.println("Grade Card Visibility Activated");
 			else
-				System.out.println("Grade card visibility activation failed");
+				throw new GradeCardNotPublishedException();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("Exception raised"+e.getMessage());

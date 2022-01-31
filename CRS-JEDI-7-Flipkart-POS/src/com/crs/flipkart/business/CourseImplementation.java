@@ -12,6 +12,7 @@ import com.crs.flipkart.dao.CourseDaoImplementation;
 import com.crs.flipkart.dao.CourseDaoInterface;
 import com.crs.flipkart.dao.StudentDaoInterface;
 import com.crs.flipkart.dao.StudentDaoOperation;
+import com.crs.flipkart.exceptions.CourseNotDeletedException;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.validator.StandardResponse;
 
@@ -35,7 +36,7 @@ public class CourseImplementation implements CourseInterface{
 		return instance;
 	}
 	
-	public void removeCourse(int courseId) throws CourseNotFoundException
+	public void removeCourse(int courseId) throws CourseNotDeletedException
 	{
 		AdminDaoInterface admin = new AdminDaoOperation();
 		if(admin.deleteCourse(courseId))
@@ -44,7 +45,8 @@ public class CourseImplementation implements CourseInterface{
 		}
 		else
 		{
-			throw new CourseNotFoundException();
+			throw new CourseNotDeletedException();
+			
 		}
 	}
 	public void addCourse(Course course)

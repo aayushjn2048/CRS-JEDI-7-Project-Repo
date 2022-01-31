@@ -10,24 +10,19 @@ public class CourseNotDeletedException extends Exception{
      * constructor for the exception class
      * @param courseCode --> this is the ID of the course which is cannot be removed
      */
-    public CourseNotDeletedException (int courseCode) {
-        this.courseCode = courseCode;
+    public CourseNotDeletedException () {
+       System.out.println("Course is not deleted");
     }
 
     /**
      * getter method for @param courseCode
      * @return
      */
-    public int getCourseCode() {
-        return courseCode;
-    }
-
+    
     /**
      * Overrides the error message shown for exception class
      * @return
      */
-    @Override
-    public String getMessage() {
-        return "Course : " + courseCode + " not deleted";
-    }
+    
+    
 }

@@ -26,7 +26,10 @@ import com.crs.flipkart.constants.Designation;
 import com.crs.flipkart.constants.Gender;
 import com.crs.flipkart.constants.Role;
 import com.crs.flipkart.dao.AdminDaoOperation;
+import com.crs.flipkart.exceptions.CourseNotDeletedException;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
+import com.crs.flipkart.exceptions.GradeCardNotPublishedException;
+import com.crs.flipkart.exceptions.PasswordIsWeakException;
 import com.crs.flipkart.exceptions.ProfessorNotFoundException;
 import com.crs.flipkart.utils.DateAndTimeUtil;
 
@@ -43,7 +46,7 @@ public class CRSAdminMenu {
 	StudentImplementation studentImplementation = StudentImplementation.getInstance();
 	private static Logger logger = Logger.getLogger(CRSAdminMenu.class);
 	
-	public void adminMenuMain() throws CourseNotFoundException, ProfessorNotFoundException{
+	public void adminMenuMain() throws CourseNotFoundException, ProfessorNotFoundException, GradeCardNotPublishedException, PasswordIsWeakException{
 		DateAndTimeUtil.loginDisplayDateAndTime();
 		System.out.println("\n-----------------------!!Welcome Admin!!----------------------\n");
 		System.out.println("Choose an option:-");
@@ -89,7 +92,7 @@ public class CRSAdminMenu {
 							System.out.print("Enter CourseId: ");
 							try {
 								courseImplementation.removeCourse(scanner.nextInt());
-							} catch (CourseNotFoundException ce) {
+							} catch (CourseNotDeletedException ce) {
 								// TODO: handle exception
 								logger.error("Exception raised" + ce.getMessage());
 							}

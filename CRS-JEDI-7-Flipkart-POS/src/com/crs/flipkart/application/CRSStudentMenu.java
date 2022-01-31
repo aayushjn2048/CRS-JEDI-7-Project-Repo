@@ -13,6 +13,7 @@ import com.crs.flipkart.business.StudentImplementation;
 import com.crs.flipkart.business.StudentInterface;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
 import com.crs.flipkart.exceptions.GradeCardNotPublishedException;
+import com.crs.flipkart.exceptions.PasswordIsWeakException;
 import com.crs.flipkart.exceptions.ProfessorNotFoundException;
 import com.crs.flipkart.utils.DateAndTimeUtil;
 
@@ -21,7 +22,7 @@ import com.crs.flipkart.utils.DateAndTimeUtil;
  *
  */
 public class CRSStudentMenu {
-	public void studentMenuMain() throws CourseNotFoundException, ProfessorNotFoundException {
+	public void studentMenuMain() throws CourseNotFoundException, ProfessorNotFoundException, GradeCardNotPublishedException, PasswordIsWeakException {
 		DateAndTimeUtil.loginDisplayDateAndTime();
 		System.out.println("\n------------------!!Welcome Student!!-------------------\n");
 		System.out.println("Choose an option:-");

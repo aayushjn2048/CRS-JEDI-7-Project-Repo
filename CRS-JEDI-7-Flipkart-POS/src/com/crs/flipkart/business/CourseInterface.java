@@ -6,6 +6,7 @@ package com.crs.flipkart.business;
 import java.util.ArrayList;
 
 import com.crs.flipkart.bean.Course;
+import com.crs.flipkart.exceptions.CourseNotDeletedException;
 import com.crs.flipkart.exceptions.CourseNotFoundException;
 
 /**
@@ -13,7 +14,7 @@ import com.crs.flipkart.exceptions.CourseNotFoundException;
  *
  */
 public interface CourseInterface {
-	public void removeCourse(int courseId) throws CourseNotFoundException;
+	public void removeCourse(int courseId) throws CourseNotDeletedException;
     public void addCourse(Course course);
     public void updateCourse(Course course) throws CourseNotFoundException;
     public ArrayList<Course> getAllCourses();

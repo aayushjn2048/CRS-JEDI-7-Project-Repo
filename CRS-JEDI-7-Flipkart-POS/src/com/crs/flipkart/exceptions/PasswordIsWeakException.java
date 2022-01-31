@@ -11,15 +11,10 @@ public class PasswordIsWeakException extends Exception {
 	/**
 	 * @param password -> password
 	 */
-	public PasswordIsWeakException(String password) {
+	public PasswordIsWeakException() {
+		 System.out.println("Entered password has less than 4 characters");
 	}
 
-	/**
-	 * @return message to be displayed
-	 */
-	@Override
-	public String getMessage() 
-	{
-		return "Entered password has less than 4 characters";
-	}
+	
+	
 }
