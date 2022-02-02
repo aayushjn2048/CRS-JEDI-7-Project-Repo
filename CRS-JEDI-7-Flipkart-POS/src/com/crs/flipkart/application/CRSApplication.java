@@ -61,7 +61,9 @@ public class CRSApplication {
 			System.out.print("Enter Choice Number: ");
 			int choice = scanner.nextInt();
 			if(choice==4)
-				return;
+			{
+				break;
+			}
 			switch(choice)
 			{
 				case 1: {

@@ -49,6 +49,7 @@ public class CRSPaymentMenu {
 		notification.setMessage("Payment successful!!! Your semester registration is completed.");
 		Date date = new Date();
 		notification.setDateTime(date);
+		notification.setUserType(Role.STUDENT);
 		adminDao.generateNotification(notification);
 		return refNo;
 	}

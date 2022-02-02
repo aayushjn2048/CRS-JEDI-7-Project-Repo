@@ -379,4 +379,45 @@ public class StudentDaoOperation implements StudentDaoInterface {
 		return false;
 	}
 
+	@Override
+	public boolean isSemesterRegistrationDone(int studentId) {
+		// TODO Auto-generated method stub
+		PreparedStatement stmt = null;
+		try
+		{
+            String sql = "SELECT * FROM registrationDetails WHERE studentId = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, studentId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+            return false;
+		} catch (Exception e) {
+	        // Handle errors for Class.forName
+	    	logger.error("Exception raised" + e.getMessage());
+	    }
+		return false;
+	}
+
+	@Override
+	public boolean isGradeCardActivated(int studentId) {
+		// TODO Auto-generated method stub
+		try {
+            PreparedStatement stmt = null;
+            String sql = "select * from student where gradeCardVisibility=1 and studentId=?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, studentId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                return true;
+            }
+            return false;
+        } catch (SQLException se) {
+            // Handle errors for JDBC
+        	logger.error("Exception raised" + se.getMessage());
+        }
+        return false;
+	}
+
 }

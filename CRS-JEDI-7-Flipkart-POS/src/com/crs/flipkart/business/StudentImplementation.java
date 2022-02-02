@@ -16,6 +16,7 @@ import com.crs.flipkart.bean.Notification;
 import com.crs.flipkart.bean.Student;
 import com.crs.flipkart.bean.StudentCourseChoice;
 import com.crs.flipkart.bean.StudentRegisteredCourses;
+import com.crs.flipkart.constants.Role;
 import com.crs.flipkart.dao.StudentDaoOperation;
 import com.crs.flipkart.exceptions.GradeCardNotPublishedException;
 import com.crs.flipkart.dao.AdminDaoInterface;
@@ -187,6 +188,7 @@ public class StudentImplementation implements StudentInterface{
 		notification.setMessage("Your application form has been submitted for the further process.");
 		Date date = new Date();
 		notification.setDateTime(date);
+		notification.setUserType(Role.STUDENT);
 		AdminDaoInterface adminDao = new AdminDaoOperation();
 		adminDao.generateNotification(notification);
 		return studentCourseChoice;
@@ -232,5 +234,17 @@ public class StudentImplementation implements StudentInterface{
 	@Override
 	public Boolean isStudentRegistered(int studentId) {
 		return studentDaoImplementation.isStudentRegistered(studentId);
+	}
+
+	@Override
+	public boolean isSemesterRegistrationDone(int studentId) {
+		// TODO Auto-generated method stub
+		return studentDaoImplementation.isSemesterRegistrationDone(studentId);
+	}
+
+	@Override
+	public boolean isGradeCardActivated(int studentId) {
+		// TODO Auto-generated method stub
+		return studentDaoImplementation.isGradeCardActivated(studentId);
 	}
 }

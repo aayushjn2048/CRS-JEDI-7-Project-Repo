@@ -88,6 +88,19 @@ public interface StudentDaoInterface {
 	 * @return Boolean object
 	 * */
     public Boolean isStudentRegistered(int studentId);
+    
+    /**
+	 * Method to check student has submitted his/her course choices or not
+	 * @param studentId
+	 * @return Boolean object
+	 * */
+
+	public boolean isSemesterRegistrationDone(int studentId);
+
+	public boolean isGradeCardActivated(int studentId);
+    
+    
+    
 
 
 }

@@ -76,4 +76,8 @@ public interface StudentInterface {
 		 * @return boolean object
 		 */
 	 public Boolean isStudentRegistered(int studentId);
+
+	public boolean isSemesterRegistrationDone(int studentId);
+
+	public boolean isGradeCardActivated(int studentId);
 }

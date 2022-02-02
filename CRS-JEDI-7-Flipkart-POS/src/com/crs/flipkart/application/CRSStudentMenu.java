@@ -57,7 +57,7 @@ public class CRSStudentMenu {
 				}
 				case 2: {
 					//Semester Registration
-					if(studentImplementation.studentAlreadyRegistered(CRSApplication.getUserId()))
+					if(studentImplementation.isSemesterRegistrationDone(CRSApplication.getUserId()))
 					{
 						System.out.println("You already submitted the registration form");
 						break;
@@ -72,23 +72,59 @@ public class CRSStudentMenu {
 				}
 				case 3:{
 					//Payment
-					String paymentStatus=studentImplementation.getPaymentStatus(studentId);
-					CRSPaymentMenu crsPaymentMenu=new CRSPaymentMenu();
-					if(paymentStatus==null || !paymentStatus.equals("SUCCESS")) {
-						System.out.println("Fees to be paid for current semester is: " + paymentImplementation.calculateFees(studentId));
-						String referenceNo = crsPaymentMenu.displayPaymentMethods();
-						studentImplementation.makePaymentSuccessful(CRSApplication.getUserId(),referenceNo);
+					try {
+						if(!studentImplementation.isSemesterRegistrationDone(studentId))
+						{
+							System.out.println("Semester Registration is pending yet!!!");
+							break;
+						}
+						String paymentStatus=studentImplementation.getPaymentStatus(studentId);
+						if(paymentStatus==null)
+						{
+							System.out.println("Admin has not approved your cousres yet!!!");
+							break;
+						}
+						CRSPaymentMenu crsPaymentMenu=new CRSPaymentMenu();
+						if(!paymentStatus.equals("SUCCESS")) {
+							System.out.println("Fees to be paid for current semester is: " + paymentImplementation.calculateFees(studentId));
+							String referenceNo = crsPaymentMenu.displayPaymentMethods();
+							studentImplementation.makePaymentSuccessful(CRSApplication.getUserId(),referenceNo);
+						}
+						System.out.println("Payment done successfully!");
 					}
-					System.out.println("Payment done successfully!");
+					catch(Exception e)
+					{
+						System.out.println(e.getMessage());
+					}
 					break;
 				}
 				case 4:{
 					//System.out.println("Grade card for current semester is: ");
 					try {
-						if(studentImplementation.isStudentRegistered(CRSApplication.getUserId()))
-							studentImplementation.displayGradeCard(studentId);
+						if(!studentImplementation.isSemesterRegistrationDone(studentId))
+						{
+							System.out.println("Semester Registration is pending yet!!!");
+							break;
+						}
+						String paymentStatus=studentImplementation.getPaymentStatus(studentId);
+						if(paymentStatus==null)
+						{
+							System.out.println("Admin has not approved your cousres yet!!!");
+							break;
+						}
+						else if(paymentStatus.equals("PENDING"))
+						{
+							System.out.println("Payement is not done yet!!!");
+							break;
+						}
+						else if(!studentImplementation.isGradeCardActivated(studentId))
+						{
+							System.out.println("Grade is not yet actived!!!");
+						}
 						else
-							System.out.println("Student not registered");
+						{
+							studentImplementation.displayGradeCard(studentId);
+						}
 					}
 					catch(GradeCardNotPublishedException g)
 					{}
