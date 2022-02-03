@@ -1,0 +1,7 @@
+21:41:10,036 ERROR AdminDaoOperation,main:568 - Exception raisedDuplicate entry '1' for key 'studentRegisteredDetails.PRIMARY'
+21:41:24,755 ERROR AdminDaoOperation,main:568 - Exception raisedDuplicate entry '1' for key 'studentRegisteredDetails.PRIMARY'
+21:42:13,135 ERROR AdminDaoOperation,main:568 - Exception raisedNo value specified for parameter 4
+21:46:22,536 ERROR AdminDaoOperation,main:568 - Exception raisedDuplicate entry '1' for key 'studentRegisteredDetails.PRIMARY'
+21:50:12,836 ERROR AdminDaoOperation,main:568 - Exception raisedDuplicate entry '1' for key 'studentRegisteredDetails.PRIMARY'
+21:55:22,359 ERROR AdminDaoOperation,main:568 - Exception raisedDuplicate entry '1' for key 'studentRegisteredDetails.PRIMARY'
+22:09:11,791  INFO AdminImplementation,main:59 - Instance creation of service class
